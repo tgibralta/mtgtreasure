@@ -1,0 +1,19 @@
+{
+  "name": "ptrc_connector",
+  "version": "1.0.0",
+  "main": "ptrc.js",
+  "repository": "git@gitlab.jp.sbibits.com:thierry.gibralta/ptrc_software.git",
+  "author": "Thierry GIBRALTA <thierry.gibralta@sbibits.com>",
+  "license": "MIT",
+  "scripts": {
+    "start_local": "NODE_CONFIG_DIR=./server/config node ptrc.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "*",
+    "path": "*",
+    "request": "*",
+    "request-promise": "^4.2.2",
+    "winston": "*"
+  }
+}
