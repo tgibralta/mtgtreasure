@@ -1,0 +1,18 @@
+{
+    "DB": {
+        "PGHOST": "localhost",
+        "PGUSER": "mtgdb",
+        "PGDATABASE": "mtgdb",
+        "PGPASSWORD": "mtgpassword",
+        "PGTABLELOGIN": {
+            "NAME" : "logintable",
+            "COLUMN0" : "user_id",
+            "COLUMN1" : "username",
+            "COLUMN2" : "mail",
+            "COLUMN3" : "password",
+            "COLUMN4" : "is_disabled",
+            "COLUMN5" : "scope"
+        },
+        "PGPORT": 5432
+    }
+}

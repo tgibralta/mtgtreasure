@@ -6,12 +6,15 @@
   "author": "Thierry GIBRALTA <thierry.gibralta@sbibits.com>",
   "license": "MIT",
   "scripts": {
-    "start_local": "NODE_CONFIG_DIR=./server/config node ptrc.js"
+    "start_local": "NODE_CONFIG_DIR=./server/config NODE_ENV=default node mtgtreasure.js",
+    "start_dev": "NODE_CONFIG_DIR=./server/config NODE_ENV=dev node mtgtreasure.js"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
+    "config": "^1.30.0",
     "express": "*",
     "path": "*",
+    "pg": "^7.4.1",
     "request": "*",
     "request-promise": "^4.2.2",
     "winston": "*"

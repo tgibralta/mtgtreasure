@@ -1,0 +1,9 @@
+{
+    "DB": {
+        "PGHOST": "localhost",
+        "PGUSER": "mtgdb",
+        "PGDATABASE": "mtgdb",
+        "PGPASSWORD": "mtgpassword",
+        "PGPORT": 5432
+    }
+}
