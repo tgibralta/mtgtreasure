@@ -4,6 +4,7 @@ const getCardPerIDRoute = rootRequire('server/routes/getCardPerID')
 const addUserRoute = rootRequire('server/routes/addUser')
 const loginRoute = rootRequire('server/routes/login')
 const deleteUserRoute = rootRequire('server/routes/deleteUser')
+const addCardToCollectionRoute = rootRequire('server/routes/addCardToCollection')
 
 module.exports = (app) => {
   app.use('/', (req, res, next) => {
@@ -15,5 +16,5 @@ module.exports = (app) => {
   app.use('/getcard/id', getCardPerIDRoute)
   app.use('/getimage', setImageRoute)
   app.use('/login', loginRoute)
-  
+  app.use('/addcardtocollection', addCardToCollectionRoute)
 }
