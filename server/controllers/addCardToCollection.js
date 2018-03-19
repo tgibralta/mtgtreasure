@@ -17,17 +17,19 @@ const checkIfCardInCollection = (user_id, card_id, price_buy) => new Promise((re
       client.query(`SELECT * FROM ${config.get('DB.PGTABLECOLLECTION.NAME')} WHERE ${config.get('DB.PGTABLECOLLECTION.COLUMN1')} = '${user_id}' AND ${config.get('DB.PGTABLECOLLECTION.COLUMN2')} = '${card_id}'`)
       .then((res) => {
         let collectionID = 0
+        let currentNumber = 0
         let exist = false
-        res.rows.forEach((valuesRow) => {
-          if (valuesRow.init_price === price_buy || (valuesRow.number_of_card === 0)) {
-            collectionID = valuesRow.collection_id
+        res.rows.forEach((item, index) => {
+          console.log(`collectionID: ${item.collection_id}`)
+          if (item.init_price === price_buy || (item.number_of_card === 0)) {
+            console.log(item.collection_id)
+            collectionID = item.collection_id
+            currentNumber = item.number_of_card
             exist = true
-            // console.log(`Collection ID: ${collectionID}`)
           }
         })
         client.end()
-        // console.log(`Collection ID: ${collectionID}`)
-        return resolve(exist, collectionID)
+        return resolve({exist, collectionID, currentNumber})
       })
       .catch((err) => {
         client.end()
@@ -55,7 +57,7 @@ const updateNumberInCollection = (collection_id, new_price_buy, new_number) => n
       client.query(`UPDATE ${config.get('DB.PGTABLECOLLECTION.NAME')} SET ${config.get('DB.PGTABLECOLLECTION.COLUMN3')} = '${new_price_buy}' WHERE ${config.get('DB.PGTABLECOLLECTION.COLUMN0')} = '${collection_id}'`)
       .then(() => {
         console.log(`QUERY2: UPDATE ${config.get('DB.PGTABLECOLLECTION.NAME')} SET ${config.get('DB.PGTABLECOLLECTION.COLUMN5')} = '${new_number}' WHERE ${config.get('DB.PGTABLECOLLECTION.COLUMN0')} = '${collection_id}'`)
-        client.query(`UPDATE ${config.get('DB.PGTABLECOLLECTION.NAME')} SET ${config.get('DB.PGTABLECOLLECTION.COLUMN5')} = '${new_number}' WHERE ${config.get('DB.PGTABLECOLLECTION.COLUMN0')} = '${collection_id}'`)
+        client.query(`UPDATE ${config.get('DB.PGTABLECOLLECTION.NAME')} SET ${config.get('DB.PGTABLECOLLECTION.COLUMN4')} = '${new_number}' WHERE ${config.get('DB.PGTABLECOLLECTION.COLUMN0')} = '${collection_id}'`)
         .then(() => {
           client.end()
           return resolve(`Update completed`)
@@ -123,10 +125,10 @@ module.exports = {
       let number = req.body.number
       console.log(`variable defined: userID: ${userID}, cardID: ${cardID}, initPrice: ${initPrice}, number: ${number}`)
       checkIfCardInCollection(userID, cardID, initPrice)
-      .then((exist, id_collection) => {
-        if (exist) {
-          console.log(`collectionID: ${id_collection}`)
-          updateNumberInCollection(id_collection, initPrice, number)
+      .then((object) => {
+        if (object.exist) {
+          let newNumber = number + object.currentNumber
+          updateNumberInCollection(object.collectionID, initPrice, newNumber)
           .then((msg) => {
             res.status(200).send(msg)
           })

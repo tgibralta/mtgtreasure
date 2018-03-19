@@ -5,6 +5,8 @@ const addUser = rootRequire('server/controllers/addUser').addUser
 const deleteUser = rootRequire('server/controllers/deleteUser').deleteUser
 const login = rootRequire('server/controllers/login').login
 const addCardToCollection = rootRequire('server/controllers/addCardToCollection').addCardToCollection
+const removeCardFromCollection = rootRequire('server/controllers/removeCardFromCollection').removeCardFromCollection
+const getCollection = rootRequire('server/controllers/getCollection').getCollection
 
 module.exports = {
     getCardPerName,
@@ -13,5 +15,7 @@ module.exports = {
     addUser,
     login,
     deleteUser,
-    addCardToCollection
+    addCardToCollection,
+    removeCardFromCollection,
+    getCollection
 }
