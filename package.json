@@ -13,6 +13,7 @@
     "body-parser": "^1.18.2",
     "config": "^1.30.0",
     "express": "*",
+    "memory-cache": "^0.2.0",
     "path": "*",
     "pg": "^7.4.1",
     "request": "*",

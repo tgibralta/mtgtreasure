@@ -1,6 +1,9 @@
 const request = require('request')
 const rp = require('request-promise')
 const urlCardSearchPerName = rootRequire('server/models/apiDescription').urlCardSearchPerName
+const mcache = require('memory-cache')
+const headerCacheScryfall = rootRequire('server/models/cacheInfo').headerCacheScryfall
+const timeoutCacheScryfall = rootRequire('server/models/cacheInfo').timeoutCacheScryfall
 
 const receiveRequest = (req) => new Promise((resolve, reject) => {
   if (req.params.cardname) {
@@ -50,21 +53,28 @@ module.exports = {
  */
   getCardPerName (req, res) {
     return new Promise((resolve, reject) => {
-      receiveRequest(req)
-      .then((cardname) => {
-        transferToAPI(cardname)
-        .then((body) => {
-          res.status(200).send(body)
+      let key = headerCacheScryfall + req.url
+      let cachedBody = mcache.get(key)
+      if (cachedBody) {
+        res.status(200).send(cachedBody)
+      } else {
+        receiveRequest(req)
+        .then((cardname) => {
+          transferToAPI(cardname)
+          .then((body) => {
+            mcache.put(key,body,timeoutCacheScryfall)
+            res.status(200).send(body)
+          })
+          .catch((err) => {
+            console.log(`Error transferToAPI: ${err}`)
+            res.status(400).send(err)
+          })
         })
         .catch((err) => {
-          console.log(`Error transferToAPI: ${err}`)
+          console.log(`Error receiveRequest: ${err}`)
           res.status(400).send(err)
         })
-      })
-      .catch((err) => {
-        console.log(`Error receiveRequest: ${err}`)
-        res.status(400).send(err)
-      }) 
+      }
     })
   }
 }
