@@ -109,7 +109,7 @@ const createEntryInCollection = (user_id, card_id, price_buy, number) => new Pro
 })
 
 module.exports = {
-  /**
+ /**
  * @description Adds a card to collection. check if the same cards has been alread added or if a similar entry with 0 cards exists in the DB
  * @param {integer} user_id
  * @param {String} card_id

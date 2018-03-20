@@ -7,6 +7,9 @@ const deleteUserRoute = rootRequire('server/routes/deleteUser')
 const addCardToCollectionRoute = rootRequire('server/routes/addCardToCollection')
 const removeCardFromCollectionRoute = rootRequire('server/routes/removeCardFromCollection')
 const getCollectionRoute = rootRequire('server/routes/getCollection')
+const addCardsToDeckRoute = rootRequire('server/routes/addCardsToDeck')
+const getDeckRoute = rootRequire('server/routes/getDeck')
+const deleteDeckRoute = rootRequire('server/routes/deleteDeck')
 
 module.exports = (app) => {
   app.use('/', (req, res, next) => {
@@ -21,4 +24,7 @@ module.exports = (app) => {
   app.use('/addcardtocollection', addCardToCollectionRoute)
   app.use('/removecardfromcollection', removeCardFromCollectionRoute)
   app.use('/getcollection', getCollectionRoute)
+  app.use('/addcardstodeck', addCardsToDeckRoute)
+  app.use('/getdeck', getDeckRoute)
+  app.use('/deletedeck', deleteDeckRoute)
 }

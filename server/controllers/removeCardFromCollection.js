@@ -18,21 +18,26 @@ const removeCardQuery = (collectionID, nb_card_to_remove, nb_card_available) => 
       if (nb_card_to_remove === nb_card_available) { // JUST NEED TO REMOVE THE ENTRY
         client.query(`DELETE FROM ${config.get('DB.PGTABLECOLLECTION.NAME')} WHERE ${config.get('DB.PGTABLECOLLECTION.COLUMN0')} = '${collectionID}'`)
         .then(() => {
+          client.end()
           return resolve(`Entry deleted from DB`)
         })
         .catch((errDEL) => {
+          client.end()
           return reject(`Error during delete`)
         })
       } else { // UPDATE THE NUMBER
         if (nb_card_available < nb_card_to_remove) {
+          client.end()
           return reject(`Error: NB Card invalid`)
         } else {
           let newNumber = nb_card_available - nb_card_to_remove
           client.query(`UPDATE ${config.get('DB.PGTABLECOLLECTION.NAME')} SET ${config.get('DB.PGTABLECOLLECTION.COLUMN4')} = '${newNumber}' WHERE ${config.get('DB.PGTABLECOLLECTION.COLUMN0')} = '${collectionID}'`)
           .then(() => {
+            client.end()
             return resolve(`Updated`)
           })
           .catch((errDEL) => {
+            client.end()
             return reject(`Error during update`)
           })
         }

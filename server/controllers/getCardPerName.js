@@ -43,7 +43,7 @@ const transferToAPI = (cardname) => new Promise((resolve, reject) => {
 
 
 module.exports = {
-  /**
+ /**
  * @description Returns a list of card from Scryfall relative to a request
  * @param {String} cardname
  * @return {JSON} Card information

@@ -25,6 +25,11 @@ const queryCollection = (user_id) => new Promise((resolve, reject) => {
 })
 
 module.exports = {
+ /**
+ * @description Returns an array with all the cards belonging to a user
+ * @param {String} userID
+ * @return {JSON} Array of cards
+ */
   getCollection (req, res) {
     return new Promise((resolve, reject) => {
       queryCollection(req.params.userid)
