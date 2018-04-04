@@ -1,6 +1,7 @@
 const path = require('path')
 const bodyParser = require('body-parser')
 const express = require('express')
+const cors = require('cors')
 
 global.rootRequire = (name) => {
     return require(path.join(__dirname, name))
@@ -12,6 +13,7 @@ const hostname = process.env.HOSTNAME
 
 // APP SETUP
 const app = express()
+app.use(cors())
 
 // BODY PARSER
 app.use(bodyParser.urlencoded({extended: false}))

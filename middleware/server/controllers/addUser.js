@@ -1,5 +1,5 @@
 const config = require('config')
-const { Client } = require('pg')
+const { Client, Pool } = require('pg')
 
 const checkIfUserExist = (client, username) => new Promise((resolve, reject) => {
   if (username) {
@@ -15,7 +15,7 @@ const checkIfUserExist = (client, username) => new Promise((resolve, reject) => 
       return reject(err)
     })
   } else {
-    return reject('Invalid username')
+    return reject('checkIfUserExist: Invalid username')
   }
 })
 
@@ -41,9 +41,25 @@ const checkIfMailExist = (client, mail) => new Promise((resolve, reject) => {
 const queryDB = (client, username, mail, password) => new Promise((resolve, reject) => {
   client.query(`INSERT INTO ${config.get('DB.PGTABLELOGIN.NAME')} (${config.get('DB.PGTABLELOGIN.COLUMN1')},${config.get('DB.PGTABLELOGIN.COLUMN2')},${config.get('DB.PGTABLELOGIN.COLUMN3')},${config.get('DB.PGTABLELOGIN.COLUMN4')},${config.get('DB.PGTABLELOGIN.COLUMN5')}) VALUES ('${username}', '${mail}', '${password}', false, 'user')`)
   .then(() => {
-    return resolve(`Account created`)
+    return resolve()
   })
   .catch((err) => {
+    console.log(`queryDB : ${err}`)
+    return reject(err)
+  })
+})
+
+const getUserID = (client, username) => new Promise((resolve, reject) => {
+  console.log(`QUERY: SELECT * FROM ${config.get('DB.PGTABLELOGIN.NAME')} WHERE ${config.get('DB.PGTABLELOGIN.COLUMN1')}='${username}'`)
+  client.query(`SELECT * FROM ${config.get('DB.PGTABLELOGIN.NAME')} WHERE ${config.get('DB.PGTABLELOGIN.COLUMN1')}='${username}'`)
+  .then((res) => {
+    let jsonResponse = {
+      "userID": res.rows[0].user_id
+    }
+    return resolve(JSON.stringify(jsonResponse))
+  })
+  .catch((err) => {
+    console.log(`getUserID: ${err}`)
     return reject(err)
   })
 })
@@ -58,74 +74,50 @@ module.exports = {
  */
   addUser(req, res) {
     return new Promise((resolve, reject) => {
-      const client1 = new Client({
+      const pool = new Pool({
         user: config.get('DB.PGUSER'),
         host: config.get('DB.PGHOST'),
         database: config.get('DB.PGDATABASE'),
         password: config.get('DB.PGPASSWORD'),
         port: config.get('DB.PGPORT')
       })
-      const client2 = new Client({
-        user: config.get('DB.PGUSER'),
-        host: config.get('DB.PGHOST'),
-        database: config.get('DB.PGDATABASE'),
-        password: config.get('DB.PGPASSWORD'),
-        port: config.get('DB.PGPORT')
-      })
-      const client3 = new Client({
-        user: config.get('DB.PGUSER'),
-        host: config.get('DB.PGHOST'),
-        database: config.get('DB.PGDATABASE'),
-        password: config.get('DB.PGPASSWORD'),
-        port: config.get('DB.PGPORT')
-      })
-      client1.connect((errorDB) => {
-        if (errorDB) {
-          client1.end()
-          return reject(`DB: ${errorDB}`)
-        } else {
-          checkIfUserExist(client1, req.body.username)
-          .then(()=> {
-            client1.end()
-            client2.connect((errorDB2) => {
-              if (errorDB2) {
-                client2.end()
-                return reject(`DB: ${errorDB2}`)
-              } else {
-                checkIfMailExist(client2, req.body.mail)
-                .then(() => {
-                  client2.end()
-                  client3.connect((errorDB3) => {
-                    if (errorDB3) {
-                      client3.end()
-                      return reject(`DB: ${errorDB3}`)
-                    } else {
-                      queryDB(client3, req.body.username, req.body.mail, req.body.password)
-                      .then((msg) => {
-                        res.status(200).send(msg)
-                        client3.end()
-                      })
-                      .catch((err) => {
-                        res.status(400).send(err)
-                        client3.end()
-                      })
-                    }
-                  })
-                })
-                .catch((err) => {
-                  res.status(400).send(err)
-                  client2.end()
-                })
-              }
+      pool.connect()
+      .then((client) => {
+        checkIfUserExist(client,req.body.username)
+        .then(() => {
+          checkIfMailExist(client, req.body.mail)
+          .then(() => {
+            queryDB(client, req.body.username, req.body.mail, req.body.password)
+            .then(() => {
+              getUserID(client, req.body.username)
+              .then((jsonUserID) => {
+                res.set('Content-Type','application/json')
+                res.status(200).send(jsonUserID)
+                return resolve()
+              })
+              .catch((errUserID) => {
+                res.status(400).send(errUserID)
+                return reject(errUserID)
+              })
             })
           })
-          .catch((err) => {
-            res.status(400).send(err)
-            client.end()
+          .catch((errMail) => {
+            console.log(errMail)
+            res.status(400).send(errMail)
+            return reject(errMail)
           })
-        }
+        })
+        .catch((errUserExist)=>{
+          console.log(errUserExist)
+          res.status(400).send(errUserExist)
+          return reject(errUserExist)
+        })
       })
-      
+      .catch((errConnect) => {
+        console.log(`Error while connection with DB: ${errConnect}`)
+        res.status(400).send(errConnect)
+        return reject(errConnect)
+      })
     })
   }
 }

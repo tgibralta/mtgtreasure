@@ -20,14 +20,13 @@ const checkIfUserExist = (client, username) => new Promise((resolve, reject) => 
 const checkCredentials = (username, mail, password, userInfo) => new Promise((resolve, reject) => {
   console.log('entered checkCredentials')
   if (username === userInfo.username) {
-    if (mail === userInfo.mail) {
-      if (password === userInfo.password) {
-        return resolve(`User authenticated`)
-      } else {
-        return reject(`Wrong Password. Please try again`)
+    if (password === userInfo.password) {
+      let jsonAnswer = {
+          "userID" : userInfo.user_id
       }
+      return resolve(JSON.stringify(jsonAnswer))
     } else {
-      return reject(`Username and mail address don't match. Please try again`)
+      return reject(`Wrong Password. Please try again`)
     }
   } else {
     return reject(`Username Unknown. Please try again`)
@@ -51,6 +50,7 @@ module.exports = {
         password: config.get('DB.PGPASSWORD'),
         port: config.get('DB.PGPORT')
       })
+      console.log(`Login Request received`)
       let username = req.params.username
       let mail = req.params.mail
       let password = req.params.password
@@ -64,20 +64,22 @@ module.exports = {
           checkIfUserExist(client, username)
           .then((row) => {
             checkCredentials(username, mail, password, row)
-            .then((msg) => {
+            .then((jsonObject) => {
               client.end()
-              res.status(200).send(msg)  
+              res.set('Content-Type','application/json')
+              res.status(200).send(jsonObject)
+              return resolve()
             })
             .catch((errCred) => {
-              console.log('error cred')
               client.end()
-              res.status(400).send(errCred) 
+              res.status(400).send(errCred)
+              return reject(errCred)
             })
           })
           .catch((errUserExist) => {
-            console.log('error user exist')
             client.end()
             res.status(400).send(errUserExist)
+            return reject(errUserExist)
           })
         }
       })

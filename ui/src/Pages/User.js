@@ -12,7 +12,6 @@ class User extends Component {
     console.log(this.props.match)
     return (
       <div>
-        <h2>User Domain</h2>
         <Switch>
           <Route exact path={`${this.props.match.url}/`} component={DashboardPage}/>
           <Route exact path={`${this.props.match.url}/collection`} component={CollectionPage}/>

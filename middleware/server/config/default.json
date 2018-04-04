@@ -1,0 +1,36 @@
+{
+  "DB": {
+    "PGHOST": "localhost",
+    "PGUSER": "mtgdb",
+    "PGDATABASE": "mtgdb",
+    "PGPASSWORD": "mtgpassword",
+    "PGTABLELOGIN": {
+      "NAME" : "logintable",
+      "COLUMN0" : "user_id",
+      "COLUMN1" : "username",
+      "COLUMN2" : "mail",
+      "COLUMN3" : "password",
+      "COLUMN4" : "is_disabled",
+      "COLUMN5" : "scope"
+    },
+    "PGTABLECOLLECTION" : {
+      "NAME" : "card_collection",
+      "COLUMN0" : "collection_id",
+      "COLUMN1" : "user_id",
+      "COLUMN2" : "card_id",
+      "COLUMN3" : "init_price",
+      "COLUMN4" : "number_of_card",
+      "COLUMN5" : "date_buy",
+      "COLUMN6" : "last_update"
+    },
+    "PGTABLEDECK" : {
+      "NAME" : "deck_collection",
+      "COLUMN0" : "user_id",
+      "COLUMN1" : "card_id",
+      "COLUMN2" : "number_of_card",
+      "COLUMN3" : "last_update",
+      "COLUMN4" : "deck_id"
+    },
+    "PGPORT": 5432
+  }
+}

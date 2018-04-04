@@ -10,8 +10,12 @@ const getCollectionRoute = rootRequire('server/routes/getCollection')
 const addCardsToDeckRoute = rootRequire('server/routes/addCardsToDeck')
 const getDeckRoute = rootRequire('server/routes/getDeck')
 const deleteDeckRoute = rootRequire('server/routes/deleteDeck')
+const cors = require('cors')
 
 module.exports = (app) => {
+
+  app.options('*', cors())
+
   app.use('/', (req, res, next) => {
       next()
   })

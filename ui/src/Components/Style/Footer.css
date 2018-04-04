@@ -1,0 +1,18 @@
+.footer-copyright {
+  background-color:  #17202a
+  positio
+}
+.page-footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+.copyright-link {
+  color: white
+}
+.icon-social {
+}
