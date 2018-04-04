@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import "./Style/Signup.css"
+import Footer from './../Components/Footer'
 const CreateUser = require('./../Actions/AccountAction').CreateUser
 
 class Signup extends Component {
@@ -37,6 +38,7 @@ class Signup extends Component {
         <div className="container">
           NEWS BANNER
         </div>
+        <Footer/>
       </div>
     );
   }

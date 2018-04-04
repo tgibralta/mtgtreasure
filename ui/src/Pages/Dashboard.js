@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import userStore from './../Stores/UserStore'
 import TableCollection from './../Components/TableCollection'
+import Footer from './../Components/Footer'
 import './Style/Dashboard.css'
 
 class Dashboard extends Component {
@@ -98,6 +99,7 @@ class Dashboard extends Component {
           <TableCollection collection={this.state.user.collection}/>
         </main>
       </div>
+      <Footer/>
     </div>
     );
   }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Style/Signin.css'
+import Footer from './../Components/Footer'
 const SigninUser = require('./../Actions/AccountAction').SigninUser
 
 class Signin extends Component {
@@ -43,11 +44,12 @@ class Signin extends Component {
         </div>
       </div>
       <div className="container">
-          NEWS BANNER
-        </div>
+        NEWS BANNER
+      </div>
+      <Footer/>
       </div>
     );
   }
 }
 
-export default Signin;
+export default Signin
