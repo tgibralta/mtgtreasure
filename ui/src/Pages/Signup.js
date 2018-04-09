@@ -38,7 +38,6 @@ class Signup extends Component {
         <div className="container">
           NEWS BANNER
         </div>
-        <Footer/>
       </div>
     );
   }

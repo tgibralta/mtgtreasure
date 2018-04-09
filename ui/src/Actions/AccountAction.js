@@ -57,10 +57,10 @@ const extractInfoElement = (element) => new Promise((resolve, reject) => {
       "DB": element,
       "Scryfall" : JSON.parse(CardInfo)
     }
-    console.log(`nbCardInElement : ${nbCardInElement}`)
-    console.log(`investmentElement : ${investmentElement}`)
-    console.log(`currentValueElement : ${currentValueElement}`)
-    console.log(`allCardInfo : ${JSON.stringify(allCardInfo)}`)
+    // console.log(`nbCardInElement : ${nbCardInElement}`)
+    // console.log(`investmentElement : ${investmentElement}`)
+    // console.log(`currentValueElement : ${currentValueElement}`)
+    // console.log(`allCardInfo : ${JSON.stringify(allCardInfo)}`)
     return resolve({allCardInfo, nbCardInElement, investmentElement, currentValueElement})
   })
   .catch((errCard) => {
@@ -94,18 +94,16 @@ const loopOverArray = (array) => new Promise((resolve, reject) => {
     let totalInvestment = fullData.reduce(reducerInvestment, 0)
     let totalValue = fullData.reduce(reducerValue, 0)
     let totalCardInfo = fullData.reduce(reducerCardInfo, [])
-    console.log(`totalNbCard: ${totalNbCard}`)
-    console.log(`totalInvestment: ${totalInvestment}`)
-    console.log(`totalValue: ${totalValue}`)
-    console.log(`totalCardInfo: ${JSON.stringify(totalCardInfo)}`)
+    // console.log(`totalNbCard: ${totalNbCard}`)
+    // console.log(`totalInvestment: ${totalInvestment}`)
+    // console.log(`totalValue: ${totalValue}`)
+    // console.log(`totalCardInfo: ${JSON.stringify(totalCardInfo)}`)
     return resolve({totalNbCard, totalInvestment, totalValue, totalCardInfo})
   }))
   results.catch((errLoop) => {
     console.log(`Error during Loop: ${errLoop}`)
     return reject(errLoop)
   })
-
-  
 })
 
 export const SigninUser = (username, password) => new Promise((resolve, reject) => {
@@ -163,3 +161,48 @@ export function SignoutUser(user) {
     user
   })
 }
+
+export const AddCardToCollection = (userID, cardID, price_when_bought, number,totalInfo) => new Promise((resolve, reject) => {
+  let intNumber = parseInt(number)
+  let floatPrice = parseFloat(price_when_bought)
+  let optionsAddCardToCollection = {
+    uri: `http://localhost:8080/addcardtocollection`,
+    method: 'POST',
+    origin: 'http://localhost:3000',
+    body: {
+      "user_id" : userID,
+      "card_id" : cardID,
+      "price_when_bought" : floatPrice,
+      "number" : intNumber
+    },
+    json: true
+  }
+  console.log(JSON.stringify(optionsAddCardToCollection))
+  rp(optionsAddCardToCollection)
+  .then((collectionIDDB) => {
+    let currentDate = new Date()
+    let date = currentDate.getUTCFullYear().toString() + '-' + currentDate.getUTCMonth().toString() + '-' + currentDate.getUTCDay().toString()
+    let cardInfoStore = {
+      "allCardInfo" : {
+        "DB" : {
+          "collection_id": collectionIDDB,
+          "user_id": userID,
+          "card_id": cardID,
+          "init_price": floatPrice,
+          "number_of_card": intNumber,
+          "date_buy": date,
+          "last_update": date
+        },
+        "Scryfall": totalInfo
+      }
+    }
+    dispatcher.dispatch({
+      type: 'ADD_CARD_TO_COLLECTION',
+      userID,
+      cardInfoStore
+    })
+  })
+  .catch((errAddCardToCollection) => {
+    console.log(errAddCardToCollection)
+  })
+})

@@ -15,9 +15,11 @@ const queryCollection = (user_id) => new Promise((resolve, reject) => {
     } else {
       client.query(`SELECT * FROM ${config.get('DB.PGTABLECOLLECTION.NAME')} WHERE ${config.get('DB.PGTABLECOLLECTION.COLUMN1')} = '${user_id}'`)
       .then((res) => {
+        client.end()
         return resolve(res.rows)
       })
       .catch((errQuery) => {
+        client.end()
         return reject(`Error during query DB`)
       })
     }

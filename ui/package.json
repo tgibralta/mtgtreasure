@@ -11,8 +11,10 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-fontawesome": "^1.6.1",
+    "react-grid-gallery": "^0.4.8",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "react-router-hash-link": "^1.2.0",
     "react-scripts": "1.1.1",
     "react-table": "^6.8.0",
     "request-promise": "^4.2.2"

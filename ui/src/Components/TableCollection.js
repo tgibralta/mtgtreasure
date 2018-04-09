@@ -5,6 +5,7 @@ import 'react-table/react-table.css'
 class TableCollection extends Component {
   allocateData(data) {
     let outputData = []
+    console.log(`Data to be displayed in Table: ${JSON.stringify(data)}`)
     data.forEach((element) => {
       let row = {
         number : element.allCardInfo.DB.number_of_card,
@@ -48,7 +49,7 @@ class TableCollection extends Component {
           <ReactTable className="table table-striped table-sm"
             data={this.allocateData(this.props.collection)}
             columns={columns}
-            defaultPageSize={5}
+            defaultPageSize={10}
           />
         </div>
       </div>

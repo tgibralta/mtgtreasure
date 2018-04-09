@@ -93,9 +93,11 @@ module.exports = {
               .then((jsonUserID) => {
                 res.set('Content-Type','application/json')
                 res.status(200).send(jsonUserID)
+                client.release()
                 return resolve()
               })
               .catch((errUserID) => {
+                client.release()
                 res.status(400).send(errUserID)
                 return reject(errUserID)
               })
@@ -104,18 +106,21 @@ module.exports = {
           .catch((errMail) => {
             console.log(errMail)
             res.status(400).send(errMail)
+            client.release()
             return reject(errMail)
           })
         })
         .catch((errUserExist)=>{
           console.log(errUserExist)
           res.status(400).send(errUserExist)
+          client.release()
           return reject(errUserExist)
         })
       })
       .catch((errConnect) => {
         console.log(`Error while connection with DB: ${errConnect}`)
         res.status(400).send(errConnect)
+        client.release()
         return reject(errConnect)
       })
     })

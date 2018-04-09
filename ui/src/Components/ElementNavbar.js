@@ -11,7 +11,7 @@ class ElementNavabar extends Component {
     if (!this.props.isLoggedIn) {
       return (
           <ul className="navbar-nav mr-auto">
-          <li className="nav-item active">
+          <li className="nav-item">
             <a className="nav-link" href="/signup">Signup</a>
           </li>
           <li className="nav-item">

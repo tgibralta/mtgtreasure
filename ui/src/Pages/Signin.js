@@ -7,7 +7,7 @@ class Signin extends Component {
 
   handleSubmit() {
     let username = document.getElementById('inputUsername').value
-     let password = document.getElementById('inputPassword').value
+    let password = document.getElementById('inputPassword').value
     SigninUser(username, password)
     .then(() => {
       this.props.history.push(`/user/${username}/`)
@@ -46,7 +46,6 @@ class Signin extends Component {
       <div className="container">
         NEWS BANNER
       </div>
-      <Footer/>
       </div>
     );
   }

@@ -75,6 +75,33 @@ const updateNumberInCollection = (collection_id, new_price_buy, new_number) => n
   })
 })
 
+// RETURN COLLECTION ID AS AN ANSWER
+const returnCollectionID = (user_id, card_id, price_buy ) => new Promise((resolve, reject) => {
+  const client = new Client({
+    user: config.get('DB.PGUSER'),
+    host: config.get('DB.PGHOST'),
+    database: config.get('DB.PGDATABASE'),
+    password: config.get('DB.PGPASSWORD'),
+    port: config.get('DB.PGPORT')
+  })
+  client.connect((errConnect) => {
+    if(errConnect) {
+      return reject(`Err: Card added to collection but failed returning collection_id: ${errConnect}`)
+    } else {
+      console.log(`QUERY DB: SELECT FROM ${config.get('DB.PGTABLECOLLECTION.NAME')} WHERE ${config.get('DB.PGTABLECOLLECTION.COLUMN1')} = '${user_id}' AND ${config.get('DB.PGTABLECOLLECTION.COLUMN2')} = '${card_id}' AND ${config.get('DB.PGTABLECOLLECTION.COLUMN3')} = '${price_buy}'`)
+      client.query(`SELECT FROM ${config.get('DB.PGTABLECOLLECTION.NAME')} WHERE ${config.get('DB.PGTABLECOLLECTION.COLUMN1')} = '${user_id}' AND ${config.get('DB.PGTABLECOLLECTION.COLUMN2')} = '${card_id}' AND ${config.get('DB.PGTABLECOLLECTION.COLUMN3')} = '${price_buy}'`)
+      .then((row) => {
+        client.end()
+        return resolve(row.collection_id)
+      })
+      .catch((errQuery) => {
+        client.end()
+        return reject(`Err: Card added to collection but failed returning collection_id: ${errQuery}`)
+      })
+    }
+  })
+})
+
 // CREATE A NEW ENTRY IN TABLE
 const createEntryInCollection = (user_id, card_id, price_buy, number) => new Promise ((resolve, reject) => {
   const client = new Client({
@@ -130,7 +157,13 @@ module.exports = {
           let newNumber = number + object.currentNumber
           updateNumberInCollection(object.collectionID, initPrice, newNumber)
           .then((msg) => {
-            res.status(200).send(msg)
+            returnCollectionID(userID,cardID,initPrice)
+            .then((collectionIDDB) => {
+              res.status(200).send(collectionIDDB)
+            })
+            .catch((errcollectionID) => {
+              res.status(400).send(errcollectionID)
+            })
           })
           .catch((err) => {
             console.log(`updateNumberInCollection: ${err}`)

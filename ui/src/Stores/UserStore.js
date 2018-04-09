@@ -26,12 +26,17 @@ class UserStore extends EventEmitter {
     this.user.initialInvestment = initialInvestment
     this.user.currentValue = currentValue
     this.emit('change')
+    console.log(`New State: ${JSON.stringify(this.user)}`)
   }
   SignoutUser() {
     this.user = {
       username: '',
       userID: 0,
-      nbCardInCollection: 0
+      nbCardInCollection: 0,
+      initialInvestment: 0,
+      currentValue: 0,
+      collection: [],
+      decks: []
     }
     this.isLoggedIn = false
     this.emit('change')
@@ -43,8 +48,19 @@ class UserStore extends EventEmitter {
     return this.isLoggedIn
   }
 
+  AddCardToCollection(user, cardInfo) {
+    this.user.collection.push(cardInfo)
+    this.user.nbCardInCollection += cardInfo.allCardInfo.DB.number_of_card
+    this.user.initialInvestment += cardInfo.allCardInfo.DB.init_price
+    this.user.currentValue += parseFloat(cardInfo.allCardInfo.Scryfall.usd)
+    console.log(`Type of number_of_card: ${typeof(cardInfo.allCardInfo.DB.number_of_card)}`)
+    console.log(`Type of init_price: ${typeof(cardInfo.allCardInfo.DB.init_price)}`)
+    console.log(`Type of value: ${typeof(cardInfo.allCardInfo.Scryfall.usd)}`)
+    this.emit('change')
+  }
+
   handleActions(action) {
-    // console.log(`USERSTORE: Received an action`)
+    console.log(`USERSTORE: Received an action`)
     switch(action.type){
       case 'SIGNIN_USER' : {
         // console.log(`USERSTORE: USER Signin In`)
@@ -59,6 +75,11 @@ class UserStore extends EventEmitter {
       case 'CREATE_USER' : {
         // console.log(`USERSTORE: Setting user information`)
         this.SigninUser(action.username, action.userID, 0, 0, 0, [])
+        break
+      }
+      case 'ADD_CARD_TO_COLLECTION' : {
+        console.log('USERSTORE: Adding card to collection')
+        this.AddCardToCollection(action.userID, action.cardInfoStore)
         break
       }
       default : {
