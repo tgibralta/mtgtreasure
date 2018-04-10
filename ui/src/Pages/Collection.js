@@ -19,20 +19,35 @@ class Collection extends Component {
 
 
   CreateCardDisplayElements (props) {
-    let results = props.results
-    let user = props.user
-    // console.log(`result in createDisplay: ${JSON.stringify(results)}`)
-    let listComponents = results.map((result) => {
-      let imageGallery = [{
-                            src: result.image_uris.normal,
-                            thumbnail: result.image_uris.normal,
-                            thumbnailWidth: 340,
-                            thumbnailHeight: 471
-                          }]
-      console.log(`Image to be displayed: ${JSON.stringify(imageGallery)}`)
-      return <SearchCardDisplay imageGallery={imageGallery}  infoCardGallery={result} user={user}/>
-    })
-    return listComponents
+    if (props.results) {
+      let results = props.results
+      let user = props.user
+      console.log(`result in createDisplay: ${JSON.stringify(results)}`)
+      let listComponents = results.map((result) => {
+        if (result.image_uris) {
+          let imageGallery = [{
+                              src: result.image_uris.normal,
+                              thumbnail: result.image_uris.normal,
+                              thumbnailWidth: 340,
+                              thumbnailHeight: 471
+                            }]
+          console.log(`Image to be displayed: ${JSON.stringify(imageGallery)}`)
+          return <SearchCardDisplay imageGallery={imageGallery}  infoCardGallery={result} user={user}/>
+        } else {
+          let imageGallery = [{
+                              src: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
+                              thumbnail: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
+                              thumbnailWidth: 340,
+                              thumbnailHeight: 471
+                            }]
+        }
+        
+      })
+      return listComponents
+    } else {
+      return ('No results found')
+    }
+    
 
   }
 
@@ -77,9 +92,7 @@ class Collection extends Component {
               <this.CreateCardDisplayElements results={this.state.result} user={this.state.user}/>
             </div>
           </div>
-          <div className="container">
-            <TableCollection collection={this.state.user.collection}/>
-          </div>
+          <TableCollection collection={this.state.user.collection}/>
         </main>
       </div>
     </div>

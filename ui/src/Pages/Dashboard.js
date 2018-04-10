@@ -17,7 +17,7 @@ class Dashboard extends Component {
     userStore.on('change', () => {
       this.setState({
         user: userStore.getUser()
-      })
+      }) 
     })
   }
 

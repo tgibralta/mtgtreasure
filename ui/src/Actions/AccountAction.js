@@ -93,11 +93,8 @@ const loopOverArray = (array) => new Promise((resolve, reject) => {
     let totalNbCard = fullData.reduce(reducerNbCard, 0)
     let totalInvestment = fullData.reduce(reducerInvestment, 0)
     let totalValue = fullData.reduce(reducerValue, 0)
+    // CHANGING THIS TO {allCardInfo: DB {}, Scryfall: {}}
     let totalCardInfo = fullData.reduce(reducerCardInfo, [])
-    // console.log(`totalNbCard: ${totalNbCard}`)
-    // console.log(`totalInvestment: ${totalInvestment}`)
-    // console.log(`totalValue: ${totalValue}`)
-    // console.log(`totalCardInfo: ${JSON.stringify(totalCardInfo)}`)
     return resolve({totalNbCard, totalInvestment, totalValue, totalCardInfo})
   }))
   results.catch((errLoop) => {
@@ -179,13 +176,14 @@ export const AddCardToCollection = (userID, cardID, price_when_bought, number,to
   }
   console.log(JSON.stringify(optionsAddCardToCollection))
   rp(optionsAddCardToCollection)
-  .then((collectionIDDB) => {
+  .then((res) => {
+    console.log(`VALUE COLLECTION ID AFTER ADDING CARD TO DB: ${res.collectionID}`)
     let currentDate = new Date()
     let date = currentDate.getUTCFullYear().toString() + '-' + currentDate.getUTCMonth().toString() + '-' + currentDate.getUTCDay().toString()
     let cardInfoStore = {
       "allCardInfo" : {
         "DB" : {
-          "collection_id": collectionIDDB,
+          "collection_id": res.collectionID,
           "user_id": userID,
           "card_id": cardID,
           "init_price": floatPrice,
@@ -206,3 +204,31 @@ export const AddCardToCollection = (userID, cardID, price_when_bought, number,to
     console.log(errAddCardToCollection)
   })
 })
+
+export function DeleteCardFromCollection (element){
+  console.log(JSON.stringify(element))
+  let collectionID = element.allCardInfo.DB.collection_id
+  let nbCardToRemove = element.allCardInfo.DB.number_of_card // TODO: change this after to be able to partially remove
+  let nbCardAvailable = element.allCardInfo.DB.number_of_card
+  let optionsRemoveCardToCollection = {
+    uri: `http://localhost:8080/removecardfromcollection`,
+    method: 'PUT',
+    origin: 'http://localhost:3000',
+    body: {
+      "collectionID" : collectionID,
+      "nbCardToRemove" : nbCardToRemove,
+      "currentNbCard" : nbCardAvailable
+    },
+    json: true
+  }
+  rp(optionsRemoveCardToCollection)
+  .then((res) => {
+    dispatcher.dispatch({
+      type: 'REMOVE_CARD_FROM_COLLECTION',
+      collectionID,
+      nbCardToRemove
+    })
+  })
+  .catch((err) => {
+  })
+}

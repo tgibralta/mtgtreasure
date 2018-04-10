@@ -88,11 +88,15 @@ const returnCollectionID = (user_id, card_id, price_buy ) => new Promise((resolv
     if(errConnect) {
       return reject(`Err: Card added to collection but failed returning collection_id: ${errConnect}`)
     } else {
-      console.log(`QUERY DB: SELECT FROM ${config.get('DB.PGTABLECOLLECTION.NAME')} WHERE ${config.get('DB.PGTABLECOLLECTION.COLUMN1')} = '${user_id}' AND ${config.get('DB.PGTABLECOLLECTION.COLUMN2')} = '${card_id}' AND ${config.get('DB.PGTABLECOLLECTION.COLUMN3')} = '${price_buy}'`)
-      client.query(`SELECT FROM ${config.get('DB.PGTABLECOLLECTION.NAME')} WHERE ${config.get('DB.PGTABLECOLLECTION.COLUMN1')} = '${user_id}' AND ${config.get('DB.PGTABLECOLLECTION.COLUMN2')} = '${card_id}' AND ${config.get('DB.PGTABLECOLLECTION.COLUMN3')} = '${price_buy}'`)
-      .then((row) => {
+      console.log(`QUERY DB: SELECT * FROM ${config.get('DB.PGTABLECOLLECTION.NAME')} WHERE ${config.get('DB.PGTABLECOLLECTION.COLUMN1')} = '${user_id}' AND ${config.get('DB.PGTABLECOLLECTION.COLUMN2')} = '${card_id}' AND ${config.get('DB.PGTABLECOLLECTION.COLUMN3')} = '${price_buy}'`)
+      client.query(`SELECT * FROM ${config.get('DB.PGTABLECOLLECTION.NAME')} WHERE ${config.get('DB.PGTABLECOLLECTION.COLUMN1')} = '${user_id}' AND ${config.get('DB.PGTABLECOLLECTION.COLUMN2')} = '${card_id}' AND ${config.get('DB.PGTABLECOLLECTION.COLUMN3')} = '${price_buy}'`)
+      .then((res) => {
         client.end()
-        return resolve(row.collection_id)
+        console.log(`Collection ID to be returned: ${res.rows[0].collection_id}`)
+        let objectCollectionID = {
+          "collectionID" : res.rows[0].collection_id
+        }
+        return resolve(objectCollectionID)
       })
       .catch((errQuery) => {
         client.end()
@@ -154,25 +158,31 @@ module.exports = {
       checkIfCardInCollection(userID, cardID, initPrice)
       .then((object) => {
         if (object.exist) {
+          console.log(`AddCardInCollection: card already in collection`)
           let newNumber = number + object.currentNumber
           updateNumberInCollection(object.collectionID, initPrice, newNumber)
           .then((msg) => {
-            returnCollectionID(userID,cardID,initPrice)
-            .then((collectionIDDB) => {
-              res.status(200).send(collectionIDDB)
-            })
-            .catch((errcollectionID) => {
-              res.status(400).send(errcollectionID)
-            })
+            console.log(`AddCardInCollection: updated number in DB`)
+            res.status(200).send(object.collectionID)
           })
           .catch((err) => {
             console.log(`updateNumberInCollection: ${err}`)
             res.status(400).send(err)
           })
         } else {
+          console.log(`AddCardInCollection: card not in collection`)
           createEntryInCollection(userID, cardID, initPrice, number)
           .then((msg) => {
-            res.status(200).send(msg)
+            console.log(`AddCardInCollection: created entry in DB`)
+            returnCollectionID(userID,cardID,initPrice)
+            .then((collectionIDDB) => {
+              console.log(`AddCardInCollection: Collection ID returned : ${collectionIDDB}`)
+              res.status(200).send(collectionIDDB)
+            })
+            .catch((errcollectionID) => {
+              console.log(`AddCardInCollection: Error during returnCollectionID : ${errcollectionID}`)
+              res.status(400).send(errcollectionID)
+            })
           })
           .catch((err) => {
             console.log(`createEntryInCollection: ${err}`)

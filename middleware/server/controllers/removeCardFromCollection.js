@@ -4,6 +4,9 @@ const { Client } = require('pg')
 
 // CHECK IF CARD IS ALREADY IN TABLE AT THE SAME PRICE OR IF CARD ALREADY IN DB WITH NUMBER = 0
 const removeCardQuery = (collectionID, nb_card_to_remove, nb_card_available) => new Promise((resolve, reject) => {
+  console.log(`Collection ID: ${collectionID}`)
+  console.log(`Nb to remove: ${nb_card_to_remove}`)
+  console.log(`nb_card_available: ${nb_card_available}`)
   const client = new Client({
     user: config.get('DB.PGUSER'),
     host: config.get('DB.PGHOST'),

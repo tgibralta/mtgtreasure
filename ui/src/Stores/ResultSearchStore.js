@@ -30,7 +30,7 @@ class  ResultSearchStore extends EventEmitter {
 
 
   handleActions(action) {
-    console.log(`RESULTSEARCHSTORE: Received an action`)
+    // console.log(`RESULTSEARCHSTORE: Received an action`)
     switch(action.type){
       case 'SEARCH_CARD' : {
         if (action.results) {
