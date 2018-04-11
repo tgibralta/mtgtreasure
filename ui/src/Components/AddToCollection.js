@@ -38,7 +38,7 @@ class AddToCollection extends Component {
           <label >Price when Acquired</label>
           <input class="form-control" id="inputInitPrice"   placeholder={this.props.cardInfo.usd} type="number" step="0.01" defaultValue={this.props.cardInfo.usd}/>
         </div>
-        <button type="button" class="btn btn-primary btn-block" onClick={this.handleSubmit.bind(this)}>Add to Collection</button>
+        <button type="button" class="btn btn-lg btn-signin  btn-primary btn-block" onClick={this.handleSubmit.bind(this)}>Add to Collection</button>
       </div>
     )
   }

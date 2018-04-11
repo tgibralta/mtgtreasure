@@ -8,7 +8,7 @@ class DeckDisplay extends Component {
       <div>
         <div className='row'>
           <div className="col-md-4">
-            <Gallery images={this.props.imageDeck}/>
+            <Gallery rowHeight='120' images={this.props.imageDeck}/>
           </div>
           <div className="col-md-4">
             <h4>{this.props.deckname}</h4>

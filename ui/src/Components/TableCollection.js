@@ -32,7 +32,7 @@ class TableCollection extends Component {
     {
       Header: <p className="text-uppercase font-weight-bold">Image</p>,
       accessor: 'image',
-      Cell: props => <img src={props.value}/>,
+      Cell: props => <img height='120' src={props.value}/>,
     },
     {
       Header: <p className="text-uppercase font-weight-bold">#</p>,

@@ -57,7 +57,15 @@ class Dashboard extends Component {
         <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
           <PanelCollection initialInvestment={this.state.user.initialInvestment} currentValue={this.state.user.currentValue} nbCard={this.state.user.nbCardInCollection}/>
           <hr/>
-          <h2>Decks</h2>
+          <div className='row'>
+            <div className="col-md-2">
+              <h2>Decks</h2>
+            </div>
+            <div className="col-md-3">
+              <button className="btn btn-lg btn-signin btn-primary btn-block " >New Deck</button>
+            </div>
+          </div>
+          <hr/>
           <this.CreateDeckDisplay decks={this.state.user.decks} user={this.state.user}/>
         </main>
       </div>

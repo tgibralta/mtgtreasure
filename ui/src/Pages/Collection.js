@@ -82,7 +82,7 @@ class Collection extends Component {
           <hr/>
           <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 ">
             <input className="form-control mr-sm-2" id="inputSearch" placeholder="Search for a card to add to your collection" type="text"/>
-            <button className="btn btn-primary my-2 my-sm-0" type="submit" onClick={this.handleSearch.bind(this)}>Search</button>
+            <button className="btn btn-lg btn-signin  btn-primary btn-block my-2 my-sm-0" type="submit" onClick={this.handleSearch.bind(this)}>Search</button>
           </div>
           <div className="jumbotron">
             <div className="container">

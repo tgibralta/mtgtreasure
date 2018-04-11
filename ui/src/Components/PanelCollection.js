@@ -8,6 +8,7 @@ class PanelCollection extends Component {
     return (
       <div>
         <h2>Collection</h2>
+        <hr/>
         <div className="row">
           <div className="col-md-4">
             <div class="card border-primary mb-3" >
