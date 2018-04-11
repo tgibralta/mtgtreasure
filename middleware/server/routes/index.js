@@ -10,6 +10,7 @@ const getCollectionRoute = rootRequire('server/routes/getCollection')
 const addCardsToDeckRoute = rootRequire('server/routes/addCardsToDeck')
 const getDeckRoute = rootRequire('server/routes/getDeck')
 const deleteDeckRoute = rootRequire('server/routes/deleteDeck')
+const getDecksRoute = rootRequire('server/routes/getDecks')
 const cors = require('cors')
 
 module.exports = (app) => {
@@ -30,5 +31,6 @@ module.exports = (app) => {
   app.use('/getcollection', getCollectionRoute)
   app.use('/addcardstodeck', addCardsToDeckRoute)
   app.use('/getdeck', getDeckRoute)
+  app.use('/getdecks', getDecksRoute)
   app.use('/deletedeck', deleteDeckRoute)
 }

@@ -17,7 +17,6 @@ class Collection extends Component {
     }
   }
 
-
   CreateCardDisplayElements (props) {
     if (props.results) {
       let results = props.results
@@ -26,29 +25,27 @@ class Collection extends Component {
       let listComponents = results.map((result) => {
         if (result.image_uris) {
           let imageGallery = [{
-                              src: result.image_uris.normal,
-                              thumbnail: result.image_uris.normal,
-                              thumbnailWidth: 340,
-                              thumbnailHeight: 471
-                            }]
+            src: result.image_uris.normal,
+            thumbnail: result.image_uris.normal,
+            thumbnailWidth: 170,
+            thumbnailHeight: 235
+          }]
           console.log(`Image to be displayed: ${JSON.stringify(imageGallery)}`)
           return <SearchCardDisplay imageGallery={imageGallery}  infoCardGallery={result} user={user}/>
         } else {
           let imageGallery = [{
-                              src: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
-                              thumbnail: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
-                              thumbnailWidth: 340,
-                              thumbnailHeight: 471
-                            }]
-        }
-        
+            src: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
+            thumbnail: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
+            thumbnailWidth: 170,
+            thumbnailHeight: 235
+          }]
+          let listComponents = <SearchCardDisplay imageGallery={imageGallery}  infoCardGallery={result} user={user}/>
+        }      
       })
       return listComponents
     } else {
       return ('No results found')
     }
-    
-
   }
 
   componentWillMount () {

@@ -1,15 +1,13 @@
 const config = require('config')
 const { Client } = require('pg')
 
-
-
 module.exports = {
   /**
-  * @description Return all cards in a given deck depending on deckID
-  * @param {integer} deckID
-  * @return {String} Array of all the cards in the deck
+  * @description Return all decks in the database for a given userID
+  * @param {integer} userID
+  * @return {JSON} Object with all the deckID, Legality and most expensive card in it
   */
-  getDeck(req, res) {
+  getDecks(req, res) {
     const client = new Client({
       user: config.get('DB.PGUSER'),
       host: config.get('DB.PGHOST'),
@@ -17,14 +15,14 @@ module.exports = {
       password: config.get('DB.PGPASSWORD'),
       port: config.get('DB.PGPORT')
     })
-    let deckID = req.params.deckid
-    console.log(`deckid: ${deckID}`)
+    console.log(`Client: ${client}`)
+    let userID = req.params.userid
     client.connect((errConnect) => {
       if(errConnect) {
         console.log(`errConnect: ${errConnect}`)
         res.status(400).send(errConnect)
       } else {
-        client.query(`SELECT * FROM ${config.get('DB.PGTABLEDECK.NAME')} WHERE ${config.get('DB.PGTABLEDECK.COLUMN4')} = '${deckID}'`)
+        client.query(`SELECT * FROM ${config.get('DB.PGTABLELISTDECKS.NAME')} WHERE ${config.get('DB.PGTABLELISTDECKS.COLUMN0')} = '${userID}'`)
         .then((response) => {
           res.status(200).send(response.rows)
         })

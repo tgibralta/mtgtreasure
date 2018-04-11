@@ -31,6 +31,15 @@
       "COLUMN3" : "last_update",
       "COLUMN4" : "deck_id"
     },
+    "PGTABLELISTDECKS" : {
+      "NAME" : "list_decks",
+      "COLUMN0" : "user_id",
+      "COLUMN1" : "deckname",
+      "COLUMN2" : "nb_card_in_main",
+      "COLUMN3" : "nb_card_in_sideboard",
+      "COLUMN4" : "thumbnail",
+      "COLUMN5" : "legality"
+    },
     "PGPORT": 5432
   }
 }

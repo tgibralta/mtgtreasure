@@ -6,7 +6,8 @@ import {createOptionAddUser,
         createOptionSignin,
         createOptionGetCollection,
         createOptionAddCardToCollection,
-        createOptionDeleteCardFromCollection} from './../Models/OptionsQuery'
+        createOptionDeleteCardFromCollection,
+        createOptionGetDecks} from './../Models/OptionsQuery'
 
 
 export const CreateUser = (username, mail, password) => new Promise((resolve, reject) => {
@@ -113,16 +114,28 @@ export const SigninUser = (username, password) => new Promise((resolve, reject) 
         let cardsInfo = nbCardAndInfo.totalCardInfo
         let initialInvestment = nbCardAndInfo.totalInvestment
         let currentValue = nbCardAndInfo.totalValue
-        dispatcher.dispatch({
-          type: 'SIGNIN_USER',
-          username,
-          userID,
-          nbCardInCollection,
-          initialInvestment,
-          currentValue,
-          cardsInfo
+        // FETCH USER DECKS
+        let optionsGetDecks = createOptionGetDecks(userID)
+        console.log(`optionsGetDecks: ${JSON.stringify(optionsGetDecks)}`)
+        rp(optionsGetDecks)
+        .then((decks) => {
+          let listDecks = JSON.parse(decks)
+          console.log(`DECKS RECEIVED FROM MIDDLEWARE: ${decks}`)
+          dispatcher.dispatch({
+            type: 'SIGNIN_USER',
+            username,
+            userID,
+            nbCardInCollection,
+            initialInvestment,
+            currentValue,
+            cardsInfo,
+            listDecks
+          })
+          return resolve()
         })
-        return resolve()
+        .catch((errDecks) => {
+          return reject(errDecks)
+        })
       })
       .catch((errLoop) => {
         return reject(errLoop)

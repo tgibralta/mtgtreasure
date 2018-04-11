@@ -9,6 +9,7 @@ const removeCardFromCollection = rootRequire('server/controllers/removeCardFromC
 const getCollection = rootRequire('server/controllers/getCollection').getCollection
 const addCardsToDeck = rootRequire('server/controllers/addCardsToDeck').addCardsToDeck
 const getDeck = rootRequire('server/controllers/getDeck').getDeck
+const getDecks = rootRequire('server/controllers/getDecks').getDecks
 const deleteDeck = rootRequire('server/controllers/deleteDeck').deleteDeck
 
 module.exports = {
@@ -23,5 +24,6 @@ module.exports = {
     getCollection,
     addCardsToDeck,
     getDeck,
+    getDecks,
     deleteDeck
 }

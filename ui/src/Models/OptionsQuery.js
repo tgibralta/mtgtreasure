@@ -76,3 +76,11 @@ export function createOptionDeleteCardFromCollection (collectionID, nbToRemove, 
     json: true
   }
 }
+
+export function createOptionGetDecks (userID) {
+  return {
+    uri: configuration.MIDDLEWARE.GET_DECKS.URI + `${userID}`,
+    method: configuration.MIDDLEWARE.GET_DECKS.METHOD,
+    origin: configuration.UI.URI
+  }
+}

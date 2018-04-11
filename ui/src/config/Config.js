@@ -31,6 +31,10 @@ const configuration ={
     "REMOVE_CARD_FROM_COLLECTION": {
       "URI": MIDDLEWARE_URI + '/removecardfromcollection',
       "METHOD": "PUT"
+    },
+    "GET_DECKS": {
+      "URI": MIDDLEWARE_URI + '/getdecks/',
+      "METHOD": "GET"
     }
   },
   "UI": {
