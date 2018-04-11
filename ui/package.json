@@ -11,6 +11,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-fontawesome": "^1.6.1",
+    "react-global-configuration": "^1.2.1",
     "react-grid-gallery": "^0.4.8",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
@@ -24,7 +25,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "start_local": "NODE_CONFIG_DIR=./src/config NODE_ENV=default yarn start",
+    "start_local": "MIDDLEWARE_URI=http://localhost:8080 UI_URI=http://localhost:3000 NODE_ENV=default yarn start",
     "start_dev": "NODE_CONFIG_DIR=./src/config NODE_ENV=dev node yarn start"
   }
 }

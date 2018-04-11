@@ -1,21 +1,16 @@
 import dispatcher from '../Dispatchers/Dispatcher'
 import rp from 'request-promise'
 import cors from 'cors'
+import {createOptionAddUser, 
+        createOptionCardQuery, 
+        createOptionSignin,
+        createOptionGetCollection,
+        createOptionAddCardToCollection,
+        createOptionDeleteCardFromCollection} from './../Models/OptionsQuery'
 
 
 export const CreateUser = (username, mail, password) => new Promise((resolve, reject) => {
-  // CREATE USER ACCOUNT
-  let options = {
-    uri: `http://localhost:8080/adduser`,
-    method: 'POST',
-    origin: 'http://localhost:3000',
-    body: {
-      'username' : username,
-      'mail' : mail,
-      'password' : password
-    },
-    json: true
-  }
+  let options = createOptionAddUser(username, mail, password)
   rp(options)
   .then((res) => {
     let userID = res.userID
@@ -45,11 +40,8 @@ const extractInfoElement = (element) => new Promise((resolve, reject) => {
   let nbCardInElement = element.number_of_card
   let investmentElement = element.number_of_card * element.init_price
   let currentValueElement =0
-  let optionCardQuery = {
-    uri: `http://localhost:8080/getcard/id/${cardID}`,
-    method: 'GET',
-    origin: 'http://localhost:3000'
-  }
+  let optionCardQuery = createOptionCardQuery(element)
+  // console.log(`OPTIONS: ${JSON.stringify(optionCardQuery)}`)
   rp(optionCardQuery)
   .then((CardInfo) => {
     currentValueElement += nbCardInElement * JSON.parse(CardInfo).usd
@@ -104,20 +96,14 @@ const loopOverArray = (array) => new Promise((resolve, reject) => {
 })
 
 export const SigninUser = (username, password) => new Promise((resolve, reject) => {
-  let optionsSignin = {
-    uri: `http://localhost:8080/login/${username}/${password}`,
-    method: 'GET',
-    origin: 'http://localhost:3000'
-  }
+  let optionsSignin = createOptionSignin(username, password)
+  console.log(`OPTION SIGNIN: ${JSON.stringify(optionsSignin)}`)
   rp(optionsSignin)
   .then((res) => {
     let userID = JSON.parse(res).userID
     // FETCH USER COLLECTION
-    let optionsCollection = {
-      uri: `http://localhost:8080/getcollection/${userID}`,
-      method: 'GET',
-      origin: 'http://localhost:3000'
-    }
+    let optionsCollection = createOptionGetCollection(userID)
+    console.log(`OPTION COLLECTION: ${JSON.stringify(optionsCollection)}`)
     rp(optionsCollection)
     .then((resCollection) => {
       let JSONReply = JSON.parse(resCollection)
@@ -162,18 +148,7 @@ export function SignoutUser(user) {
 export const AddCardToCollection = (userID, cardID, price_when_bought, number,totalInfo) => new Promise((resolve, reject) => {
   let intNumber = parseInt(number)
   let floatPrice = parseFloat(price_when_bought)
-  let optionsAddCardToCollection = {
-    uri: `http://localhost:8080/addcardtocollection`,
-    method: 'POST',
-    origin: 'http://localhost:3000',
-    body: {
-      "user_id" : userID,
-      "card_id" : cardID,
-      "price_when_bought" : floatPrice,
-      "number" : intNumber
-    },
-    json: true
-  }
+  let optionsAddCardToCollection = createOptionAddCardToCollection(userID,cardID,floatPrice,intNumber)
   console.log(JSON.stringify(optionsAddCardToCollection))
   rp(optionsAddCardToCollection)
   .then((res) => {
@@ -210,17 +185,7 @@ export function DeleteCardFromCollection (element){
   let collectionID = element.allCardInfo.DB.collection_id
   let nbCardToRemove = element.allCardInfo.DB.number_of_card // TODO: change this after to be able to partially remove
   let nbCardAvailable = element.allCardInfo.DB.number_of_card
-  let optionsRemoveCardToCollection = {
-    uri: `http://localhost:8080/removecardfromcollection`,
-    method: 'PUT',
-    origin: 'http://localhost:3000',
-    body: {
-      "collectionID" : collectionID,
-      "nbCardToRemove" : nbCardToRemove,
-      "currentNbCard" : nbCardAvailable
-    },
-    json: true
-  }
+  let optionsRemoveCardToCollection = createOptionDeleteCardFromCollection(collectionID, nbCardToRemove, nbCardAvailable)
   rp(optionsRemoveCardToCollection)
   .then((res) => {
     dispatcher.dispatch({

@@ -1,14 +1,11 @@
 {
   "MIDDLEWARE": {
-    "URL_SIGNIN" : "",
-    "URL_SIGNUP" : "http://localhost:8080/adduser",
-    "URL_DELETE_USER" : "",
-    "URL_GET_CARD_PER_ID" : "",
-    "URL_GET_CARD_PER_NAME" : "",
-    "URL_ADD_CARD_TO_COLLECTION" : "",
-    "URL_REMOVE_CARD_FROM_COLLECTION" : "",
-    "URL_GET_COLLECTION" : "",
-    "URL_GET_DECKS" : "",
-    "URL_ADD_CARDS_TO_DECK" : ""
+    "ADD_USER": {
+      "URI": "http://localhost:8080/adduser",
+      "METHOD": "POST"
+    }
+  },
+  "UI": {
+    "URI": "http://localhost:3000"
   }
 }
