@@ -1,13 +1,10 @@
 import dispatcher from '../Dispatchers/Dispatcher'
 import rp from 'request-promise'
 import cors from 'cors'
+import {createOptionCardPerNameQuery} from './../Models/OptionsQuery'
 
 export const SearchCardPerName = (cardName) => new Promise((resolve, reject) => {
-  let options = {
-    uri: `http://localhost:8080/getcard/name/${cardName}`,
-    method: 'GET',
-    origin: 'http://localhost:3000'
-  }
+  let options = createOptionCardPerNameQuery(cardName)
   rp(options)
   .then((res) => {
       let results = JSON.parse(res).data

@@ -2,7 +2,7 @@ import dispatcher from '../Dispatchers/Dispatcher'
 import rp from 'request-promise'
 import cors from 'cors'
 import {createOptionAddUser, 
-        createOptionCardQuery, 
+        createOptionCardPerIDQuery, 
         createOptionSignin,
         createOptionGetCollection,
         createOptionAddCardToCollection,
@@ -40,7 +40,7 @@ const extractInfoElement = (element) => new Promise((resolve, reject) => {
   let nbCardInElement = element.number_of_card
   let investmentElement = element.number_of_card * element.init_price
   let currentValueElement =0
-  let optionCardQuery = createOptionCardQuery(element)
+  let optionCardQuery = createOptionCardPerIDQuery(element)
   // console.log(`OPTIONS: ${JSON.stringify(optionCardQuery)}`)
   rp(optionCardQuery)
   .then((CardInfo) => {

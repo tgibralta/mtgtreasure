@@ -16,10 +16,18 @@ export function createOptionAddUser (username, mail, password) {
   }
 }
 
-export function createOptionCardQuery (element) {
+export function createOptionCardPerIDQuery (element) {
   return {
     uri: configuration.MIDDLEWARE.GET_CARD_PER_ID.URI + `${element.card_id}`,
     method: configuration.MIDDLEWARE.GET_CARD_PER_ID.METHOD,
+    origin: configuration.UI.URI
+  }
+}
+
+export function createOptionCardPerNameQuery (cardName) {
+  return {
+    uri: configuration.MIDDLEWARE.GET_CARD_PER_NAME.URI + `${cardName}`,
+    method: configuration.MIDDLEWARE.GET_CARD_PER_NAME.METHOD,
     origin: configuration.UI.URI
   }
 }

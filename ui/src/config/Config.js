@@ -12,6 +12,10 @@ const configuration ={
       "URI": MIDDLEWARE_URI + '/getcard/id/',
       "METHOD": "GET"
     },
+    "GET_CARD_PER_NAME": {
+      "URI": MIDDLEWARE_URI + '/getcard/name/',
+      "METHOD": "GET"
+    },
     "SIGNIN": {
       "URI": MIDDLEWARE_URI + '/login/',
       "METHOD": "GET"
