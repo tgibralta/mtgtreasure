@@ -12,7 +12,15 @@ class UserStore extends EventEmitter {
       currentValue: 0,
       collection: [
       ],
-      decks: [
+      decks: [{
+        name: '',
+        avg_cmc: 0,
+        legality: 'standard',
+        nb_main: 0,
+        nb_sideboard: 0,
+        main: [],
+        sideboard: []
+      }
       ]
     }
     this.isLoggedIn = false

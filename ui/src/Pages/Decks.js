@@ -42,6 +42,10 @@ class Decks extends Component {
     }
   }
 
+  handleClickNewDeck () {
+    this.props.history.push(`/user/${this.state.user.username}/createdeck`)
+  }
+
   render() {
     return (
       <div className="container-fluid">
@@ -55,7 +59,7 @@ class Decks extends Component {
               <h2>Decks</h2>
             </div>
             <div className="col-md-2">
-              <button className="btn btn-lg btn-signin  btn-primary btn-block" >New Deck</button>
+              <button className="btn btn-lg btn-signin  btn-primary btn-block" onClick={this.handleClickNewDeck.bind(this)}>New Deck</button>
             </div>
           </div>
           <hr/>

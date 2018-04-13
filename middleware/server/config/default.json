@@ -29,7 +29,9 @@
       "COLUMN1" : "card_id",
       "COLUMN2" : "number_of_card",
       "COLUMN3" : "last_update",
-      "COLUMN4" : "deck_id"
+      "COLUMN4" : "deck_id",
+      "COLUMN5" : "uri_image",
+      "COLUMN6" : "main_or_side"
     },
     "PGTABLELISTDECKS" : {
       "NAME" : "list_decks",

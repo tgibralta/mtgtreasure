@@ -7,7 +7,8 @@ import {createOptionAddUser,
         createOptionGetCollection,
         createOptionAddCardToCollection,
         createOptionDeleteCardFromCollection,
-        createOptionGetDecks} from './../Models/OptionsQuery'
+        createOptionGetDecks,
+        createOptionCardPerNameQuery} from './../Models/OptionsQuery'
 
 
 export const CreateUser = (username, mail, password) => new Promise((resolve, reject) => {
@@ -210,3 +211,58 @@ export function DeleteCardFromCollection (element){
   .catch((err) => {
   })
 }
+
+
+const buildInfoCardDeck = (card, ifmain) => new Promise((resolve, reject) => {
+  // Ask the information about the card to the middleware
+  let options = createOptionCardPerNameQuery(card.cardName)
+  rp(options)
+  .then((res) => {
+    console.log(JSON.stringify(res))
+    // create the corresponding element for the main array
+    let mainElement = {
+      'cardID': JSON.parse(res).data[0].multiverse_ids[0],
+      'name' : JSON.parse(res).data[0].name,
+      'number' : card.number,
+      'uri' : JSON.parse(res).data[0].image_uris.small,
+      'board': ifmain
+    }
+    return resolve(mainElement)
+  })
+  .catch((err) => {
+    return reject(err)
+  })
+})
+
+// const queryAddToDeck = (elementBoard) => new Promise((resolve, reject) => {
+// })
+
+export const AddCardsToDeck = (userID, deckName, legality, mainboardCards, sideboardCards) => new Promise((resolve, reject) => {
+  console.log(`Deck Name: ${deckName}`)
+  console.log(`Legality: ${legality}`)
+  console.log(`Mainboard Cards: ${JSON.stringify(mainboardCards)}`)
+  console.log(`Sideboard Cards: ${JSON.stringify(sideboardCards)}`)
+  let main_element = mainboardCards.map(buildInfoCardDeck('main'))
+  let resultMain = Promise.all(main_element)
+  resultMain.then((dataMain) => {
+    let side_element = sideboardCards.map(buildInfoCardDeck('side'))
+    let resultSide = Promise.all(side_element)
+    resultSide.then((dataSide) => {
+      let newDeck = {
+        'name': deckName,
+        'legality': legality,
+        'nb_main' : 0,
+        'nb_sideboard' : 0,
+        'main' : dataMain,
+        'sideboard' : dataSide
+      }
+      console.log(`Deck: ${JSON.stringify(newDeck)}`)
+      return resolve()
+    })
+  })
+  .catch((errMain) => {
+    console.log(`Error in Query Mainboard: ${errMain}`)
+    return reject(errMain)
+  })
+
+})

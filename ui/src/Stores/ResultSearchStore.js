@@ -7,10 +7,13 @@ class  ResultSearchStore extends EventEmitter {
     this.results = [{
       "name" : "",
       "set" : "",
+      "set_name": "",
+      "mana_cost": 0,
       "usd" : 0,
       "type_line" : "",
       "image_uris": {
-        "normal" : "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg"
+        "normal" : "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
+        "art_crop": "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg"
       },
       "multiverse_ids": [
         ""
@@ -25,6 +28,7 @@ class  ResultSearchStore extends EventEmitter {
   }
   
   getResults() {
+    console.log(`LIST RESULTS: ${JSON.stringify(this.results)}`)
     return this.results
   }
 
@@ -43,8 +47,8 @@ class  ResultSearchStore extends EventEmitter {
             "type_line" : "",
             "image_uris": {
               "normal" : "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg"
-          }
-    }])
+            }
+          }])
         }
         
         break

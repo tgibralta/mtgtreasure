@@ -13,7 +13,7 @@ class TableCollection extends Component {
         image : element.allCardInfo.Scryfall.image_uris.small,
         number : element.allCardInfo.DB.number_of_card,
         name : element.allCardInfo.Scryfall.name,
-        set : element.allCardInfo.Scryfall.set,
+        set : element.allCardInfo.Scryfall.set_name,
         initPrice : element.allCardInfo.DB.init_price,
         currentPrice : element.allCardInfo.Scryfall.usd
       }

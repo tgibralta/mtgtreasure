@@ -6,6 +6,7 @@ import DecksPage from './Decks'
 import DeckPage from './Deck'
 import OptionsPage from './Options'
 import NotFoundPage from './NotFound'
+import CreateDeckPage from './CreateDeck'
 
 class User extends Component {
   render() {
@@ -16,6 +17,7 @@ class User extends Component {
           <Route exact path={`${this.props.match.url}/`} component={DashboardPage}/>
           <Route exact path={`${this.props.match.url}/collection`} component={CollectionPage}/>
           <Route exact path={`${this.props.match.url}/decks`} component={DecksPage}/>
+          <Route exact path={`${this.props.match.url}/createdeck`} component={CreateDeckPage}/>
           <Route exact path={`${this.props.match.url}/:deckid`} component={DeckPage}/>
           <Route exact path={`${this.props.match.url}/options`} component={OptionsPage}/>
           <Route exact path='*' component={NotFoundPage}/>

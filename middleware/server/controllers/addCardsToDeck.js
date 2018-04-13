@@ -52,7 +52,7 @@ const addAllCardsQuery = (rows, deckID, userID) => new Promise((resolve, reject)
   pool.connect()
   .then((client) => {
     rows.forEach((item, index) => {
-      client.query(`INSERT INTO ${config.get('DB.PGTABLEDECK.NAME')} (${config.get('DB.PGTABLEDECK.COLUMN0')}, ${config.get('DB.PGTABLEDECK.COLUMN1')}, ${config.get('DB.PGTABLEDECK.COLUMN2')}, ${config.get('DB.PGTABLEDECK.COLUMN3')}, ${config.get('DB.PGTABLEDECK.COLUMN4')}) VALUES ('${userID}', '${item.cardID}', '${item.numberOfCard}', '${date}', '${deckID}')`)
+      client.query(`INSERT INTO ${config.get('DB.PGTABLEDECK.NAME')} (${config.get('DB.PGTABLEDECK.COLUMN0')}, ${config.get('DB.PGTABLEDECK.COLUMN1')}, ${config.get('DB.PGTABLEDECK.COLUMN2')}, ${config.get('DB.PGTABLEDECK.COLUMN3')}, ${config.get('DB.PGTABLEDECK.COLUMN4')} , ${config.get('DB.PGTABLEDECK.COLUMN5')} , ${config.get('DB.PGTABLEDECK.COLUMN6')}) VALUES ('${userID}', '${item.cardID}', '${item.numberOfCard}', '${date}', '${deckID}', '${item.uri}', '${item.board}' )`)
       .then((res) => {
         console.log(`CARD ${item.cardID} Successfully registered to Deck ${deckID} from User ${userID}`)
         msg += `CARD ${item.cardID} Successfully registered to Deck ${deckID} from User ${userID}`
@@ -76,7 +76,7 @@ module.exports = {
       checkIfDeckAlreadyExists (req.body.deckID)
       .then((exists) => {
         if (exists) {
-          res.status(400).send(`deckID already exists in DB`)
+          res.status(400).send(`deckID already exists in DB`) // DONT THROW AN ERROR, DELETE ALL AND THEN REPOPULATE
         } else {
           addAllCardsQuery(req.body.cards, req.body.deckID, req.body.userID)
           .then((msg) => {

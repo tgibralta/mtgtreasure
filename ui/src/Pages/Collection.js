@@ -25,10 +25,10 @@ class Collection extends Component {
       let listComponents = results.map((result) => {
         if (result.image_uris) {
           let imageGallery = [{
-            src: result.image_uris.normal,
-            thumbnail: result.image_uris.normal,
-            thumbnailWidth: 170,
-            thumbnailHeight: 235
+            src: result.image_uris.art_crop,
+            thumbnail: result.image_uris.art_crop,
+            // thumbnailWidth: 170,
+            thumbnailHeight: 100
           }]
           console.log(`Image to be displayed: ${JSON.stringify(imageGallery)}`)
           return <SearchCardDisplay imageGallery={imageGallery}  infoCardGallery={result} user={user}/>
@@ -36,8 +36,8 @@ class Collection extends Component {
           let imageGallery = [{
             src: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
             thumbnail: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
-            thumbnailWidth: 170,
-            thumbnailHeight: 235
+            // thumbnailWidth: 170,
+            thumbnailHeight: 100
           }]
           let listComponents = <SearchCardDisplay imageGallery={imageGallery}  infoCardGallery={result} user={user}/>
         }      
