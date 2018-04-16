@@ -32,7 +32,8 @@ class CreateDeck extends Component {
     })
   }
 
-  Submit() {
+  Submit(user) {
+    let userID = user.userID
     // Parse the content of the text area for the Main
     let mainObject = []
     let sideboardObject = []
@@ -76,7 +77,10 @@ class CreateDeck extends Component {
       }
       sideboardObject.push(element)
     })
-    AddCardsToDeck.bind(this,this.state.user.userID, deckName, legality, mainObject, sideboardObject)
+
+    console.log(`Main: ${JSON.stringify(mainObject)}`)
+    console.log(`Sideboard: ${JSON.stringify(sideboardObject)}`)
+    AddCardsToDeck(userID, deckName, legality, mainObject, sideboardObject)
 
   }
 
@@ -94,7 +98,7 @@ class CreateDeck extends Component {
             <label for="inputName">Name</label>
             <input className="form-control" id="inputName" placeholder="Name Deck" type="text" defaultValue={this.state.newDeck.name}/>
             <div className="col-md-4">
-              <FormEditDeck deckInfo={this.state.newDeck} submit={this.Submit} valueMain={this.state.textCardMain} valueSideboard={this.state.textCardSideboard}/>
+              <FormEditDeck deckInfo={this.state.newDeck} submit={this.Submit.bind(this,this.state.user)} valueMain={this.state.textCardMain} valueSideboard={this.state.textCardSideboard}/>
             </div>
           </div>
         </main>

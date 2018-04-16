@@ -84,3 +84,16 @@ export function createOptionGetDecks (userID) {
     origin: configuration.UI.URI
   }
 }
+
+export function createOptionAddDeck (userID, deck) {
+  return {
+    uri: configuration.MIDDLEWARE.ADD_DECK.URI,
+    method: configuration.MIDDLEWARE.ADD_DECK.METHOD,
+    origin: configuration.UI.URI,
+    body : {
+      userID,
+      deck
+    },
+    json: true
+  }
+}

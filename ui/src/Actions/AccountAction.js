@@ -8,7 +8,8 @@ import {createOptionAddUser,
         createOptionAddCardToCollection,
         createOptionDeleteCardFromCollection,
         createOptionGetDecks,
-        createOptionCardPerNameQuery} from './../Models/OptionsQuery'
+        createOptionCardPerNameQuery,
+        createOptionAddDeck} from './../Models/OptionsQuery'
 
 
 export const CreateUser = (username, mail, password) => new Promise((resolve, reject) => {
@@ -213,7 +214,7 @@ export function DeleteCardFromCollection (element){
 }
 
 
-const buildInfoCardDeck = (card, ifmain) => new Promise((resolve, reject) => {
+const buildInfoCardDeckMain = (card) => new Promise((resolve, reject) => {
   // Ask the information about the card to the middleware
   let options = createOptionCardPerNameQuery(card.cardName)
   rp(options)
@@ -223,9 +224,9 @@ const buildInfoCardDeck = (card, ifmain) => new Promise((resolve, reject) => {
     let mainElement = {
       'cardID': JSON.parse(res).data[0].multiverse_ids[0],
       'name' : JSON.parse(res).data[0].name,
-      'number' : card.number,
+      'number' : parseInt(card.number),
       'uri' : JSON.parse(res).data[0].image_uris.small,
-      'board': ifmain
+      'board': 'main'
     }
     return resolve(mainElement)
   })
@@ -233,6 +234,32 @@ const buildInfoCardDeck = (card, ifmain) => new Promise((resolve, reject) => {
     return reject(err)
   })
 })
+
+const buildInfoCardDeckSide = (card) => new Promise((resolve, reject) => {
+  // Ask the information about the card to the middleware
+  let options = createOptionCardPerNameQuery(card.cardName)
+  rp(options)
+  .then((res) => {
+    console.log(JSON.stringify(res))
+    // create the corresponding element for the main array
+    let mainElement = {
+      'cardID': JSON.parse(res).data[0].multiverse_ids[0],
+      'name' : JSON.parse(res).data[0].name,
+      'number' : parseInt(card.number),
+      'uri' : JSON.parse(res).data[0].image_uris.small,
+      'board': 'side'
+    }
+    return resolve(mainElement)
+  })
+  .catch((err) => {
+    return reject(err)
+  })
+})
+
+function reducerNbCard(accumulator, element) {
+  accumulator += element.number
+  return accumulator
+}
 
 // const queryAddToDeck = (elementBoard) => new Promise((resolve, reject) => {
 // })
@@ -242,22 +269,39 @@ export const AddCardsToDeck = (userID, deckName, legality, mainboardCards, sideb
   console.log(`Legality: ${legality}`)
   console.log(`Mainboard Cards: ${JSON.stringify(mainboardCards)}`)
   console.log(`Sideboard Cards: ${JSON.stringify(sideboardCards)}`)
-  let main_element = mainboardCards.map(buildInfoCardDeck('main'))
+  let main_element = mainboardCards.map(buildInfoCardDeckMain)
   let resultMain = Promise.all(main_element)
   resultMain.then((dataMain) => {
-    let side_element = sideboardCards.map(buildInfoCardDeck('side'))
+    let side_element = sideboardCards.map(buildInfoCardDeckSide)
     let resultSide = Promise.all(side_element)
     resultSide.then((dataSide) => {
+      let nbCardMain = dataMain.reduce(reducerNbCard, 0)
+      let nbCardSide = dataSide.reduce(reducerNbCard, 0)
       let newDeck = {
-        'name': deckName,
+        'deckID': deckName,
         'legality': legality,
-        'nb_main' : 0,
-        'nb_sideboard' : 0,
+        'nb_main' : nbCardMain,
+        'nb_sideboard' : nbCardSide,
         'main' : dataMain,
         'sideboard' : dataSide
       }
       console.log(`Deck: ${JSON.stringify(newDeck)}`)
-      return resolve()
+      let optionsQuery = createOptionAddDeck(userID, newDeck)
+      console.log(`Option Query: ${JSON.stringify(optionsQuery)}`)
+      rp(optionsQuery)
+      .then((res) => {
+        console.log(res)
+        return resolve()
+      })
+      .catch((err) => {
+        console.log(err)
+        return reject(err)
+      })
+      
+    })
+    .catch((errSide) => {
+      console.log(`Error in Query Sideboard: ${errSide}`)
+      return reject(errSide)
     })
   })
   .catch((errMain) => {

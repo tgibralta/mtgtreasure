@@ -35,6 +35,10 @@ const configuration ={
     "GET_DECKS": {
       "URI": MIDDLEWARE_URI + '/getdecks/',
       "METHOD": "GET"
+    },
+    "ADD_DECK": {
+      "URI": MIDDLEWARE_URI + '/adddeck',
+      "METHOD": "POST"
     }
   },
   "UI": {
