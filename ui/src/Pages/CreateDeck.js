@@ -4,7 +4,7 @@ import userStore from './../Stores/UserStore'
 import './Style/CreateDeck.css'
 import FormEditDeck from './../Components/FormEditDeck'
 const SearchCardPerName = require('./../Actions/SearchAction').SearchCardPerName
-const AddCardsToDeck = require('./../Actions/AccountAction').AddCardsToDeck
+const AddDeck = require('./../Actions/AccountAction').AddDeck
 
 class CreateDeck extends Component {
   constructor () {
@@ -80,7 +80,13 @@ class CreateDeck extends Component {
 
     console.log(`Main: ${JSON.stringify(mainObject)}`)
     console.log(`Sideboard: ${JSON.stringify(sideboardObject)}`)
-    AddCardsToDeck(userID, deckName, legality, mainObject, sideboardObject)
+    AddDeck(userID, deckName, legality, mainObject, sideboardObject)
+    .then(() => {
+      console.log(`Deck created. Will need to be redirected to deck page (WIP)`)
+    })
+    .catch((err) => {
+      console.log(`Err during deck creation: ${err}`)
+    })
 
   }
 

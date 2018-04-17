@@ -80,7 +80,7 @@ const addAllCardsQuery = (rows, deckID, userID) => new Promise((resolve, reject)
   pool.connect()
   .then((client) => {
     rows.forEach((item, index) => {
-      client.query(`INSERT INTO ${config.get('DB.PGTABLEDECK.NAME')} (${config.get('DB.PGTABLEDECK.COLUMN0')}, ${config.get('DB.PGTABLEDECK.COLUMN1')}, ${config.get('DB.PGTABLEDECK.COLUMN2')}, ${config.get('DB.PGTABLEDECK.COLUMN3')}, ${config.get('DB.PGTABLEDECK.COLUMN4')} , ${config.get('DB.PGTABLEDECK.COLUMN5')} , ${config.get('DB.PGTABLEDECK.COLUMN6')}) VALUES ('${userID}', '${item.cardID}', '${item.number}', '${date}', '${deckID}', '${item.uri}', '${item.board}' )`)
+      client.query(`INSERT INTO ${config.get('DB.PGTABLEDECK.NAME')} (${config.get('DB.PGTABLEDECK.COLUMN0')}, ${config.get('DB.PGTABLEDECK.COLUMN1')}, ${config.get('DB.PGTABLEDECK.COLUMN2')}, ${config.get('DB.PGTABLEDECK.COLUMN3')}, ${config.get('DB.PGTABLEDECK.COLUMN4')} , ${config.get('DB.PGTABLEDECK.COLUMN5')} , ${config.get('DB.PGTABLEDECK.COLUMN6')} , ${config.get('DB.PGTABLEDECK.COLUMN7')}) VALUES ('${userID}', '${item.cardID}', '${item.number}', '${date}', '${deckID}', '${item.uri}', '${item.board}' , '${item.name}')`)
       .then((res) => {
         console.log(`CARD ${item.cardID} Successfully registered to Deck ${deckID} from User ${userID}`)
         msg += `CARD ${item.cardID} Successfully registered to Deck ${deckID} from User ${userID}`
@@ -158,7 +158,7 @@ module.exports = {
       let sideCards = req.body.deck.sideboard
       let userID = req.body.userID
       let legality = req.body.deck.legality
-      let thumbnail = req.body.deck.main[0].uri
+      let thumbnail = req.body.deck.thumbnail
       let nbSide = req.body.deck.nb_sideboard
       let  nbMain = req.body.deck.nb_main
 
@@ -166,6 +166,7 @@ module.exports = {
       console.log(`User ID: ${userID}`)
       console.log(`Cards in Main: ${JSON.stringify(mainCards)}`)
       console.log(`Cards in Side: ${JSON.stringify(sideCards)}`)
+      console.log(`Thumbnail" ${thumbnail}`)
       checkIfDeckAlreadyExists (deckID)
       .then((exists) => {
         if (exists) {

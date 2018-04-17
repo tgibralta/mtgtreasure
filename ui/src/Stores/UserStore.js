@@ -34,9 +34,9 @@ class UserStore extends EventEmitter {
     this.user.initialInvestment = initialInvestment
     this.user.currentValue = currentValue
     this.user.decks = decks
-    console.log(JSON.stringify(this.user.collection))
+    console.log(`Collection: ${JSON.stringify(this.user.collection)}`)
+    console.log(`Decks: ${JSON.stringify(this.user.decks)}`)
     this.emit('change')
-    console.log(`New State: ${JSON.stringify(this.user)}`)
   }
   SignoutUser() {
     this.user = {
@@ -79,7 +79,6 @@ class UserStore extends EventEmitter {
   })
     
 
-
   RemoveCardFromCollection = (collectionID, nbCardToRemove) => new Promise((resolve, reject) => {
     let indexCardToRemove = this.user.collection.findIndex(element => element.allCardInfo.DB.collection_id === collectionID)
     // console.log(JSON.stringify(this.user.collection))
@@ -99,6 +98,34 @@ class UserStore extends EventEmitter {
       return resolve()
     } else {
       return reject(`RemoveCardFromCollection: Index invalid`)
+    }
+  })
+
+
+  AddDeck = (newDeck) => new Promise((resolve, reject) => {
+    if(newDeck) {
+      console.log(`New Deck: ${JSON.stringify(newDeck)}`)
+      this.user.decks.push(newDeck)
+      this.emit('change')
+      console.log(`State after adding deck: ${JSON.stringify(this.user)}`)
+      return resolve()
+    } else {
+      return reject(`Not a valid new deck`)
+    }
+  })
+
+
+  DeleteDeck = (userID, deckID) => new Promise((resolve, reject) => {
+    console.log(`Decks object: ${JSON.stringify(this.user.decks)}`)
+    let indexDeck = this.user.decks.findIndex((element)=> element.deckname === deckID)
+    console.log(`indexDeck: ${indexDeck}`)
+    if (indexDeck > -1) {
+      this.user.decks.splice(indexDeck, 1)
+      this.emit('change')
+      console.log(`State after deleting deck: ${JSON.stringify(this.user)}`)
+      return resolve()
+    } else {
+      return reject(`Deck does not exist in Userstore`)
     }
   })
     
@@ -143,8 +170,30 @@ class UserStore extends EventEmitter {
         })
         break
       }
+      case 'ADD_DECK' : {
+        this.AddDeck(action.DeckStore)
+        .then(()=> {
+          console.log(`USERSTORE: deck successfuly added`)
+        })
+        .catch((err) => {
+          console.log(`USERSTORE: Error when adding deck: ${err}`)
+        })
+        break
+      }
+      case 'DELETE_DECK': {
+        console.log(`USERSTORE: deleting deck ${action.deckID}`)
+        this.DeleteDeck(action.userID, action.deckID)
+        .then(() => {
+          console.log(`Removed Deck Successfuly`)
+        })
+        .catch((err) => {
+          console.log(`Error while deleting deck: ${err}`)
+        })
+        break
+      }
       default : {
-        // console.log('cactched an unhandled action')
+        console.log('cactched an unhandled action')
+        break
       }
     } 
   }

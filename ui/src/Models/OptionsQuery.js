@@ -97,3 +97,16 @@ export function createOptionAddDeck (userID, deck) {
     json: true
   }
 }
+
+export function createOptionDeleteDeck (userID, deckID) {
+  return {
+    uri: configuration.MIDDLEWARE.DELETE_DECK.URI,
+    method: configuration.MIDDLEWARE.DELETE_DECK.METHOD,
+    origin: configuration.UI.URI,
+    body : {
+      "userID": userID,
+      "deckID": deckID
+    },
+    json: true
+  }
+}

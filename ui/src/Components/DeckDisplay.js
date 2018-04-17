@@ -17,7 +17,7 @@ class DeckDisplay extends Component {
             <p>Legality: {this.props.legality}</p>
           </div>
           <div className="col-md-4">
-            <button type="button" class="btn btn-danger">X</button>
+            <button type="button" class="btn btn-danger" onClick={this.props.delete.bind(this)}>X</button>
           </div>
         </div>
         <hr/>

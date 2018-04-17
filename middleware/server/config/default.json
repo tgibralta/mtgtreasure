@@ -31,7 +31,8 @@
       "COLUMN3" : "last_update",
       "COLUMN4" : "deck_id",
       "COLUMN5" : "uri_image",
-      "COLUMN6" : "main_or_side"
+      "COLUMN6" : "main_or_side",
+      "COLUMN7" : "name"
     },
     "PGTABLELISTDECKS" : {
       "NAME" : "list_decks",

@@ -9,7 +9,8 @@ import {createOptionAddUser,
         createOptionDeleteCardFromCollection,
         createOptionGetDecks,
         createOptionCardPerNameQuery,
-        createOptionAddDeck} from './../Models/OptionsQuery'
+        createOptionAddDeck,
+        createOptionDeleteDeck} from './../Models/OptionsQuery'
 
 
 export const CreateUser = (username, mail, password) => new Promise((resolve, reject) => {
@@ -226,7 +227,8 @@ const buildInfoCardDeckMain = (card) => new Promise((resolve, reject) => {
       'name' : JSON.parse(res).data[0].name,
       'number' : parseInt(card.number),
       'uri' : JSON.parse(res).data[0].image_uris.small,
-      'board': 'main'
+      'board': 'main',
+      'thumbnail': JSON.parse(res).data[0].image_uris.art_crop
     }
     return resolve(mainElement)
   })
@@ -247,7 +249,8 @@ const buildInfoCardDeckSide = (card) => new Promise((resolve, reject) => {
       'name' : JSON.parse(res).data[0].name,
       'number' : parseInt(card.number),
       'uri' : JSON.parse(res).data[0].image_uris.small,
-      'board': 'side'
+      'board': 'side',
+      'thumbnail': JSON.parse(res).data[0].image_uris.art_crop
     }
     return resolve(mainElement)
   })
@@ -264,7 +267,7 @@ function reducerNbCard(accumulator, element) {
 // const queryAddToDeck = (elementBoard) => new Promise((resolve, reject) => {
 // })
 
-export const AddCardsToDeck = (userID, deckName, legality, mainboardCards, sideboardCards) => new Promise((resolve, reject) => {
+export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCards) => new Promise((resolve, reject) => {
   console.log(`Deck Name: ${deckName}`)
   console.log(`Legality: ${legality}`)
   console.log(`Mainboard Cards: ${JSON.stringify(mainboardCards)}`)
@@ -283,7 +286,17 @@ export const AddCardsToDeck = (userID, deckName, legality, mainboardCards, sideb
         'nb_main' : nbCardMain,
         'nb_sideboard' : nbCardSide,
         'main' : dataMain,
-        'sideboard' : dataSide
+        'sideboard' : dataSide,
+        'thumbnail' : dataMain[0].thumbnail
+      }
+      let DeckStore = {
+        'deckname': deckName,
+        'nb_card_in_main': nbCardMain,
+        'nb_card_in_sideboard': nbCardSide,
+        'thumbnail': dataMain[0].thumbnail,
+        'main': dataMain,
+        'sideboard': dataSide,
+        'legality' : legality
       }
       console.log(`Deck: ${JSON.stringify(newDeck)}`)
       let optionsQuery = createOptionAddDeck(userID, newDeck)
@@ -291,6 +304,12 @@ export const AddCardsToDeck = (userID, deckName, legality, mainboardCards, sideb
       rp(optionsQuery)
       .then((res) => {
         console.log(res)
+        dispatcher.dispatch({
+          type: 'ADD_DECK',
+          DeckStore,
+          userID
+
+        })
         return resolve()
       })
       .catch((err) => {
@@ -309,4 +328,20 @@ export const AddCardsToDeck = (userID, deckName, legality, mainboardCards, sideb
     return reject(errMain)
   })
 
+})
+
+export const DeleteDeck = (userID, deckID) => new Promise((resolve, reject) => {
+  let options = createOptionDeleteDeck(userID, deckID)
+  rp(options)
+  .then(() => {
+    dispatcher.dispatch({
+      type: 'DELETE_DECK',
+      userID,
+      deckID
+    })
+    return resolve()
+  })
+  .catch((err) => {
+    return reject()
+  })
 })

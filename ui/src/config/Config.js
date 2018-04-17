@@ -39,6 +39,10 @@ const configuration ={
     "ADD_DECK": {
       "URI": MIDDLEWARE_URI + '/adddeck',
       "METHOD": "POST"
+    },
+    "DELETE_DECK": {
+      "URI": MIDDLEWARE_URI + '/deletedeck',
+      "METHOD": "PUT"
     }
   },
   "UI": {

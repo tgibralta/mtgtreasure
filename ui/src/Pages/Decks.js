@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Sidebar from './../Components/Sidebar'
 import userStore from './../Stores/UserStore'
 import DeckDisplay from './../Components/DeckDisplay'
+const DeleteDeck = require('./../Actions/AccountAction').DeleteDeck
 
 class Decks extends Component {
   constructor () {
@@ -15,6 +16,17 @@ class Decks extends Component {
       this.setState({
         user: userStore.getUser()
       }) 
+    })
+  }
+
+  handleDelete(userID, deckID) {
+    console.log(`Delete trigger in Decks`)
+    DeleteDeck(userID, deckID)
+    .then(() => {
+      console.log(`Deck deleted`)
+    })
+    .catch((err) => {
+      console.log(`Error while deleting Deck`)
     })
   }
 
@@ -34,7 +46,7 @@ class Decks extends Component {
         let nbSideboard = deck.nb_card_in_sideboard
         let legality = deck.legality
         console.log(`ALL STUFFS DEFINED in CreateDeckDisplay`)
-        return <DeckDisplay imageDeck={imageGallery} deckname={deckName} nbMain={nbMain} nbSideboard={nbSideboard} legality={legality}/>
+        return <DeckDisplay imageDeck={imageGallery} deckname={deckName} nbMain={nbMain} nbSideboard={nbSideboard} legality={legality} delete={props.delete.bind(this, user.userID, deckName)}/>
       })
       return listComponents
     } else {
@@ -63,7 +75,7 @@ class Decks extends Component {
             </div>
           </div>
           <hr/>
-          <this.CreateDeckDisplay decks={this.state.user.decks} user={this.state.user}/>
+          <this.CreateDeckDisplay decks={this.state.user.decks} user={this.state.user} delete={this.handleDelete.bind(this)}/>
         </main>
       </div>
     </div>
