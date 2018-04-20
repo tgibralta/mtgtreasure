@@ -60,6 +60,16 @@ class UserStore extends EventEmitter {
   getIsLoggedIn(){
     return this.isLoggedIn
   }
+  getDeck(deckID) {
+    this.user.decks.forEach((deck) => {
+      console.log(`Deck we are trying to find: ${deckID}`)
+      console.log(`Deck in Store: ${deck.deckname}`)
+      if (deck.deckname === deckID) {
+        console.log(`Deck returned as match found`)
+        return deck
+      }
+    })
+  }
 
   AddCardToCollection = (user, cardInfo) => new Promise ((resolve, reject) => {
     if (cardInfo) {
@@ -102,16 +112,46 @@ class UserStore extends EventEmitter {
   })
 
 
+
   AddDeck = (newDeck) => new Promise((resolve, reject) => {
-    if(newDeck) {
-      console.log(`New Deck: ${JSON.stringify(newDeck)}`)
-      this.user.decks.push(newDeck)
-      this.emit('change')
-      console.log(`State after adding deck: ${JSON.stringify(this.user)}`)
-      return resolve()
+    console.log(`User Created/edited a deck`)
+    if (newDeck) {
+      // check if decks already exists
+      let newName = newDeck.deckname
+      let exist = 0
+      this.user.decks.forEach((deck) => {
+        console.log(`Deck: ${JSON.stringify(deck)}`)
+        if (deck.deckname === newName) {
+          exist = 1
+        }
+      })
+      console.log(`EXIST: ${exist} #############################################`)
+      if (exist === 1) {
+        //find index and replace
+        let indexToReplace = this.user.decks.findIndex(function (x) {
+          if (x.deckname === newName) {
+            return x
+          }
+        })
+        console.log(`Existing deck. Index ${indexToReplace}`)
+        this.user.decks[indexToReplace] = newDeck
+        this.emit('change')
+      } else {
+        this.user.decks.push(newDeck)
+        this.emit('change')
+      }
     } else {
       return reject(`Not a valid new deck`)
     }
+    // if(newDeck) {
+    //   console.log(`New Deck: ${JSON.stringify(newDeck)}`)
+    //   this.user.decks.push(newDeck)
+    //   this.emit('change')
+    //   console.log(`State after adding deck: ${JSON.stringify(this.user)}`)
+    //   return resolve()
+    // } else {
+    //   return reject(`Not a valid new deck`)
+    // }
   })
 
 
@@ -192,7 +232,6 @@ class UserStore extends EventEmitter {
         break
       }
       default : {
-        console.log('cactched an unhandled action')
         break
       }
     } 

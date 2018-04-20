@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import Sidebar from './../Components/Sidebar'
 import userStore from './../Stores/UserStore'
+import displayDeckStore from './../Stores/DisplayDeckStore'
 import './Style/CreateDeck.css'
 import FormEditDeck from './../Components/FormEditDeck'
+import {redirectToDeckPage} from './../Functions/redirectToDeckPage'
 const SearchCardPerName = require('./../Actions/SearchAction').SearchCardPerName
+const SetDeck = require('./../Actions/DisplayDeckAction').SetDeck
 const AddDeck = require('./../Actions/AccountAction').AddDeck
 
 class CreateDeck extends Component {
@@ -11,29 +14,31 @@ class CreateDeck extends Component {
     super()
     this.state = {
       user: userStore.getUser(),
-      newDeck: {
-                  name: '',
-                  avg_cmc: 0,
-                  legality: 'standard',
-                  nb_main: 0,
-                  nb_sideboard: 0,
-                  main: [],
-                  sideboard: []
-                },
-      textCardMain: "",
-      textCardSideboard: "",
+      newDeck : displayDeckStore.getDeckEdited(),
+      textCardMain : displayDeckStore.getTextMain(),
+      textCardSideboard : displayDeckStore.getTextSideboard()
     }
   }
+
+
   componentWillMount () {
     userStore.on('change', () => {
       this.setState({
         user: userStore.getUser()
       }) 
     })
+    displayDeckStore.on('change', () => {
+      this.setState({
+        newDeck : displayDeckStore.getDeckEdited(),
+        textCardMain : displayDeckStore.getTextMain(),
+        textCardSideboard : displayDeckStore.getTextSideboard()
+      }) 
+    })
   }
 
   Submit(user) {
     let userID = user.userID
+    let username = user.username
     // Parse the content of the text area for the Main
     let mainObject = []
     let sideboardObject = []
@@ -81,8 +86,16 @@ class CreateDeck extends Component {
     console.log(`Main: ${JSON.stringify(mainObject)}`)
     console.log(`Sideboard: ${JSON.stringify(sideboardObject)}`)
     AddDeck(userID, deckName, legality, mainObject, sideboardObject)
-    .then(() => {
-      console.log(`Deck created. Will need to be redirected to deck page (WIP)`)
+    .then((deckCreated) => {
+      console.log(`Now waiting to redirect: ${JSON.stringify(deckCreated)}`)
+      // redirectToDeckPage.bind(this, deckCreated)
+      SetDeck(deckCreated)
+      .then(() => {
+        this.props.history.push(`/user/${this.state.user.username}/deck/${deckCreated.deckname}`)
+      })
+      .catch((err) => {
+        console.log(`Error when trying to redirect: ${err}`)
+      })
     })
     .catch((err) => {
       console.log(`Err during deck creation: ${err}`)
@@ -102,7 +115,7 @@ class CreateDeck extends Component {
           <hr/>
           <div className="row">
             <label for="inputName">Name</label>
-            <input className="form-control" id="inputName" placeholder="Name Deck" type="text" defaultValue={this.state.newDeck.name}/>
+            <input className="form-control" id="inputName" placeholder="Name Deck" type="text" defaultValue={this.state.newDeck.deckname}/>
             <div className="col-md-4">
               <FormEditDeck deckInfo={this.state.newDeck} submit={this.Submit.bind(this,this.state.user)} valueMain={this.state.textCardMain} valueSideboard={this.state.textCardSideboard}/>
             </div>

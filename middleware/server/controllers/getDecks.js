@@ -55,18 +55,20 @@ const requestCardsInDeck = (userID, deckID) => new Promise((resolve, reject) => 
 
 const buildInfoCardDeckMain = (card) => new Promise((resolve, reject) => {
   if (card) {
+    // console.log(`Card: ${JSON.stringify(card)}`)
     if (card.main_or_side === 'main') {
-      return resolve (
-        {
-          'cardID': card.card_id,
-          'name': card.name,
-          'number': card.number_of_card,
-          'uri': card.uri_image,
-          'board': card.main_or_side
-        }
-      )
+      // console.log('buildInfoCardDeckMain: Main Card')
+      let cardMain = {
+        'cardID': card.card_id,
+        'name': card.name,
+        'number': card.number_of_card,
+        'uri': card.uri_image,
+        'board': card.main_or_side
+      }
+      return resolve (cardMain)
     } else {
-      return resolve()
+      
+      return resolve(0)
     }
   } else {
     return reject(`No card`)
@@ -75,27 +77,31 @@ const buildInfoCardDeckMain = (card) => new Promise((resolve, reject) => {
 
 const buildInfoCardDeckSide = (card) => new Promise((resolve, reject) => {
   if (card) {
+    // console.log(`Card: ${JSON.stringify(card)}`)
     if (card.main_or_side === 'side') {
-      return resolve (
-        {
-          'cardID': card.card_id,
-          'name': card.name,
-          'number': card.number_of_card,
-          'uri': card.uri_image,
-          'board': card.main_or_side
-        }
-      )
+      // console.log('buildInfoCardDeckMain: Side Card')
+      let cardSide = {
+        'cardID': card.card_id,
+        'name': card.name,
+        'number': card.number_of_card,
+        'uri': card.uri_image,
+        'board': card.main_or_side
+      }
+      return resolve (cardSide)
     } else {
-      return resolve()
+      return resolve(0)
     }
   } else {
     return reject(`No card`)
   }
 })
 
-function RemoveNull (accumulator, element) {
+function reducerNotNull (accumulator, element) {
   console.log(`Element: ${element}`)
-  if (element !== null) return element
+  if (element !== 0) {
+    accumulator.push(element)
+  }
+  return accumulator
 }
 
 const buildDecksObject = (objectList, CardsInDeck) => new Promise((resolve, reject) => {
@@ -106,11 +112,13 @@ const buildDecksObject = (objectList, CardsInDeck) => new Promise((resolve, reje
     objectMain = CardsInDeck.map(buildInfoCardDeckMain)
     let resultMain = Promise.all(objectMain)
     resultMain.then((dataMain) => {
+      console.log(`DataMain Obtained: ${JSON.stringify(dataMain)}`)
       objectSide = CardsInDeck.map(buildInfoCardDeckSide)
       let resultSide = Promise.all(objectSide)
       resultSide.then((dataSide) => {
-        let arrayMain = dataMain.map(RemoveNull)
-        let arraySide = dataSide.map(RemoveNull)
+        console.log(`DataSide Obtained: ${JSON.stringify(dataSide)}`)
+        let arrayMain = dataMain.reduce(reducerNotNull,[])
+        let arraySide = dataSide.reduce(reducerNotNull,[])
         return resolve(
           {
             'deckname': objectList.deckname,

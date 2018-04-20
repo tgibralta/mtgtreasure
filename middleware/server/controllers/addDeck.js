@@ -63,6 +63,20 @@ const deleteDeckQuery = (deckID) => new Promise((resolve, reject) => {
   })
 })
 
+const queryInsertDB = (item, client, userID, deckID, date) => new Promise((resolve, reject) => {
+  let nameInDB = item.name.replace(`'`,``)
+  client.query(`INSERT INTO ${config.get('DB.PGTABLEDECK.NAME')} (${config.get('DB.PGTABLEDECK.COLUMN0')}, ${config.get('DB.PGTABLEDECK.COLUMN1')}, ${config.get('DB.PGTABLEDECK.COLUMN2')}, ${config.get('DB.PGTABLEDECK.COLUMN3')}, ${config.get('DB.PGTABLEDECK.COLUMN4')} , ${config.get('DB.PGTABLEDECK.COLUMN5')} , ${config.get('DB.PGTABLEDECK.COLUMN6')} , ${config.get('DB.PGTABLEDECK.COLUMN7')}) VALUES ('${userID}', '${item.cardID}', '${item.number}', '${date}', '${deckID}', '${item.uri}', '${item.board}' , '${nameInDB}')`)
+  .then((res) => {
+    console.log(`CARD ${item.cardID} Successfully registered to Deck ${deckID} from User ${userID}`)
+    let msg = `CARD ${item.cardID} Successfully registered to Deck ${deckID} from User ${userID}`
+    return resolve(msg)
+  })
+  .catch((errQuery) => {
+    console.log(`Error when query: ${item.name}: ${errQuery}`)
+    return reject(errQuery)
+  })
+})
+
 // LOOP ON ARRAY OF REQUEST AND ADD ALL THE CARDS IN DB WITH THE PROPER DECK ID AND PROPER NUMBER
 const addAllCardsQuery = (rows, deckID, userID) => new Promise((resolve, reject) => {
   console.log(`Entering addAllCardsQuery`)
@@ -79,17 +93,15 @@ const addAllCardsQuery = (rows, deckID, userID) => new Promise((resolve, reject)
     })
   pool.connect()
   .then((client) => {
-    rows.forEach((item, index) => {
-      client.query(`INSERT INTO ${config.get('DB.PGTABLEDECK.NAME')} (${config.get('DB.PGTABLEDECK.COLUMN0')}, ${config.get('DB.PGTABLEDECK.COLUMN1')}, ${config.get('DB.PGTABLEDECK.COLUMN2')}, ${config.get('DB.PGTABLEDECK.COLUMN3')}, ${config.get('DB.PGTABLEDECK.COLUMN4')} , ${config.get('DB.PGTABLEDECK.COLUMN5')} , ${config.get('DB.PGTABLEDECK.COLUMN6')} , ${config.get('DB.PGTABLEDECK.COLUMN7')}) VALUES ('${userID}', '${item.cardID}', '${item.number}', '${date}', '${deckID}', '${item.uri}', '${item.board}' , '${item.name}')`)
-      .then((res) => {
-        console.log(`CARD ${item.cardID} Successfully registered to Deck ${deckID} from User ${userID}`)
-        msg += `CARD ${item.cardID} Successfully registered to Deck ${deckID} from User ${userID}`
-        return resolve(msg)
-      })
-      .catch((errQuery) => {
-        console.log(`Error when query: ${errQuery}`)
-        return reject(errQuery)
-      })
+    let allDone = rows.map(function(x){return(queryInsertDB(x, client, userID, deckID, date))})
+    let allPromiseDone = Promise.all(allDone)
+    allPromiseDone.then(() => {
+      pool.end()
+      return resolve()
+    })
+    .catch((errPromise) => {
+      pool.end()
+      return reject(errPromise)
     })
   })
   .catch((errConnect) => {

@@ -18,7 +18,7 @@ class User extends Component {
           <Route exact path={`${this.props.match.url}/collection`} component={CollectionPage}/>
           <Route exact path={`${this.props.match.url}/decks`} component={DecksPage}/>
           <Route exact path={`${this.props.match.url}/createdeck`} component={CreateDeckPage}/>
-          <Route exact path={`${this.props.match.url}/:deckid`} component={DeckPage}/>
+          <Route exact path={`${this.props.match.url}/deck/:deckid`} component={DeckPage}/>
           <Route exact path={`${this.props.match.url}/options`} component={OptionsPage}/>
           <Route exact path='*' component={NotFoundPage}/>
         </Switch>

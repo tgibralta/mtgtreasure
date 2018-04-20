@@ -24,6 +24,7 @@ const checkIfMailExist = (client, mail) => new Promise((resolve, reject) => {
     client.query(`SELECT * FROM ${config.get('DB.PGTABLELOGIN.NAME')} WHERE ${config.get('DB.PGTABLELOGIN.COLUMN2')} = '${mail}'`)
     .then((res) => {
       if (res.rows[0]) {
+
         return reject (`Mail already used`)
       } else {
         return resolve()
@@ -98,6 +99,7 @@ module.exports = {
               })
               .catch((errUserID) => {
                 client.release()
+                pool.end()
                 res.status(400).send(errUserID)
                 return reject(errUserID)
               })
@@ -107,6 +109,7 @@ module.exports = {
             console.log(errMail)
             res.status(400).send(errMail)
             client.release()
+            pool.end()
             return reject(errMail)
           })
         })
@@ -114,6 +117,7 @@ module.exports = {
           console.log(errUserExist)
           res.status(400).send(errUserExist)
           client.release()
+          pool.end()
           return reject(errUserExist)
         })
       })
@@ -121,6 +125,7 @@ module.exports = {
         console.log(`Error while connection with DB: ${errConnect}`)
         res.status(400).send(errConnect)
         client.release()
+        pool.end()
         return reject(errConnect)
       })
     })

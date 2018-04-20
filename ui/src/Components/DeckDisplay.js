@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Gallery from 'react-grid-gallery'
+import { NavHashLink as NavLink } from 'react-router-hash-link';
 
 class DeckDisplay extends Component {
 
@@ -11,7 +12,7 @@ class DeckDisplay extends Component {
             <Gallery rowHeight='120' images={this.props.imageDeck}/>
           </div>
           <div className="col-md-4">
-            <h4>{this.props.deckname}</h4>
+            <a className="h3"onClick={this.props.goTo.bind(this)}>{this.props.deckname}</a>
             <p>Main: {this.props.nbMain}</p>
             <p>Sideboard: {this.props.nbSideboard}</p>
             <p>Legality: {this.props.legality}</p>

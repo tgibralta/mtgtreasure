@@ -7,7 +7,7 @@ class FormEditDeck extends Component {
     return (
       <div>
         <label for="formatSelect">Format</label>
-        <select className="form-control" id="formatSelect">
+        <select className="form-control" id="formatSelect" defaultValue={this.props.deckInfo.legality}>
           <option>Standard</option>
           <option>Modern</option>
           <option>Legacy</option>

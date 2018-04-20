@@ -218,6 +218,7 @@ export function DeleteCardFromCollection (element){
 const buildInfoCardDeckMain = (card) => new Promise((resolve, reject) => {
   // Ask the information about the card to the middleware
   let options = createOptionCardPerNameQuery(card.cardName)
+  console.log(`Card Query: ${card.cardName} #################################################################################`)
   rp(options)
   .then((res) => {
     console.log(JSON.stringify(res))
@@ -310,7 +311,7 @@ export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCar
           userID
 
         })
-        return resolve()
+        return resolve(DeckStore)
       })
       .catch((err) => {
         console.log(err)

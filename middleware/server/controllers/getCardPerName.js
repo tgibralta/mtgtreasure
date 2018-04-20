@@ -35,6 +35,7 @@ const transferToAPI = (cardname) => new Promise((resolve, reject) => {
       return resolve(JSON.parse(body))
     })
     .catch((err) => {
+      console.log(`Error in Search for card ${cardname}`)
       return reject(err)
     })
   })
