@@ -18,7 +18,7 @@ export const CreateUser = (username, mail, password) => new Promise((resolve, re
   rp(options)
   .then((res) => {
     let userID = res.userID
-    console.log(userID)
+    // console.log(userID)
     dispatcher.dispatch({
       type: 'CREATE_USER',
       username,
@@ -39,7 +39,7 @@ export function DeleteUser(user) {
 }
 
 const extractInfoElement = (element) => new Promise((resolve, reject) => {
-  console.log(`Entered extractInfoElement`)
+  // console.log(`Entered extractInfoElement`)
   let cardID = element.card_id
   let nbCardInElement = element.number_of_card
   let investmentElement = element.number_of_card * element.init_price
@@ -60,7 +60,7 @@ const extractInfoElement = (element) => new Promise((resolve, reject) => {
 })
 
 function reducerNbCard(accumulator, element) {
-  console.log(`Element Value: ${element.nbCardInElement}`)
+  // console.log(`Element Value: ${element.nbCardInElement}`)
   accumulator += element.nbCardInElement
   return accumulator
 }
@@ -85,11 +85,11 @@ const concatCardsInfo = (element) => new Promise((resolve, reject) => {
 
 
 const loopOverArray = (array) => new Promise((resolve, reject) => {
-  console.log(`Entered loopOverArray`)
+  // console.log(`Entered loopOverArray`)
   let actions = array.map(extractInfoElement)
   let results = Promise.all(actions)
   results.then((fullData => {
-    console.log(`FULL DATA: ${JSON.stringify(fullData)}`)
+    // console.log(`FULL DATA: ${JSON.stringify(fullData)}`)
     // let totalNbCard = fullData.reduce(reducerNbCard, 0)
     let totalNbCard = 0
     fullData.forEach((element) => {
@@ -110,20 +110,20 @@ const loopOverArray = (array) => new Promise((resolve, reject) => {
     
   }))
   results.catch((errLoop) => {
-    console.log(`Error during Loop: ${errLoop}`)
+    // console.log(`Error during Loop: ${errLoop}`)
     return reject(errLoop)
   })
 })
 
 export const SigninUser = (username, password) => new Promise((resolve, reject) => {
   let optionsSignin = createOptionSignin(username, password)
-  console.log(`OPTION SIGNIN: ${JSON.stringify(optionsSignin)}`)
+  // console.log(`OPTION SIGNIN: ${JSON.stringify(optionsSignin)}`)
   rp(optionsSignin)
   .then((res) => {
     let userID = JSON.parse(res).userID
     // FETCH USER COLLECTION
     let optionsCollection = createOptionGetCollection(userID)
-    console.log(`OPTION COLLECTION: ${JSON.stringify(optionsCollection)}`)
+    // console.log(`OPTION COLLECTION: ${JSON.stringify(optionsCollection)}`)
     rp(optionsCollection)
     .then((resCollection) => {
       let JSONReply = JSON.parse(resCollection)
@@ -133,19 +133,19 @@ export const SigninUser = (username, password) => new Promise((resolve, reject) 
         let cardsInfo = nbCardAndInfo.totalCardInfo
         let initialInvestment = nbCardAndInfo.totalInvestment
         let currentValue = nbCardAndInfo.totalValue
-        console.log(`OBJECT OBTAINED AFTER LOOP OVER ARRAY: ${JSON.stringify(nbCardAndInfo)}`)
-        console.log(`NB CARD: ${nbCardInCollection}`)
-        console.log(`INVESTMENT: ${initialInvestment}`)
-        console.log(`VALUE: ${currentValue}`)
-        console.log(`INFO: ${JSON.stringify(cardsInfo)}`)
+        // console.log(`OBJECT OBTAINED AFTER LOOP OVER ARRAY: ${JSON.stringify(nbCardAndInfo)}`)
+        // console.log(`NB CARD: ${nbCardInCollection}`)
+        // console.log(`INVESTMENT: ${initialInvestment}`)
+        // console.log(`VALUE: ${currentValue}`)
+        // console.log(`INFO: ${JSON.stringify(cardsInfo)}`)
         // FETCH USER DECKS
         let optionsGetDecks = createOptionGetDecks(userID)
-        console.log(`optionsGetDecks: ${JSON.stringify(optionsGetDecks)}`)
+        // console.log(`optionsGetDecks: ${JSON.stringify(optionsGetDecks)}`)
         rp(optionsGetDecks)
         .then((decks) => {
           let listDecks = JSON.parse(decks)
-          console.log(`DECKS RECEIVED FROM MIDDLEWARE: ${decks}`)
-          console.log(`NB CARD IN COLLECTION: ${nbCardInCollection}`)
+          // console.log(`DECKS RECEIVED FROM MIDDLEWARE: ${decks}`)
+          // console.log(`NB CARD IN COLLECTION: ${nbCardInCollection}`)
           dispatcher.dispatch({
             type: 'SIGNIN_USER',
             username,
@@ -187,10 +187,10 @@ export const AddCardToCollection = (userID, cardID, price_when_bought, number,to
   let intNumber = parseInt(number)
   let floatPrice = parseFloat(price_when_bought)
   let optionsAddCardToCollection = createOptionAddCardToCollection(userID,cardID,floatPrice,intNumber)
-  console.log(JSON.stringify(optionsAddCardToCollection))
+  // console.log(JSON.stringify(optionsAddCardToCollection))
   rp(optionsAddCardToCollection)
   .then((res) => {
-    console.log(`VALUE COLLECTION ID AFTER ADDING CARD TO DB: ${res.collectionID}`)
+    // console.log(`VALUE COLLECTION ID AFTER ADDING CARD TO DB: ${res.collectionID}`)
     let currentDate = new Date()
     let date = currentDate.getUTCFullYear().toString() + '-' + currentDate.getUTCMonth().toString() + '-' + currentDate.getUTCDay().toString()
     let cardInfoStore = {
@@ -219,7 +219,7 @@ export const AddCardToCollection = (userID, cardID, price_when_bought, number,to
 })
 
 export function DeleteCardFromCollection (element){
-  console.log(JSON.stringify(element))
+  // console.log(JSON.stringify(element))
   let collectionID = element.allCardInfo.DB.collection_id
   let nbCardToRemove = element.allCardInfo.DB.number_of_card // TODO: change this after to be able to partially remove
   let nbCardAvailable = element.allCardInfo.DB.number_of_card
@@ -240,10 +240,10 @@ export function DeleteCardFromCollection (element){
 const buildInfoCardDeckMain = (card) => new Promise((resolve, reject) => {
   // Ask the information about the card to the middleware
   let options = createOptionCardPerNameQuery(card.cardName)
-  console.log(`Card Query: ${card.cardName} #################################################################################`)
+  // console.log(`Card Query: ${card.cardName} #################################################################################`)
   rp(options)
   .then((res) => {
-    console.log(JSON.stringify(res))
+    // console.log(JSON.stringify(res))
     // create the corresponding element for the main array
     let JSONRes = JSON.parse(res)
     let mainElement = {
@@ -270,7 +270,7 @@ const buildInfoCardDeckSide = (card) => new Promise((resolve, reject) => {
   let options = createOptionCardPerNameQuery(card.cardName)
   rp(options)
   .then((res) => {
-    console.log(JSON.stringify(res))
+    // console.log(JSON.stringify(res))
     let JSONRes = JSON.parse(res)
     // create the corresponding element for the main array
     let mainElement = {
@@ -305,10 +305,10 @@ function reducerPrice(accumulator, element){
 // })
 
 export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCards) => new Promise((resolve, reject) => {
-  console.log(`Deck Name: ${deckName}`)
-  console.log(`Legality: ${legality}`)
-  console.log(`Mainboard Cards: ${JSON.stringify(mainboardCards)}`)
-  console.log(`Sideboard Cards: ${JSON.stringify(sideboardCards)}`)
+  // console.log(`Deck Name: ${deckName}`)
+  // console.log(`Legality: ${legality}`)
+  // console.log(`Mainboard Cards: ${JSON.stringify(mainboardCards)}`)
+  // console.log(`Sideboard Cards: ${JSON.stringify(sideboardCards)}`)
   let main_element = mainboardCards.map(buildInfoCardDeckMain)
   let resultMain = Promise.all(main_element)
   resultMain.then((dataMain) => {
@@ -340,12 +340,12 @@ export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCar
         'legality' : legality,
         'price' : priceDeck
       }
-      console.log(`Deck: ${JSON.stringify(newDeck)}`)
+      // console.log(`Deck: ${JSON.stringify(newDeck)}`)
       let optionsQuery = createOptionAddDeck(userID, newDeck)
-      console.log(`Option Query: ${JSON.stringify(optionsQuery)}`)
+      // console.log(`Option Query: ${JSON.stringify(optionsQuery)}`)
       rp(optionsQuery)
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         dispatcher.dispatch({
           type: 'ADD_DECK',
           DeckStore,

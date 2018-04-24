@@ -218,7 +218,7 @@ module.exports = {
           .then((msg) => {
             addAllCardsQuery(sideCards, deckID, userID)
             .then((msg) => {
-              addDeckToList(userID, deckID, nbMain, nbSide, thumbnail, legality)
+              addDeckToList(userID, deckID, nbMain, nbSide, thumbnail, legality, priceDeck)
               .then(()=> {
                 res.status(200).send(`Deck Added to DB`)
               })
