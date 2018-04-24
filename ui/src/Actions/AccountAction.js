@@ -60,20 +60,28 @@ const extractInfoElement = (element) => new Promise((resolve, reject) => {
 })
 
 function reducerNbCard(accumulator, element) {
-  return accumulator + element.nbCardInElement 
+  console.log(`Element Value: ${element.nbCardInElement}`)
+  accumulator += element.nbCardInElement
+  return accumulator
 }
 
 function reducerInvestment(accumulator, element) {
-  return accumulator + element.investmentElement 
+  accumulator += element.investmentElement
+  return accumulator
 }
 
 function reducerValue(accumulator, element) {
-  return accumulator + element.currentValueElement
+  accumulator += element.currentValueElement
+  return accumulator
 }
 
-function reducerCardInfo(accumulator, element) {
-  return accumulator.concat(element)
-}
+const concatCardsInfo = (element) => new Promise((resolve, reject) => {
+  if (element) {
+    return resolve(element)
+  } else {
+    return reject(`Empty Element`)
+  }
+})
 
 
 const loopOverArray = (array) => new Promise((resolve, reject) => {
@@ -81,12 +89,25 @@ const loopOverArray = (array) => new Promise((resolve, reject) => {
   let actions = array.map(extractInfoElement)
   let results = Promise.all(actions)
   results.then((fullData => {
-    let totalNbCard = fullData.reduce(reducerNbCard, 0)
+    console.log(`FULL DATA: ${JSON.stringify(fullData)}`)
+    // let totalNbCard = fullData.reduce(reducerNbCard, 0)
+    let totalNbCard = 0
+    fullData.forEach((element) => {
+      totalNbCard += element.nbCardInElement
+    })
     let totalInvestment = fullData.reduce(reducerInvestment, 0)
     let totalValue = fullData.reduce(reducerValue, 0)
     // CHANGING THIS TO {allCardInfo: DB {}, Scryfall: {}}
-    let totalCardInfo = fullData.reduce(reducerCardInfo, [])
-    return resolve({totalNbCard, totalInvestment, totalValue, totalCardInfo})
+    let PromiseInfo = fullData.map(concatCardsInfo)
+    let totalCardInfoP = Promise.all(PromiseInfo)
+    totalCardInfoP
+    .then((totalCardInfo) => {
+      return resolve({totalNbCard, totalInvestment, totalValue, totalCardInfo})
+    })
+    .catch((err) => {
+      return reject (err)
+    })
+    
   }))
   results.catch((errLoop) => {
     console.log(`Error during Loop: ${errLoop}`)
