@@ -1,5 +1,6 @@
 import {EventEmitter } from 'events'
 import dispatcher from './../Dispatchers/Dispatcher'
+import configuration from './../config/Config'
 
 class  DisplayDeckStore extends EventEmitter {
   constructor() {
@@ -12,6 +13,12 @@ class  DisplayDeckStore extends EventEmitter {
       'main': [],
       'sideboard': []
     }
+    this.imageDisplay = [{
+          src: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
+          thumbnail: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
+          thumbnailWidth: configuration.IMAGE.FULLCARD.LARGE.WIDTH,
+          thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
+        }]
   }
 
   setDeck(deck){
@@ -24,6 +31,15 @@ class  DisplayDeckStore extends EventEmitter {
     console.log(`Edited Deck: ${JSON.stringify(deck)}`)
     this.deckEdited = deck
     this.emit('change')
+  }
+
+  setImageDeck(imageGallery){
+    this.imageDisplay = imageGallery
+    this.emit('changeImage')
+  }
+
+  getImage(){
+    return this.imageDisplay
   }
   
   getDeck() {
@@ -64,6 +80,10 @@ class  DisplayDeckStore extends EventEmitter {
       }
       case 'SET_DECK_TO_EDIT' : {
         this.setEditDeck(action.deck)
+        break
+      }
+      case 'SET_IMAGE_DECK' : {
+        this.setImageDeck(action.imageGallery)
         break
       }
       default : {

@@ -63,7 +63,11 @@ const buildInfoCardDeckMain = (card) => new Promise((resolve, reject) => {
         'name': card.name,
         'number': card.number_of_card,
         'uri': card.uri_image,
-        'board': card.main_or_side
+        'board': card.main_or_side,
+        'manaCost': card.mana_cost,
+        'cmc': card.cmc,
+        'type': card.type,
+        'price': card.current_price
       }
       return resolve (cardMain)
     } else {
@@ -85,7 +89,11 @@ const buildInfoCardDeckSide = (card) => new Promise((resolve, reject) => {
         'name': card.name,
         'number': card.number_of_card,
         'uri': card.uri_image,
-        'board': card.main_or_side
+        'board': card.main_or_side,
+        'manaCost': card.mana_cost,
+        'cmc': card.cmc,
+        'type': card.type,
+        'price': card.current_price
       }
       return resolve (cardSide)
     } else {
@@ -124,6 +132,7 @@ const buildDecksObject = (objectList, CardsInDeck) => new Promise((resolve, reje
             'deckname': objectList.deckname,
             'nb_card_in_main': objectList.nb_card_in_main,
             'nb_card_in_sideboard': objectList.nb_card_in_sideboard,
+            'price': objectList.price,
             'thumbnail': objectList.thumbnail,
             'legality': objectList.legality,
             'main': arrayMain,

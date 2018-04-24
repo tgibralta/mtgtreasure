@@ -26,3 +26,15 @@ export const setEditDeck = (deck) => new Promise((resolve, reject) => {
     return reject(`Deck not defined`)
   }
 })
+
+export const setImage = (imageGallery) => new Promise((resolve, reject) => {
+  if (imageGallery) {
+    dispatcher.dispatch({
+      type: 'SET_IMAGE_DECK',
+      imageGallery
+    })
+    return resolve()
+  } else {
+    return reject (`Empty image`)
+  }
+})

@@ -32,7 +32,11 @@
       "COLUMN4" : "deck_id",
       "COLUMN5" : "uri_image",
       "COLUMN6" : "main_or_side",
-      "COLUMN7" : "name"
+      "COLUMN7" : "name",
+      "COLUMN8" : "mana_cost",
+      "COLUMN9" : "cmc",
+      "COLUMN10": "type",
+      "COLUMN11": "current_price"
     },
     "PGTABLELISTDECKS" : {
       "NAME" : "list_decks",
@@ -41,7 +45,8 @@
       "COLUMN2" : "nb_card_in_main",
       "COLUMN3" : "nb_card_in_sideboard",
       "COLUMN4" : "thumbnail",
-      "COLUMN5" : "legality"
+      "COLUMN5" : "legality",
+      "COLUMN6" : "price"
     },
     "PGPORT": 5432
   }

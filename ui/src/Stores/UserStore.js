@@ -143,15 +143,6 @@ class UserStore extends EventEmitter {
     } else {
       return reject(`Not a valid new deck`)
     }
-    // if(newDeck) {
-    //   console.log(`New Deck: ${JSON.stringify(newDeck)}`)
-    //   this.user.decks.push(newDeck)
-    //   this.emit('change')
-    //   console.log(`State after adding deck: ${JSON.stringify(this.user)}`)
-    //   return resolve()
-    // } else {
-    //   return reject(`Not a valid new deck`)
-    // }
   })
 
 

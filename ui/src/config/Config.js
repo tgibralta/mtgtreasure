@@ -47,6 +47,37 @@ const configuration ={
   },
   "UI": {
     "URI": UI_URI
+  },
+  "IMAGE": {
+    "FULLCARD": {
+      "SMALL": {
+        "HEIGHT": 680,
+        "WIDTH": 288
+      },
+      "MEDIUM": {
+        "HEIGHT": 1020,
+        "WIDTH": 732
+      },
+      "LARGE": {
+        "HEIGHT": 1360,
+        "WIDTH": 976
+      }
+    }, 
+    "ART_CROP": {
+      "SMALL": {
+        "HEIGHT": 120,
+        "WIDTH" : 170
+      },
+      "MEDIUM": {
+        "HEIGHT": 180,
+        "WIDTH" : 255
+      },
+      "LARGE": {
+        "HEIGHT": 240,
+        "WIDTH" : 340
+      },
+      
+    }
   }
 }
 

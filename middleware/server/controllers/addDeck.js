@@ -65,7 +65,8 @@ const deleteDeckQuery = (deckID) => new Promise((resolve, reject) => {
 
 const queryInsertDB = (item, client, userID, deckID, date) => new Promise((resolve, reject) => {
   let nameInDB = item.name.replace(`'`,``)
-  client.query(`INSERT INTO ${config.get('DB.PGTABLEDECK.NAME')} (${config.get('DB.PGTABLEDECK.COLUMN0')}, ${config.get('DB.PGTABLEDECK.COLUMN1')}, ${config.get('DB.PGTABLEDECK.COLUMN2')}, ${config.get('DB.PGTABLEDECK.COLUMN3')}, ${config.get('DB.PGTABLEDECK.COLUMN4')} , ${config.get('DB.PGTABLEDECK.COLUMN5')} , ${config.get('DB.PGTABLEDECK.COLUMN6')} , ${config.get('DB.PGTABLEDECK.COLUMN7')}) VALUES ('${userID}', '${item.cardID}', '${item.number}', '${date}', '${deckID}', '${item.uri}', '${item.board}' , '${nameInDB}')`)
+  client.query(`INSERT INTO ${config.get('DB.PGTABLEDECK.NAME')} (${config.get('DB.PGTABLEDECK.COLUMN0')}, ${config.get('DB.PGTABLEDECK.COLUMN1')}, ${config.get('DB.PGTABLEDECK.COLUMN2')}, ${config.get('DB.PGTABLEDECK.COLUMN3')}, ${config.get('DB.PGTABLEDECK.COLUMN4')} , ${config.get('DB.PGTABLEDECK.COLUMN5')} , ${config.get('DB.PGTABLEDECK.COLUMN6')}, ${config.get('DB.PGTABLEDECK.COLUMN7')}, ${config.get('DB.PGTABLEDECK.COLUMN8')}, ${config.get('DB.PGTABLEDECK.COLUMN9')}, ${config.get('DB.PGTABLEDECK.COLUMN10')}, ${config.get('DB.PGTABLEDECK.COLUMN11')})
+                VALUES ('${userID}', '${item.cardID}', '${item.number}', '${date}', '${deckID}', '${item.uri}', '${item.board}' , '${nameInDB}', '${item.manaCost}', '${item.cmc}', '${item.type}', '${item.price}')`)
   .then((res) => {
     console.log(`CARD ${item.cardID} Successfully registered to Deck ${deckID} from User ${userID}`)
     let msg = `CARD ${item.cardID} Successfully registered to Deck ${deckID} from User ${userID}`
@@ -110,7 +111,7 @@ const addAllCardsQuery = (rows, deckID, userID) => new Promise((resolve, reject)
   })
 })
 
-const addDeckToList = (userID, deckID, nbMain, nbSide, thumbnail, legality) => new Promise((resolve, reject) => {
+const addDeckToList = (userID, deckID, nbMain, nbSide, thumbnail, legality, priceDeck) => new Promise((resolve, reject) => {
   const client = new Client({
     user: config.get('DB.PGUSER'),
     host: config.get('DB.PGHOST'),
@@ -122,14 +123,14 @@ const addDeckToList = (userID, deckID, nbMain, nbSide, thumbnail, legality) => n
     if(errConect) {
       return reject(`Error during connection when addDeckToList`)
     } else {
-      client.query(`INSERT INTO ${config.get('DB.PGTABLELISTDECKS.NAME')} (${config.get('DB.PGTABLELISTDECKS.COLUMN0')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN1')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN2')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN3')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN4')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN5')}) VALUES ('${userID}', '${deckID}', '${nbMain}', '${nbSide}', '${thumbnail}', '${legality}')`)
+      client.query(`INSERT INTO ${config.get('DB.PGTABLELISTDECKS.NAME')} (${config.get('DB.PGTABLELISTDECKS.COLUMN0')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN1')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN2')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN3')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN4')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN5')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN6')}) VALUES ('${userID}', '${deckID}', '${nbMain}', '${nbSide}', '${thumbnail}', '${legality}', '${priceDeck}')`)
       .then(() => {
         client.end()
         return resolve()
       })
       .catch((errAdd) => {
         client.end()
-        return reject(`Error while adding deck to decklist`)
+        return reject(`Error while adding deck to decklist: ${errAdd}`)
       })
     }
   })
@@ -173,7 +174,7 @@ module.exports = {
       let thumbnail = req.body.deck.thumbnail
       let nbSide = req.body.deck.nb_sideboard
       let  nbMain = req.body.deck.nb_main
-
+      let priceDeck = req.body.deck.price
       console.log(`deck ID: ${deckID}`)
       console.log(`User ID: ${userID}`)
       console.log(`Cards in Main: ${JSON.stringify(mainCards)}`)
@@ -191,7 +192,7 @@ module.exports = {
                 // res.status(200).send(msg)
                 deleteDeckFromList(userID, deckID)
                 .then(() => {
-                  addDeckToList(userID, deckID, nbMain, nbSide, thumbnail, legality)
+                  addDeckToList(userID, deckID, nbMain, nbSide, thumbnail, legality, priceDeck)
                   .then(()=> {
                     res.status(200).send(`Deck Added to DB`)
                   })

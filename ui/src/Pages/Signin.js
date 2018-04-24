@@ -22,7 +22,6 @@ class Signin extends Component {
     return (
       <div>
         <div className="jumbotron">
-        <h1 className="display-5 text-center">Welcome back!</h1>
         <div className="card card-container">
             <h1 className="text-center">MTG</h1>
             <h1 className="text-center">Treasure</h1>

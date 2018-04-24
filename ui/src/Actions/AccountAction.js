@@ -45,7 +45,6 @@ const extractInfoElement = (element) => new Promise((resolve, reject) => {
   let investmentElement = element.number_of_card * element.init_price
   let currentValueElement =0
   let optionCardQuery = createOptionCardPerIDQuery(element)
-  // console.log(`OPTIONS: ${JSON.stringify(optionCardQuery)}`)
   rp(optionCardQuery)
   .then((CardInfo) => {
     currentValueElement += nbCardInElement * JSON.parse(CardInfo).usd
@@ -53,10 +52,6 @@ const extractInfoElement = (element) => new Promise((resolve, reject) => {
       "DB": element,
       "Scryfall" : JSON.parse(CardInfo)
     }
-    // console.log(`nbCardInElement : ${nbCardInElement}`)
-    // console.log(`investmentElement : ${investmentElement}`)
-    // console.log(`currentValueElement : ${currentValueElement}`)
-    // console.log(`allCardInfo : ${JSON.stringify(allCardInfo)}`)
     return resolve({allCardInfo, nbCardInElement, investmentElement, currentValueElement})
   })
   .catch((errCard) => {
@@ -117,6 +112,11 @@ export const SigninUser = (username, password) => new Promise((resolve, reject) 
         let cardsInfo = nbCardAndInfo.totalCardInfo
         let initialInvestment = nbCardAndInfo.totalInvestment
         let currentValue = nbCardAndInfo.totalValue
+        console.log(`OBJECT OBTAINED AFTER LOOP OVER ARRAY: ${JSON.stringify(nbCardAndInfo)}`)
+        console.log(`NB CARD: ${nbCardInCollection}`)
+        console.log(`INVESTMENT: ${initialInvestment}`)
+        console.log(`VALUE: ${currentValue}`)
+        console.log(`INFO: ${JSON.stringify(cardsInfo)}`)
         // FETCH USER DECKS
         let optionsGetDecks = createOptionGetDecks(userID)
         console.log(`optionsGetDecks: ${JSON.stringify(optionsGetDecks)}`)
@@ -124,6 +124,7 @@ export const SigninUser = (username, password) => new Promise((resolve, reject) 
         .then((decks) => {
           let listDecks = JSON.parse(decks)
           console.log(`DECKS RECEIVED FROM MIDDLEWARE: ${decks}`)
+          console.log(`NB CARD IN COLLECTION: ${nbCardInCollection}`)
           dispatcher.dispatch({
             type: 'SIGNIN_USER',
             username,
@@ -223,13 +224,18 @@ const buildInfoCardDeckMain = (card) => new Promise((resolve, reject) => {
   .then((res) => {
     console.log(JSON.stringify(res))
     // create the corresponding element for the main array
+    let JSONRes = JSON.parse(res)
     let mainElement = {
-      'cardID': JSON.parse(res).data[0].multiverse_ids[0],
-      'name' : JSON.parse(res).data[0].name,
+      'cardID': JSONRes.data[0].multiverse_ids[0],
+      'name' : JSONRes.data[0].name,
+      'cmc' : JSONRes.data[0].cmc,
+      'manaCost' : JSONRes.data[0].mana_cost,
+      'type' : JSONRes.data[0].type_line,
       'number' : parseInt(card.number),
-      'uri' : JSON.parse(res).data[0].image_uris.small,
+      'uri' : JSONRes.data[0].image_uris.large,
+      'price' : JSONRes.data[0].usd,
       'board': 'main',
-      'thumbnail': JSON.parse(res).data[0].image_uris.art_crop
+      'thumbnail': JSONRes.data[0].image_uris.art_crop
     }
     return resolve(mainElement)
   })
@@ -244,14 +250,19 @@ const buildInfoCardDeckSide = (card) => new Promise((resolve, reject) => {
   rp(options)
   .then((res) => {
     console.log(JSON.stringify(res))
+    let JSONRes = JSON.parse(res)
     // create the corresponding element for the main array
     let mainElement = {
-      'cardID': JSON.parse(res).data[0].multiverse_ids[0],
-      'name' : JSON.parse(res).data[0].name,
+      'cardID': JSONRes.data[0].multiverse_ids[0],
+      'name' : JSONRes.data[0].name,
+      'cmc' : JSONRes.data[0].cmc,
+      'manaCost' : JSONRes.data[0].mana_cost,
+      'type' : JSONRes.data[0].type_line,
       'number' : parseInt(card.number),
-      'uri' : JSON.parse(res).data[0].image_uris.small,
+      'uri' : JSONRes.data[0].image_uris.large,
+      'price' : JSONRes.data[0].usd,
       'board': 'side',
-      'thumbnail': JSON.parse(res).data[0].image_uris.art_crop
+      'thumbnail': JSONRes.data[0].image_uris.art_crop
     }
     return resolve(mainElement)
   })
@@ -265,6 +276,10 @@ function reducerNbCard(accumulator, element) {
   return accumulator
 }
 
+function reducerPrice(accumulator, element){
+  accumulator += element.price * element.number
+  return accumulator
+ }
 // const queryAddToDeck = (elementBoard) => new Promise((resolve, reject) => {
 // })
 
@@ -281,6 +296,9 @@ export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCar
     resultSide.then((dataSide) => {
       let nbCardMain = dataMain.reduce(reducerNbCard, 0)
       let nbCardSide = dataSide.reduce(reducerNbCard, 0)
+      let priceMain = dataMain.reduce(reducerPrice, 0)
+      let priceSide = dataSide.reduce(reducerPrice, 0)
+      let priceDeck = priceMain + priceSide
       let newDeck = {
         'deckID': deckName,
         'legality': legality,
@@ -288,7 +306,8 @@ export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCar
         'nb_sideboard' : nbCardSide,
         'main' : dataMain,
         'sideboard' : dataSide,
-        'thumbnail' : dataMain[0].thumbnail
+        'thumbnail' : dataMain[0].thumbnail,
+        'price' : priceDeck
       }
       let DeckStore = {
         'deckname': deckName,
@@ -297,7 +316,8 @@ export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCar
         'thumbnail': dataMain[0].thumbnail,
         'main': dataMain,
         'sideboard': dataSide,
-        'legality' : legality
+        'legality' : legality,
+        'price' : priceDeck
       }
       console.log(`Deck: ${JSON.stringify(newDeck)}`)
       let optionsQuery = createOptionAddDeck(userID, newDeck)
