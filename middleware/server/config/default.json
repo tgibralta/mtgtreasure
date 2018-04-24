@@ -48,6 +48,18 @@
       "COLUMN5" : "legality",
       "COLUMN6" : "price"
     },
+    "PGTABLELISTTRACKED" : {
+      "NAME" : "list_tracked_card",
+      "COLUMN0" : "user_id",
+      "COLUMN1" : "card_id",
+      "COLUMN2" : "cardname"
+    },
+    "PGTABLEPRICETRACKED" : {
+      "NAME" : "price_tracked_card",
+      "COLUMN0" : "card_id",
+      "COLUMN1" : "price",
+      "COLUMN2" : "date"
+    },
     "PGPORT": 5432
   }
 }
