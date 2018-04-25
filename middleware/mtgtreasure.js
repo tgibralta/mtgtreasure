@@ -2,6 +2,9 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const express = require('express')
 const cors = require('cors')
+const schedule = require('node-schedule')
+const fetchPrice = require('./server/jobs/fetchPrices')
+
 
 global.rootRequire = (name) => {
     return require(path.join(__dirname, name))
@@ -21,6 +24,8 @@ app.use(bodyParser.json())
 
 // ROUTES
 require.main.require('./server/routes')(app)
+
+
 
 
 // #################################################################### START THE SERVER

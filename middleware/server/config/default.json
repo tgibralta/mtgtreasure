@@ -52,17 +52,12 @@
       "NAME" : "price_tracked_card",
       "COLUMN0" : "card_id",
       "COLUMN1" : "price",
-      "COLUMN2" : "date",
-      "COLUMN3" : "cardname"
+      "COLUMN2" : "date"
     },
     "PGPORT": 5432
   },
   "SCHEDULE_FETCH_PRICE" : {
-    "SECOND": "*",
-    "HOUR": 23,
-    "MIN" : 59,
-    "DAYOFWEEK" : "*",
-    "DAYOFMONTH" : "*",
-    "MONTH" : "*"
+    "H": 12,
+    "MIN" : 0
   }
 }

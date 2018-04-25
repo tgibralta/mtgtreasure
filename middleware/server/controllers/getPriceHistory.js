@@ -39,7 +39,7 @@ module.exports = {
           promiseHistory
           .then((priceHistory) => {
             console.log(`Price history: JSON.stringify(${priceHistory})`)
-            res.status(200).send({"priceHistory": priceHistory})
+            res.status(200).send({priceHistory})
           })
           .catch((errHistory) => {
             console.log(errHistory)
