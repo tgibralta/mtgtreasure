@@ -54,10 +54,19 @@
       "COLUMN1" : "price",
       "COLUMN2" : "date"
     },
+    "PGTABLEDAILYINFOUSER" : {
+      "NAME" : "daily_info_users",
+      "COLUMN0" : "user_id",
+      "COLUMN1" : "value",
+      "COLUMN2" : "nb_card",
+      "COLUMN3" : "investment",
+      "COLUMN4" : "potential_profit",
+      "COLUMN5" : "date"
+    },
     "PGPORT": 5432
   },
   "SCHEDULE_FETCH_PRICE" : {
-    "H": 12,
+    "H": 6,
     "MIN" : 0
   }
 }

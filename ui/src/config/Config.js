@@ -43,6 +43,10 @@ const configuration ={
     "DELETE_DECK": {
       "URI": MIDDLEWARE_URI + '/deletedeck',
       "METHOD": "PUT"
+    },
+    "GET_PRICE_HISTORY": {
+      "URI": MIDDLEWARE_URI + '/getpricehistory/',
+      "METHOD": "GET"
     }
   },
   "UI": {
@@ -56,7 +60,7 @@ const configuration ={
       },
       "MEDIUM": {
         "HEIGHT": 1020,
-        "WIDTH": 732
+        "WIDTH": 950
       },
       "LARGE": {
         "HEIGHT": 1360,

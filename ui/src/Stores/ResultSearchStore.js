@@ -5,19 +5,29 @@ class  ResultSearchStore extends EventEmitter {
   constructor() {
     super()
     this.results = [{
-      "name" : "",
-      "set" : "",
-      "set_name": "",
-      "mana_cost": 0,
-      "usd" : 0,
-      "type_line" : "",
-      "image_uris": {
-        "normal" : "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
-        "art_crop": "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg"
+      "cardInfo": {
+        "name" : "",
+        "set" : "",
+        "set_name": "",
+        "mana_cost": 0,
+        "usd" : 0,
+        "type_line" : "",
+        "image_uris": {
+          "large" : "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
+          "art_crop": "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg"
+        },
+        "multiverse_ids": [
+          ""
+        ] 
       },
-      "multiverse_ids": [
-        ""
-      ]
+      "priceHistory": {
+        "priceHistory": [
+          {
+            "price": 0,
+            "date": "0"
+          }
+        ]
+      }
     }]
   }
 
@@ -37,8 +47,8 @@ class  ResultSearchStore extends EventEmitter {
     // console.log(`RESULTSEARCHSTORE: Received an action`)
     switch(action.type){
       case 'SEARCH_CARD' : {
-        if (action.results) {
-          this.setResult(action.results)
+        if (action.objectResult) {
+          this.setResult(action.objectResult)
         } else {
           this.setResult([{
             "name" : "",
@@ -46,7 +56,7 @@ class  ResultSearchStore extends EventEmitter {
             "usd" : 0,
             "type_line" : "",
             "image_uris": {
-              "normal" : "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg"
+              "large" : "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg"
             }
           }])
         }

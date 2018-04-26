@@ -5,6 +5,7 @@ import TableCollection from './../Components/TableCollection'
 import Sidebar from './../Components/Sidebar'
 import SearchCardDisplay from './../Components/SearchCardDisplay'
 import PanelCollection from './../Components/PanelCollection'
+import configuration from './../config/Config'
 
 const SearchCardPerName = require('./../Actions/SearchAction').SearchCardPerName
 
@@ -21,23 +22,39 @@ class Collection extends Component {
     if (props.results) {
       let results = props.results
       let user = props.user
-      console.log(`result in createDisplay: ${JSON.stringify(results)}`)
+      // console.log(`result in createDisplay: ${JSON.stringify(results)}`)
       let listComponents = results.map((result) => {
-        if (result.image_uris) {
+        if (result.cardInfo.image_uris) {
           let imageGallery = [{
-            src: result.image_uris.art_crop,
-            thumbnail: result.image_uris.art_crop,
-            // thumbnailWidth: 170,
-            thumbnailHeight: 100
+            src: result.cardInfo.image_uris.large,
+            thumbnail: result.cardInfo.image_uris.large,
+            thumbnailWidth: configuration.IMAGE.FULLCARD.MEDIUM.WIDTH,
+            thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
           }]
-          console.log(`Image to be displayed: ${JSON.stringify(imageGallery)}`)
-          return <SearchCardDisplay imageGallery={imageGallery}  infoCardGallery={result} user={user}/>
+          // console.log(`Image to be displayed: ${JSON.stringify(imageGallery)}`)
+          let labels = result.priceHistory.priceHistory.map(function(x) {
+            return x.date
+          })
+          let data = result.priceHistory.priceHistory.map(function(x) {
+            return x.price
+          })
+          let chartData = {
+            labels,
+            datasets: [
+              {
+                label: 'Price History',
+                data
+              }
+            ]
+          }
+          console.log(`Data sent to graph: ${JSON.stringify(chartData)}`)
+          return <SearchCardDisplay imageGallery={imageGallery}  infoCardGallery={result.cardInfo} user={user} chartData={chartData}/>
         } else {
           let imageGallery = [{
             src: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
             thumbnail: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
-            // thumbnailWidth: 170,
-            thumbnailHeight: 100
+            thumbnailWidth: configuration.IMAGE.FULLCARD.MEDIUM.WIDTH,
+            thumbnailHeight: configuration.IMAGE.FULLCARD.MEDIUM.HEIGHT
           }]
           let listComponents = <SearchCardDisplay imageGallery={imageGallery}  infoCardGallery={result} user={user}/>
         }      
@@ -66,6 +83,9 @@ class Collection extends Component {
     SearchCardPerName(cardName)
     .then(() => {
       // console.log(`Results of the search returned from Action`)
+    })
+    .catch((err) => {
+      console.log(err)
     })
   }
 

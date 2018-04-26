@@ -12,6 +12,7 @@ const getDeckRoute = rootRequire('server/routes/getDeck')
 const deleteDeckRoute = rootRequire('server/routes/deleteDeck')
 const getDecksRoute = rootRequire('server/routes/getDecks')
 const getPriceHistoryRoute = rootRequire('server/routes/getPriceHistory')
+const getUserHistoryRoute = rootRequire('server/routes/getUserHistory')
 const cors = require('cors')
 
 module.exports = (app) => {
@@ -35,4 +36,5 @@ module.exports = (app) => {
   app.use('/getdecks', getDecksRoute)
   app.use('/deletedeck', deleteDeckRoute)
   app.use('/getpricehistory', getPriceHistoryRoute)
+  app.use('/getuserhistory',getUserHistoryRoute)
 }

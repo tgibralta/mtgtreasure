@@ -110,3 +110,11 @@ export function createOptionDeleteDeck (userID, deckID) {
     json: true
   }
 }
+
+export function createOptionGetPriceHistory (cardID) {
+  return {
+    uri: configuration.MIDDLEWARE.GET_PRICE_HISTORY.URI + cardID,
+    method: configuration.MIDDLEWARE.GET_PRICE_HISTORY.METHOD,
+    origin: configuration.UI.URI,
+  }
+}
