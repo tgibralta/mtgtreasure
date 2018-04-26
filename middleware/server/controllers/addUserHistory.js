@@ -143,5 +143,9 @@ module.exports = {
       console.log(`Error in checkIfEntryExists: ${errIfExist}`)
       res.status(400).send(errIfExist)
     })
-  }
+  },
+  checkIfEntryExists,
+  deleteEntryHistory,
+  addEntryHistory
+
 }
