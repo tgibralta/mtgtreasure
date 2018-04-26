@@ -44,14 +44,17 @@ module.exports = {
           let promiseHistory = Promise.all(mapHistory)
           promiseHistory
           .then((userHistory) => {
+            client.end()
             res.status(200).send(userHistory)
           })
           .catch((errHistory) => {
+            client.end()
             console.log(`History: ${errHistory}`)
             res.status(400).send(errHistory)
           })
         })
         .catch((errQuery) => {
+          client.end()
           console.log(`Query: ${errQuery}`)
           res.status(400).send(errQuery)
         })
