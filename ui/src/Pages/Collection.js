@@ -39,11 +39,12 @@ class Collection extends Component {
             return x.price
           })
           let chartData = {
-            labels,
+            labels: labels,
             datasets: [
               {
+                borderColor: '#e74c3c',
                 label: 'Price History',
-                data
+                data: data
               }
             ]
           }
@@ -89,6 +90,64 @@ class Collection extends Component {
     })
   }
 
+  CreateDataChartHistoryUser (props) {
+    let history = props.user.history
+    let investment = props.user.initialInvestment
+    let currentValue = props.user.currentValue
+    let currentNbCard = props.user.nbCardInCollection
+    console.log(`History: ${JSON.stringify(history)}`)
+    let labels = history.map(function(x) {
+      return x.date
+    })
+    let dataInvestment = history.map(function(x) {
+      return x.investment
+    })
+    let dataValue = history.map(function(x) {
+      return x.value_collection
+    })
+    let dataNbCard = history.map(function(x) {
+      return x.nb_card
+    })
+    let dataProfit = history.map(function(x) {
+      return x.potential_profit
+    })
+    let chartDataInvestment = {
+      labels: labels,
+      datasets: [
+        {
+          borderColor: '#154360',
+          label: 'Investment ($)',
+          data: dataInvestment,
+          fill: false,
+        }
+      ]
+    }
+    let chartDataValue = {
+      labels: labels,
+      datasets: [
+        {
+          borderColor: '#154360',
+          label: 'Value ($)',
+          data: dataValue,
+          fill: false,
+        }
+      ]
+    }
+    let chartDataNbCard = {
+      labels: labels,
+      datasets: [
+        {
+          borderColor: '#154360',
+          label: '# Card',
+          data: dataNbCard,
+          fill: false,
+        }
+      ]
+    }
+    
+    return (<PanelCollection initialInvestment={investment} currentValue={currentValue} nbCard={currentNbCard} chartDataInvestment={chartDataInvestment} chartDataValue={chartDataValue} chartDataNbCard={chartDataNbCard}/>)
+  }
+
 
   render() {
     return (
@@ -98,7 +157,8 @@ class Collection extends Component {
           <Sidebar username={this.state.user.username}/>
         </div>
         <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-          <PanelCollection initialInvestment={this.state.user.initialInvestment} currentValue={this.state.user.currentValue} nbCard={this.state.user.nbCardInCollection}/>
+          {/* <PanelCollection initialInvestment={this.state.user.initialInvestment} currentValue={this.state.user.currentValue} nbCard={this.state.user.nbCardInCollection}/> */}
+          <this.CreateDataChartHistoryUser user={this.state.user} />
           <hr/>
           <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 ">
             <input className="form-control mr-sm-2" id="inputSearch" placeholder="Search for a card to add to your collection" type="text"/>

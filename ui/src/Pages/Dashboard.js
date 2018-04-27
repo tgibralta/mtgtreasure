@@ -8,6 +8,7 @@ import PanelCollection from './../Components/PanelCollection'
 import DeckDisplay from './../Components/DeckDisplay'
 import {CreateDeckDisplay} from './../Functions/CreateDeckDisplay'
 import {redirectToDeckPage} from './../Functions/redirectToDeckPage'
+import ChartPriceHistory from './../Components/ChartPriceHistory'
 const DeleteDeck = require('./../Actions/AccountAction').DeleteDeck
 
 class Dashboard extends Component {
@@ -41,6 +42,64 @@ class Dashboard extends Component {
     })
   }
 
+  CreateDataChartHistoryUser (props) {
+    let history = props.user.history
+    let investment = props.user.initialInvestment
+    let currentValue = props.user.currentValue
+    let currentNbCard = props.user.nbCardInCollection
+    console.log(`History: ${JSON.stringify(history)}`)
+    let labels = history.map(function(x) {
+      return x.date
+    })
+    let dataInvestment = history.map(function(x) {
+      return x.investment
+    })
+    let dataValue = history.map(function(x) {
+      return x.value_collection
+    })
+    let dataNbCard = history.map(function(x) {
+      return x.nb_card
+    })
+    let dataProfit = history.map(function(x) {
+      return x.potential_profit
+    })
+    let chartDataInvestment = {
+      labels: labels,
+      datasets: [
+        {
+          borderColor: '#154360',
+          label: 'Investment ($)',
+          data: dataInvestment,
+          fill: false,
+        }
+      ]
+    }
+    let chartDataValue = {
+      labels: labels,
+      datasets: [
+        {
+          borderColor: '#154360',
+          label: 'Value ($)',
+          data: dataValue,
+          fill: false,
+        }
+      ]
+    }
+    let chartDataNbCard = {
+      labels: labels,
+      datasets: [
+        {
+          borderColor: '#154360',
+          label: '# Card',
+          data: dataNbCard,
+          fill: false,
+        }
+      ]
+    }
+    
+    return (<PanelCollection initialInvestment={investment} currentValue={currentValue} nbCard={currentNbCard} chartDataInvestment={chartDataInvestment} chartDataValue={chartDataValue} chartDataNbCard={chartDataNbCard}/>)
+  }
+
   
   render() {
     return (
@@ -50,7 +109,9 @@ class Dashboard extends Component {
           <Sidebar username={this.state.user.username}/>
         </div>
         <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-          <PanelCollection initialInvestment={this.state.user.initialInvestment} currentValue={this.state.user.currentValue} nbCard={this.state.user.nbCardInCollection}/>
+          
+          {/* <PanelCollection initialInvestment={this.state.user.initialInvestment} currentValue={this.state.user.currentValue} nbCard={this.state.user.nbCardInCollection}/> */}
+          <this.CreateDataChartHistoryUser user={this.state.user} />
           <hr/>
           <div className='row'>
             <div className="col-md-2">

@@ -47,6 +47,10 @@ const configuration ={
     "GET_PRICE_HISTORY": {
       "URI": MIDDLEWARE_URI + '/getpricehistory/',
       "METHOD": "GET"
+    },
+    "GET_USER_HISTORY": {
+      "URI": MIDDLEWARE_URI + '/getuserhistory/',
+      "METHOD": "GET"
     }
   },
   "UI": {

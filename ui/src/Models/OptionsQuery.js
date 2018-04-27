@@ -118,3 +118,11 @@ export function createOptionGetPriceHistory (cardID) {
     origin: configuration.UI.URI,
   }
 }
+
+export function createOptionGetUserHistory (userID) {
+  return {
+    uri: configuration.MIDDLEWARE.GET_USER_HISTORY.URI + userID,
+    method: configuration.MIDDLEWARE.GET_USER_HISTORY.METHOD,
+    origin: configuration.UI.URI,
+  }
+}

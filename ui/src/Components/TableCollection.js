@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 import {DeleteCardFromCollection} from './../Actions/AccountAction'
+import {SearchCardPerName} from './../Actions/SearchAction'
 
 class TableCollection extends Component {
   allocateData(data) {
@@ -10,7 +11,6 @@ class TableCollection extends Component {
     data.forEach((element) => {
       let row = {
         buttons : element,
-        image : element.allCardInfo.Scryfall.image_uris.small,
         number : element.allCardInfo.DB.number_of_card,
         name : element.allCardInfo.Scryfall.name,
         set : element.allCardInfo.Scryfall.set_name,
@@ -26,31 +26,48 @@ class TableCollection extends Component {
     DeleteCardFromCollection(props)
   }
 
+  onRowClick (state, rowInfo, column, instance){
+    return {
+      onClick: e => {
+        let cardName = rowInfo.row.name
+        SearchCardPerName(cardName)
+        .then((history) => {
+          console.log(`History: ${JSON.stringify(history)}`)
+          let uri = history[0].cardInfo.image_uris.normal
+          let cardID = history[0].cardInfo.multiverse_ids[0]
+          let currentPrice = history[0].cardInfo.usd
+          let initPrice = rowInfo.row.initPrice
+          let priceHistory = history[0].priceHistory.priceHistory
+
+          console.log(`Image : ${uri}`)
+          console.log(`currentPrice : ${currentPrice}`)
+          console.log(`initPrice : ${initPrice}`)
+          console.log(`history : ${JSON.stringify(priceHistory)}`)
+        })
+        .catch((errHistory) => {
+          console.log(errHistory)
+        })
+      }
+    }
+  }
+  
   
   render() {
     const columns = [
     {
-      Header: <p className="text-uppercase font-weight-bold">Image</p>,
-      accessor: 'image',
-      Cell: props => <img height='120' src={props.value}/>,
-    },
-    {
       Header: <p className="text-uppercase font-weight-bold">#</p>,
       accessor: 'number',
       Cell: props => <p className="text-center text-name">{props.value}</p>,
-      width: 50
     },
     {
       Header: <p className="text-uppercase font-weight-bold">Name</p>,
       accessor: 'name',
       Cell: props => <p className="text-center">{props.value}</p>,
-      minWidth: 250
     },
     {
       Header: <p className="text-uppercase font-weight-bold">Set</p>,
       accessor: 'set',
       Cell: props => <p className="text-center">{props.value}</p>,
-      width: 75
     },
     {
       Header: <p className="text-uppercase font-weight-bold">Inital Price ($)</p>,
@@ -75,7 +92,8 @@ class TableCollection extends Component {
           <ReactTable className="table table-striped table-sm"
             data={this.allocateData(this.props.collection)}
             columns={columns}
-            defaultPageSize={5}
+            defaultPageSize={10}
+            getTrProps={this.onRowClick.bind(this)}
           />
         </div>
       </div>

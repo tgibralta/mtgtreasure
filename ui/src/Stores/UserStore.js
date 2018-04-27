@@ -21,11 +21,12 @@ class UserStore extends EventEmitter {
         main: [],
         sideboard: []
       }
-      ]
+      ],
+    history: []
     }
     this.isLoggedIn = false
   }
-  SigninUser(username, userID, nbCardInCollection, initialInvestment, currentValue, cardsInfo, decks) {
+  SigninUser(username, userID, nbCardInCollection, initialInvestment, currentValue, cardsInfo, decks, history) {
     this.user.username = username
     this.user.userID = userID
     this.isLoggedIn = true
@@ -34,6 +35,7 @@ class UserStore extends EventEmitter {
     this.user.initialInvestment = initialInvestment
     this.user.currentValue = currentValue
     this.user.decks = decks
+    this.user.history = history
     console.log(`Collection: ${JSON.stringify(this.user.collection)}`)
     console.log(`Decks: ${JSON.stringify(this.user.decks)}`)
     this.emit('change')
@@ -46,7 +48,8 @@ class UserStore extends EventEmitter {
       initialInvestment: 0,
       currentValue: 0,
       collection: [],
-      decks: []
+      decks: [],
+      history: []
     }
     this.isLoggedIn = false
     this.emit('change')
@@ -167,7 +170,7 @@ class UserStore extends EventEmitter {
       case 'SIGNIN_USER' : {
         // console.log(`USERSTORE: USER Signin In`)
         // console.log(action)
-        this.SigninUser(action.username, action.userID, action.nbCardInCollection, action.initialInvestment, action.currentValue, action.cardsInfo, action.listDecks)
+        this.SigninUser(action.username, action.userID, action.nbCardInCollection, action.initialInvestment, action.currentValue, action.cardsInfo, action.listDecks, action.history)
         break
       }
       case 'SIGNOUT_USER' : {

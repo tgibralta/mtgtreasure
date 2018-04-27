@@ -10,7 +10,8 @@ import {createOptionAddUser,
         createOptionGetDecks,
         createOptionCardPerNameQuery,
         createOptionAddDeck,
-        createOptionDeleteDeck} from './../Models/OptionsQuery'
+        createOptionDeleteDeck,
+        createOptionGetUserHistory} from './../Models/OptionsQuery'
 
 
 export const CreateUser = (username, mail, password) => new Promise((resolve, reject) => {
@@ -146,17 +147,29 @@ export const SigninUser = (username, password) => new Promise((resolve, reject) 
           let listDecks = JSON.parse(decks)
           // console.log(`DECKS RECEIVED FROM MIDDLEWARE: ${decks}`)
           // console.log(`NB CARD IN COLLECTION: ${nbCardInCollection}`)
-          dispatcher.dispatch({
-            type: 'SIGNIN_USER',
-            username,
-            userID,
-            nbCardInCollection,
-            initialInvestment,
-            currentValue,
-            cardsInfo,
-            listDecks
+          
+          // GET USER HISTORY
+          let optionsUserHistory = createOptionGetUserHistory(userID)
+          rp(optionsUserHistory)
+          .then ((historyDB) => {
+            let history = JSON.parse(historyDB)
+            console.log(`History received: ${JSON.stringify(history)}`)
+            dispatcher.dispatch({
+              type: 'SIGNIN_USER',
+              username,
+              userID,
+              nbCardInCollection,
+              initialInvestment,
+              currentValue,
+              cardsInfo,
+              listDecks,
+              history
+            })
+            return resolve()
           })
-          return resolve()
+          .catch((errHistory) => {
+            return reject(errHistory)
+          })
         })
         .catch((errDecks) => {
           return reject(errDecks)

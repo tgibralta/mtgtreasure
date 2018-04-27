@@ -35,7 +35,7 @@ export const SearchCardPerName = (cardName) => new Promise((resolve, reject) => 
         type: 'SEARCH_CARD',
         objectResult
       })
-      return resolve()
+      return resolve(objectResult)
     })
     .catch((errPrice) => {
       return reject(`Error in price history: ${errPrice}`)
@@ -45,3 +45,5 @@ export const SearchCardPerName = (cardName) => new Promise((resolve, reject) => 
     return reject(`Error at store: ${err}`)
   })
 })
+
+
