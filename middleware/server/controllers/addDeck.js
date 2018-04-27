@@ -1,5 +1,6 @@
 const config = require('config')
 const { Pool, Client } = require('pg')
+const currentDate = require('./../helpers/currentDate').currentDate
 
 // CHECK FROM DB IF DECK ID ALREADY EXISTS
 const checkIfDeckAlreadyExists = (deckID) => new Promise((resolve, reject) => {
@@ -82,9 +83,7 @@ const queryInsertDB = (item, client, userID, deckID, date) => new Promise((resol
 const addAllCardsQuery = (rows, deckID, userID) => new Promise((resolve, reject) => {
   console.log(`Entering addAllCardsQuery`)
   let msg = ''
-  let date = ''
-  currentDate = new Date()
-  date = currentDate.getUTCFullYear().toString() + '-' + currentDate.getUTCMonth().toString() + '-' + currentDate.getUTCDay().toString()
+  let date = currentDate()
   const pool = new Pool({
       user: config.get('DB.PGUSER'),
       host: config.get('DB.PGHOST'),

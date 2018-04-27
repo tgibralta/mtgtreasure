@@ -1,5 +1,6 @@
 const config = require('config')
 const { Client } = require('pg')
+const currentDate = require('./../helpers/currentDate').currentDate
 
 
 const checkIfEntryExists = (userID, date) => new Promise ((resolve, reject) => {
@@ -30,7 +31,7 @@ const checkIfEntryExists = (userID, date) => new Promise ((resolve, reject) => {
   })
 })
 
-const deleteEntryHistory = (userID, date) => new Promise ((reolve, reject) => {
+const deleteEntryHistory = (userID, date) => new Promise ((resolve, reject) => {
   const client = new Client({
     user: config.get('DB.PGUSER'),
     host: config.get('DB.PGHOST'),
@@ -106,9 +107,7 @@ module.exports = {
     let nbCard = req.body.nbCard
     let investment = req.body.investment
     let potentialProfit = req.body. potentialProfit
-    let date = ''
-    currentDate = new Date()
-    date = currentDate.getUTCFullYear().toString() + '-' + currentDate.getUTCMonth().toString() + '-' + currentDate.getUTCDay().toString()
+    let date = currentDate()
 
     checkIfEntryExists(userID, date)
     .then((ifExist) => {

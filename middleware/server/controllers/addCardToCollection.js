@@ -121,11 +121,7 @@ const createEntryInCollection = (user_id, card_id, price_buy, number) => new Pro
       return reject(errConnect)
     } else {
       let date = ''
-      currentDate = new Date()
-      date = currentDate.getUTCFullYear().toString() + '-' + currentDate.getUTCMonth().toString() + '-' + currentDate.getUTCDay().toString()
-      console.log(`date: ${date}`)
-      console.log(`date type: ${typeof(date)}`)
-      console.log(`QUERY: INSERT INTO ${config.get('DB.PGTABLECOLLECTION.NAME')} (${config.get('DB.PGTABLECOLLECTION.COLUMN1')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN2')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN3')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN4')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN5')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN6')}) VALUES ('${user_id}', '${card_id}', ${price_buy}, ${number}, '${date}', '${date}')`)
+      currentDate = currentDate()
       client.query(`INSERT INTO ${config.get('DB.PGTABLECOLLECTION.NAME')} (${config.get('DB.PGTABLECOLLECTION.COLUMN1')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN2')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN3')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN4')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN5')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN6')}) VALUES ('${user_id}', '${card_id}', ${price_buy}, ${number}, '${date}', '${date}')`)
       .then(() => {
         client.end()

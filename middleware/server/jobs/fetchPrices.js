@@ -3,13 +3,12 @@ const config = require('config')
 const rp = require('request-promise')
 const urlSearch = require('./../models/apiDescription').urlGetCards
 const { Client, Pool } = require('pg')
+const currentDate = require('./../helpers/currentDate').currentDate
 
 const queryToDB = (data, client) => new Promise((resolve, reject) => {
   let card_id = data.multiverse_ids[0] || 0
   let price = data.usd || 0
-  let date = ''
-  currentDate = new Date()
-  date = currentDate.getUTCFullYear().toString() + '-' + currentDate.getUTCMonth().toString() + '-' + currentDate.getUTCDay().toString()
+  let date = currentDate()
   client.query(`INSERT INTO ${config.get("DB.PGTABLEPRICETRACKED.NAME")} (${config.get("DB.PGTABLEPRICETRACKED.COLUMN0")}, ${config.get("DB.PGTABLEPRICETRACKED.COLUMN1")}, ${config.get("DB.PGTABLEPRICETRACKED.COLUMN2")}) 
                 VALUES ('${card_id}', '${price}', '${date}')`)
   .then(() => {
@@ -169,9 +168,8 @@ const getCollection = (user) => new Promise((resolve, reject) => {
           })
           console.log(`Values: ${valueUser}, ${nbCardUser}, ${investmentUser}, ${profitUser} for user ${userID}`)
           console.log(``)
-          let date = ''
-          currentDate = new Date()
-          date = currentDate.getUTCFullYear().toString() + '-' + currentDate.getUTCMonth().toString() + '-' + currentDate.getUTCDay().toString()
+          let date = currentDate()
+          console.log(`Date: ${date}`)
           checkIfEntryExists(userID, date)
           .then((ifExist) => {
             if (ifExist) {
