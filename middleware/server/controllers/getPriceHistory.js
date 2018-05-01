@@ -1,5 +1,6 @@
 const config = require('config')
 const { Client } = require('pg')
+const sortPerDate = require('./../helpers/sortPerDate').sortPerDate
 
 const buildObjectPriceHistory = (row) => new Promise ((resolve, reject) => {
   if (row) {
@@ -38,13 +39,7 @@ module.exports = {
           let promiseHistory = Promise.all(priceHistoryObject)
           promiseHistory
           .then((priceHistoryUnsorted) => {
-            let priceHistory = priceHistoryUnsorted.sort(function(a,b){
-            let ArrayA = a.date.split("/")
-            let ArrayB = a.date.split("/")
-            let dateA = parseInt(ArrayA[0]) + parseInt(ArrayA[1]) + parseInt(ArrayA[2])
-            let dateB = parseInt(ArrayB[0]) + parseInt(ArrayB[1]) + parseInt(ArrayB[2])
-            return dateA>dateB ? 1 : dateA<dateB ? 1 : 0
-          })
+            let priceHistory = priceHistoryUnsorted.sort(sortPerDate)
             client.end()
             console.log(`Price history: JSON.stringify(${priceHistory})`)
             res.status(200).send({priceHistory})

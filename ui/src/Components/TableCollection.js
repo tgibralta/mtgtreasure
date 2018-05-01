@@ -3,11 +3,22 @@ import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 import {DeleteCardFromCollection} from './../Actions/AccountAction'
 import {SearchCardPerName} from './../Actions/SearchAction'
+import './Style/TableCollection.css'
 
 class TableCollection extends Component {
   allocateData(data) {
     let outputData = []
+    
     data.forEach((element) => {
+      let trend = element.trend
+      console.log(`Type of Trend: ${typeof(trend)}`)
+      let trendElement = [<i class="fas fa-minus"></i>]
+      if (trend > 0) {
+        trendElement = [<i class="fas fa-angle-double-up"></i>]
+      } else if (trend < 0) {
+        trendElement = [<i class="fas fa-angle-double-down"></i>]
+      }
+      trendElement.push(<p>{trend}%</p>)
       console.log(`ELEMENT SENT: ${JSON.stringify(element)}`)
       let row = {
         buttons : element,
@@ -16,7 +27,7 @@ class TableCollection extends Component {
         set : element.allCardInfo.Scryfall.set_name,
         initPrice : element.allCardInfo.DB.init_price,
         currentPrice : element.allCardInfo.Scryfall.usd,
-        trend: element.trend
+        trend: trendElement
       }
       outputData.push(row)
     })
