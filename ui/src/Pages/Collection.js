@@ -169,7 +169,7 @@ class Collection extends Component {
               <this.CreateCardDisplayElements results={this.state.result} user={this.state.user}/>
             </div>
           </div>
-          <TableCollection collection={this.state.user.collection}/>
+          <TableCollection collection={this.state.user.collection} history={this.state.user.history}/>
         </main>
       </div>
     </div>

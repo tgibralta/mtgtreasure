@@ -38,15 +38,18 @@ module.exports = {
           let promiseHistory = Promise.all(priceHistoryObject)
           promiseHistory
           .then((priceHistory) => {
+            client.end()
             console.log(`Price history: JSON.stringify(${priceHistory})`)
             res.status(200).send({priceHistory})
           })
           .catch((errHistory) => {
+            client.end()
             console.log(errHistory)
             res.status(400).send(errHistory)
           })
         })
         .catch((errQuery) => {
+          client.end()
           console.log(errQuery)
           res.status(400).send(errQuery)
         })

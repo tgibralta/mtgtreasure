@@ -7,15 +7,16 @@ import {SearchCardPerName} from './../Actions/SearchAction'
 class TableCollection extends Component {
   allocateData(data) {
     let outputData = []
-    // console.log(`Data to be displayed in Table: ${JSON.stringify(data)}`)
     data.forEach((element) => {
+      console.log(`ELEMENT SENT: ${JSON.stringify(element)}`)
       let row = {
         buttons : element,
         number : element.allCardInfo.DB.number_of_card,
         name : element.allCardInfo.Scryfall.name,
         set : element.allCardInfo.Scryfall.set_name,
         initPrice : element.allCardInfo.DB.init_price,
-        currentPrice : element.allCardInfo.Scryfall.usd
+        currentPrice : element.allCardInfo.Scryfall.usd,
+        trend: element.trend
       }
       outputData.push(row)
     })
@@ -38,11 +39,14 @@ class TableCollection extends Component {
           let currentPrice = history[0].cardInfo.usd
           let initPrice = rowInfo.row.initPrice
           let priceHistory = history[0].priceHistory.priceHistory
+          let nameCard = rowInfo.row.name
 
           console.log(`Image : ${uri}`)
           console.log(`currentPrice : ${currentPrice}`)
           console.log(`initPrice : ${initPrice}`)
           console.log(`history : ${JSON.stringify(priceHistory)}`)
+          console.log(`Name: ${nameCard}`)
+
         })
         .catch((errHistory) => {
           console.log(errHistory)
@@ -80,6 +84,11 @@ class TableCollection extends Component {
       Cell: props => <p className="text-center">{props.value}</p>
     },
     {
+      Header: <p className="text-uppercase font-weight-bold">Trend (%)</p>,
+      accessor: 'trend',
+      Cell: props => <p className="text-center">{props.value}</p>
+    },
+    {
       Header: '',
       accessor: 'buttons',
       Cell: props => <button type="button" class="btn btn-danger btn-small" onClick={this.handleSubmit.bind(this, props.original.buttons)}>X</button>,
@@ -92,7 +101,7 @@ class TableCollection extends Component {
           <ReactTable className="table table-striped table-sm"
             data={this.allocateData(this.props.collection)}
             columns={columns}
-            defaultPageSize={10}
+            defaultPageSize={5}
             getTrProps={this.onRowClick.bind(this)}
           />
         </div>

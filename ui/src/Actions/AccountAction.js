@@ -45,15 +45,19 @@ const extractInfoElement = (element) => new Promise((resolve, reject) => {
   let nbCardInElement = element.number_of_card
   let investmentElement = element.number_of_card * element.init_price
   let currentValueElement =0
+  let priceHistory = element.priceHistory
+
+  let lengthHistory = priceHistory.length - 1
+  let trend = Math.ceil(100 * ((priceHistory[lengthHistory].price - priceHistory[lengthHistory - 1].price) / priceHistory[lengthHistory - 1].price))
   let optionCardQuery = createOptionCardPerIDQuery(element)
   rp(optionCardQuery)
   .then((CardInfo) => {
     currentValueElement += nbCardInElement * JSON.parse(CardInfo).usd
     let allCardInfo = {
       "DB": element,
-      "Scryfall" : JSON.parse(CardInfo)
+      "Scryfall" : JSON.parse(CardInfo),
     }
-    return resolve({allCardInfo, nbCardInElement, investmentElement, currentValueElement})
+    return resolve({allCardInfo, nbCardInElement, investmentElement, currentValueElement, trend})
   })
   .catch((errCard) => {
     return reject(`Error while fetching card information: ${errCard}`)

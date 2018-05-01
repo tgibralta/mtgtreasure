@@ -15,7 +15,6 @@ class PanelCollection extends Component {
             <div class="card border-primary mb-3" >
               <div class="card-header">Inital Investment {this.props.initialInvestment} $</div>
                 <div class="card-body">
-                  {/* <h4 class="card-title"></h4> */}
                   <ChartPriceHistory chartData={this.props.chartDataInvestment}/>
                 </div>
             </div>
@@ -24,7 +23,6 @@ class PanelCollection extends Component {
             <div class="card border-primary mb-3" >
               <div class="card-header">Current Value: {Math.ceil(this.props.currentValue)} $</div>
                 <div class="card-body">
-                  {/* <h4 class="card-title"></h4> */}
                   <ChartPriceHistory chartData={this.props.chartDataValue}/>
                 </div>
             </div>
@@ -33,7 +31,6 @@ class PanelCollection extends Component {
             <div class="card border-primary mb-3" >
               <div class="card-header">Nb Card: {this.props.nbCard}</div>
                 <div class="card-body">
-                  {/* <h4 class="card-title"></h4> */}
                   <ChartPriceHistory chartData={this.props.chartDataNbCard}/>
                 </div>
             </div>
