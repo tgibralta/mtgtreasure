@@ -25,7 +25,7 @@ const getPriceHistory= (row) => new Promise((resolve, reject) =>{
     if (errConnect) {
       return reject(errConnect)
     } else {
-      console.log(`SELECT * FROM ${config.get("DB.PGTABLEPRICETRACKED.NAME")} WHERE ${config.get("DB.PGTABLEPRICETRACKED.COLUMN0")} = '${cardID}'`)
+      // console.log(`SELECT * FROM ${config.get("DB.PGTABLEPRICETRACKED.NAME")} WHERE ${config.get("DB.PGTABLEPRICETRACKED.COLUMN0")} = '${cardID}'`)
       client.query(`SELECT * FROM ${config.get("DB.PGTABLEPRICETRACKED.NAME")} WHERE ${config.get("DB.PGTABLEPRICETRACKED.COLUMN0")} = '${cardID}'`)
       .then((response) => {
         let priceHistoryObject = response.rows.map(buildObjectPriceHistory)
@@ -40,7 +40,7 @@ const getPriceHistory= (row) => new Promise((resolve, reject) =>{
             let dateB = parseInt(ArrayB[0]) + parseInt(ArrayB[1]) + parseInt(ArrayB[2])
             return dateA>dateB ? 1 : dateA<dateB ? 1 : 0
           })
-          console.log(`Price history: ${JSON.stringify(priceHistory)}`)
+          // console.log(`Price history: ${JSON.stringify(priceHistory)}`)
 
           return resolve({
                 "collection_id":row.collection_id,

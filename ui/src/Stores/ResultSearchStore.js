@@ -25,6 +25,10 @@ class  ResultSearchStore extends EventEmitter {
           {
             "price": 0,
             "date": "0"
+          },
+          {
+            "price": 0,
+            "date": "0"
           }
         ]
       }

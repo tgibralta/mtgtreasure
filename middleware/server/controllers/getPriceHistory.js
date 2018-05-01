@@ -37,7 +37,14 @@ module.exports = {
           let priceHistoryObject = response.rows.map(buildObjectPriceHistory)
           let promiseHistory = Promise.all(priceHistoryObject)
           promiseHistory
-          .then((priceHistory) => {
+          .then((priceHistoryUnsorted) => {
+            let priceHistory = priceHistoryUnsorted.sort(function(a,b){
+            let ArrayA = a.date.split("/")
+            let ArrayB = a.date.split("/")
+            let dateA = parseInt(ArrayA[0]) + parseInt(ArrayA[1]) + parseInt(ArrayA[2])
+            let dateB = parseInt(ArrayB[0]) + parseInt(ArrayB[1]) + parseInt(ArrayB[2])
+            return dateA>dateB ? 1 : dateA<dateB ? 1 : 0
+          })
             client.end()
             console.log(`Price history: JSON.stringify(${priceHistory})`)
             res.status(200).send({priceHistory})

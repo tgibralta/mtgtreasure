@@ -31,13 +31,19 @@ class Collection extends Component {
             thumbnailWidth: configuration.IMAGE.FULLCARD.MEDIUM.WIDTH,
             thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
           }]
+          let history = result.priceHistory.priceHistory
+          let lengthhistory = history.length - 1
           // console.log(`Image to be displayed: ${JSON.stringify(imageGallery)}`)
-          let labels = result.priceHistory.priceHistory.map(function(x) {
+          let labels = history.map(function(x) {
             return x.date
           })
-          let data = result.priceHistory.priceHistory.map(function(x) {
+          let data = history.map(function(x) {
             return x.price
           })
+          let trend = 0
+          if (history[lengthhistory - 1].price !== 0) {
+            trend = Math.ceil(100* (history[lengthhistory].price - history[lengthhistory - 1].price) / history[lengthhistory - 1].price)
+          }
           let chartData = {
             labels: labels,
             datasets: [
@@ -48,8 +54,8 @@ class Collection extends Component {
               }
             ]
           }
-          console.log(`Data sent to graph: ${JSON.stringify(chartData)}`)
-          return <SearchCardDisplay imageGallery={imageGallery}  infoCardGallery={result.cardInfo} user={user} chartData={chartData}/>
+          // console.log(`Data sent to graph: ${JSON.stringify(chartData)}`)
+          return <SearchCardDisplay imageGallery={imageGallery}  infoCardGallery={result.cardInfo} user={user} chartData={chartData} trend={trend}/>
         } else {
           let imageGallery = [{
             src: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",

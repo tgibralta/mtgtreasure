@@ -48,6 +48,7 @@ const extractInfoElement = (element) => new Promise((resolve, reject) => {
   let priceHistory = element.priceHistory
 
   let lengthHistory = priceHistory.length - 1
+  
   let trend = Math.ceil(100 * ((priceHistory[lengthHistory].price - priceHistory[lengthHistory - 1].price) / priceHistory[lengthHistory - 1].price))
   let optionCardQuery = createOptionCardPerIDQuery(element)
   rp(optionCardQuery)
@@ -57,6 +58,9 @@ const extractInfoElement = (element) => new Promise((resolve, reject) => {
       "DB": element,
       "Scryfall" : JSON.parse(CardInfo),
     }
+    // console.log(`Card: ${JSON.parse(CardInfo).name}`)
+    // console.log(`Yesterday's Price: ${priceHistory[lengthHistory - 1].price}, Date: ${priceHistory[lengthHistory - 1].date}`)
+    // console.log(`Today's Price: ${priceHistory[lengthHistory].price}, Date: ${priceHistory[lengthHistory].date}`)
     return resolve({allCardInfo, nbCardInElement, investmentElement, currentValueElement, trend})
   })
   .catch((errCard) => {

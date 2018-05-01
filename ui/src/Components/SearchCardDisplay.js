@@ -20,6 +20,7 @@ class SearchCardDisplay extends Component {
               <ChartPriceHistory chartData={this.props.chartData}/>
               <h4> Set: {this.props.infoCardGallery.set_name} ({this.props.infoCardGallery.set}) </h4>
               <h4> Current Price: {this.props.infoCardGallery.usd} $</h4>
+              <h4> Trend: {this.props.trend} %</h4>
           </div>
           <div className="col-md-2">
               <AddToCollection cardInfo={this.props.infoCardGallery} user={this.props.user}/>
