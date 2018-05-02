@@ -101,7 +101,7 @@ class Collection extends Component {
     let investment = props.user.initialInvestment
     let currentValue = props.user.currentValue
     let currentNbCard = props.user.nbCardInCollection
-    console.log(`History: ${JSON.stringify(history)}`)
+    // console.log(`History: ${JSON.stringify(history)}`)
     let labels = history.map(function(x) {
       return x.date
     })

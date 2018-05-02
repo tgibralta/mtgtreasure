@@ -27,6 +27,9 @@ const checkIfEntryExists = (userID, date) => new Promise ((resolve, reject) => {
           return resolve(false)
         }
       })
+      .catch((errQuery) => {
+          return reject(errQuery)
+      })
     }
   })
 })

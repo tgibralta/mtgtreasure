@@ -14,6 +14,7 @@ const deleteDeck = rootRequire('server/controllers/deleteDeck').deleteDeck
 const getPriceHistory = rootRequire('server/controllers/getPriceHistory').getPriceHistory
 const getUserHistory = rootRequire('server/controllers/getUserHistory').getUserHistory
 const addUserHistory = rootRequire('server/controllers/addUserHistory').addUserHistory
+const updateUserHistory = rootRequire('server/controllers/updateUserHistory').updateUserHistory
 
 module.exports = {
     getCardPerName,
@@ -31,5 +32,6 @@ module.exports = {
     deleteDeck,
     getPriceHistory,
     getUserHistory,
-    addUserHistory
+    addUserHistory,
+    updateUserHistory
 }

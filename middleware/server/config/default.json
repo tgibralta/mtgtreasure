@@ -66,7 +66,7 @@
     "PGPORT": 5432
   },
   "SCHEDULE_FETCH_PRICE" : {
-    "H": 9,
-    "MIN" : 11
+    "H": 11,
+    "MIN" : 35
   }
 }

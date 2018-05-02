@@ -22,13 +22,13 @@ class  DisplayDeckStore extends EventEmitter {
   }
 
   setDeck(deck){
-    console.log(`In store Display Deck: ${JSON.stringify(deck)}`)
+    // console.log(`In store Display Deck: ${JSON.stringify(deck)}`)
     this.deck = deck
     this.emit('change')
   }
 
   setEditDeck(deck){
-    console.log(`Edited Deck: ${JSON.stringify(deck)}`)
+    // console.log(`Edited Deck: ${JSON.stringify(deck)}`)
     this.deckEdited = deck
     this.emit('change')
   }
@@ -43,7 +43,7 @@ class  DisplayDeckStore extends EventEmitter {
   }
   
   getDeck() {
-    console.log(`Get Deck triggered: ${JSON.stringify(this.deck)}`)
+    // console.log(`Get Deck triggered: ${JSON.stringify(this.deck)}`)
     return this.deck
   }
 
@@ -52,7 +52,7 @@ class  DisplayDeckStore extends EventEmitter {
   }
 
   getTextMain() {
-    console.log(`getTextMain called`)
+    // console.log(`getTextMain called`)
     let text =this.deckEdited.main.reduce((accumulator, card) => {
       accumulator += `${card.number} ${card.name}\n`
       return (accumulator)
@@ -61,7 +61,7 @@ class  DisplayDeckStore extends EventEmitter {
     return text
   }
   getTextSideboard() {
-    console.log(`getTextSideboard called`)
+    // console.log(`getTextSideboard called`)
     let text =this.deckEdited.sideboard.reduce((accumulator, card) => {
       accumulator += `${card.number} ${card.name}\n`
       return (accumulator)

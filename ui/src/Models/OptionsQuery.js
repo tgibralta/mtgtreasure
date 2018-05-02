@@ -126,3 +126,35 @@ export function createOptionGetUserHistory (userID) {
     origin: configuration.UI.URI,
   }
 }
+
+export function createOptionAddToUserHistory (userID, nbCard, Value, Investment) {
+  return {
+    uri: configuration.MIDDLEWARE.UPDATE_USER_HISTORY.URI,
+    method: configuration.MIDDLEWARE.UPDATE_USER_HISTORY.METHOD,
+    origin: configuration.UI.URI,
+    body : {
+      "userID": userID,
+      "mode": "ADD",
+      "differenceNbCard": nbCard,
+      "differenceValue": Value,
+      "differenceInvestment": Investment
+    },
+    json: true
+  }
+}
+
+export function createOptionRemoveToUserHistory (userID, nbCard, Value, Investment) {
+  return {
+    uri: configuration.MIDDLEWARE.UPDATE_USER_HISTORY.URI,
+    method: configuration.MIDDLEWARE.UPDATE_USER_HISTORY.METHOD,
+    origin: configuration.UI.URI,
+    body : {
+      "userID": userID,
+      "mode": "REMOVE",
+      "differenceNbCard": nbCard,
+      "differenceValue": Value,
+      "differenceInvestment": Investment
+    },
+    json: true
+  }
+}

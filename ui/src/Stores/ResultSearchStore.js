@@ -36,13 +36,13 @@ class  ResultSearchStore extends EventEmitter {
   }
 
   setResult(results){
-    console.log(`In store results: ${JSON.stringify(results)}`)
+    // console.log(`In store results: ${JSON.stringify(results)}`)
     this.results = results
     this.emit('change')
   }
   
   getResults() {
-    console.log(`LIST RESULTS: ${JSON.stringify(this.results)}`)
+    // console.log(`LIST RESULTS: ${JSON.stringify(this.results)}`)
     return this.results
   }
 

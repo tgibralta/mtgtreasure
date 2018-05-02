@@ -4,6 +4,9 @@ const rp = require('request-promise')
 const urlSearch = require('./../models/apiDescription').urlGetCards
 const { Client, Pool } = require('pg')
 const currentDate = require('./../helpers/currentDate').currentDate
+const checkIfEntryExists = require('./../controllers/addUserHistory').checkIfEntryExists
+const deleteEntryHistory = require('./../controllers/addUserHistory').deleteEntryHistory
+const addEntryHistory = require('./../controllers/addUserHistory').addEntryHistory
 
 const queryToDB = (data, client) => new Promise((resolve, reject) => {
   let card_id = data.multiverse_ids[0] || 0
@@ -77,9 +80,7 @@ const requestToAPI = (options) => new Promise ((resolve, reject) => {
   })
 })
 
-const checkIfEntryExists = require('./../controllers/addUserHistory').checkIfEntryExists
-const deleteEntryHistory = require('./../controllers/addUserHistory').deleteEntryHistory
-const addEntryHistory = require('./../controllers/addUserHistory').addEntryHistory
+
 
 const getUsers = () => new Promise((resolve, reject) => {
   const client = new Client({

@@ -51,6 +51,10 @@ const configuration ={
     "GET_USER_HISTORY": {
       "URI": MIDDLEWARE_URI + '/getuserhistory/',
       "METHOD": "GET"
+    },
+    "UPDATE_USER_HISTORY": {
+      "URI": MIDDLEWARE_URI + '/updateuserhistory',
+      "METHOD": "PUT"
     }
   },
   "UI": {

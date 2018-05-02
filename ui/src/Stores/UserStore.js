@@ -36,8 +36,8 @@ class UserStore extends EventEmitter {
     this.user.currentValue = currentValue
     this.user.decks = decks
     this.user.history = history
-    console.log(`Collection: ${JSON.stringify(this.user.collection)}`)
-    console.log(`Decks: ${JSON.stringify(this.user.decks)}`)
+    // console.log(`Collection: ${JSON.stringify(this.user.collection)}`)
+    // console.log(`Decks: ${JSON.stringify(this.user.decks)}`)
     this.emit('change')
   }
   SignoutUser() {
@@ -65,24 +65,43 @@ class UserStore extends EventEmitter {
   }
   getDeck(deckID) {
     this.user.decks.forEach((deck) => {
-      console.log(`Deck we are trying to find: ${deckID}`)
-      console.log(`Deck in Store: ${deck.deckname}`)
+      // console.log(`Deck we are trying to find: ${deckID}`)
+      // console.log(`Deck in Store: ${deck.deckname}`)
       if (deck.deckname === deckID) {
-        console.log(`Deck returned as match found`)
+        // console.log(`Deck returned as match found`)
         return deck
       }
     })
   }
 
-  AddCardToCollection = (user, cardInfo) => new Promise ((resolve, reject) => {
+  AddCardToCollection = (user, cardInfo, userInfo) => new Promise ((resolve, reject) => {
     if (cardInfo) {
       this.user.collection.push(cardInfo)
       this.user.nbCardInCollection += cardInfo.allCardInfo.DB.number_of_card
       this.user.initialInvestment += cardInfo.allCardInfo.DB.init_price * cardInfo.allCardInfo.DB.number_of_card
       this.user.currentValue += parseFloat(cardInfo.allCardInfo.Scryfall.usd) * cardInfo.allCardInfo.DB.number_of_card
-      console.log(`Type of number_of_card: ${typeof(cardInfo.allCardInfo.DB.number_of_card)}`)
-      console.log(`Type of init_price: ${typeof(cardInfo.allCardInfo.DB.init_price)}`)
-      console.log(`Type of value: ${typeof(cardInfo.allCardInfo.Scryfall.usd)}`)
+      // console.log(`Type of number_of_card: ${typeof(cardInfo.allCardInfo.DB.number_of_card)}`)
+      // console.log(`Type of init_price: ${typeof(cardInfo.allCardInfo.DB.init_price)}`)
+      // console.log(`Type of value: ${typeof(cardInfo.allCardInfo.Scryfall.usd)}`)
+      
+      if (userInfo.existed === "true"){ // update history
+        this.user.history[this.user.history.length - 1] = {
+          "date": userInfo.date,
+          "value_collection": userInfo.value,
+          "investment": userInfo.investment,
+          "potential_profit": userInfo.profit,
+          "nb_card": userInfo.nbCard
+        }
+      } else { // add entry to history
+        this.user.history.push({
+          "date": userInfo.date,
+          "value_collection": userInfo.value,
+          "investment": userInfo.investment,
+          "potential_profit": userInfo.profit,
+          "nb_card": userInfo.nbCard
+        })
+      }
+      console.log(`user history: ${JSON.stringify(this.user.history)}`)
       this.emit('change')
       return resolve()
     } else {
@@ -92,10 +111,10 @@ class UserStore extends EventEmitter {
   })
     
 
-  RemoveCardFromCollection = (collectionID, nbCardToRemove) => new Promise((resolve, reject) => {
+  RemoveCardFromCollection = (collectionID, nbCardToRemove, userInfo) => new Promise((resolve, reject) => {
     let indexCardToRemove = this.user.collection.findIndex(element => element.allCardInfo.DB.collection_id === collectionID)
     // console.log(JSON.stringify(this.user.collection))
-    console.log(`Index: ${indexCardToRemove}`)
+    // console.log(`Index: ${indexCardToRemove}`)
     if (indexCardToRemove != -1) {
       // console.log(`Element removed: ${JSON.stringify(this.user.collection[indexCardToRemove].allCardInfo.Scryfall.name)}`)
       // console.log(`Nb Card to Remove: ${nbCardToRemove}`)
@@ -105,9 +124,26 @@ class UserStore extends EventEmitter {
       this.user.initialInvestment -= nbCardToRemove * this.user.collection[indexCardToRemove].allCardInfo.DB.init_price
       this.user.currentValue -= this.user.collection[indexCardToRemove].allCardInfo.Scryfall.usd
       this.user.collection.splice(indexCardToRemove, 1)
+      if (userInfo.existed === "true"){ // update history
+        this.user.history[this.user.history.length - 1] = {
+          "date": userInfo.date,
+          "value_collection": userInfo.value,
+          "investment": userInfo.investment,
+          "potential_profit": userInfo.profit,
+          "nb_card": userInfo.nbCard
+        }
+      } else { // add entry to history
+        this.user.history.push({
+          "date": userInfo.date,
+          "value_collection": userInfo.value,
+          "investment": userInfo.investment,
+          "potential_profit": userInfo.profit,
+          "nb_card": userInfo.nbCard
+        })
+      }
       // console.log(JSON.stringify(this.user))
       this.emit('change')
-      console.log(`Change emitted`)
+      // console.log(`Change emitted`)
       return resolve()
     } else {
       return reject(`RemoveCardFromCollection: Index invalid`)
@@ -117,18 +153,18 @@ class UserStore extends EventEmitter {
 
 
   AddDeck = (newDeck) => new Promise((resolve, reject) => {
-    console.log(`User Created/edited a deck`)
+    // console.log(`User Created/edited a deck`)
     if (newDeck) {
       // check if decks already exists
       let newName = newDeck.deckname
       let exist = 0
       this.user.decks.forEach((deck) => {
-        console.log(`Deck: ${JSON.stringify(deck)}`)
+        // console.log(`Deck: ${JSON.stringify(deck)}`)
         if (deck.deckname === newName) {
           exist = 1
         }
       })
-      console.log(`EXIST: ${exist} #############################################`)
+      // console.log(`EXIST: ${exist} #############################################`)
       if (exist === 1) {
         //find index and replace
         let indexToReplace = this.user.decks.findIndex(function (x) {
@@ -136,7 +172,7 @@ class UserStore extends EventEmitter {
             return x
           }
         })
-        console.log(`Existing deck. Index ${indexToReplace}`)
+        // console.log(`Existing deck. Index ${indexToReplace}`)
         this.user.decks[indexToReplace] = newDeck
         this.emit('change')
       } else {
@@ -150,13 +186,13 @@ class UserStore extends EventEmitter {
 
 
   DeleteDeck = (userID, deckID) => new Promise((resolve, reject) => {
-    console.log(`Decks object: ${JSON.stringify(this.user.decks)}`)
+    // console.log(`Decks object: ${JSON.stringify(this.user.decks)}`)
     let indexDeck = this.user.decks.findIndex((element)=> element.deckname === deckID)
-    console.log(`indexDeck: ${indexDeck}`)
+    // console.log(`indexDeck: ${indexDeck}`)
     if (indexDeck > -1) {
       this.user.decks.splice(indexDeck, 1)
       this.emit('change')
-      console.log(`State after deleting deck: ${JSON.stringify(this.user)}`)
+      // console.log(`State after deleting deck: ${JSON.stringify(this.user)}`)
       return resolve()
     } else {
       return reject(`Deck does not exist in Userstore`)
@@ -183,10 +219,10 @@ class UserStore extends EventEmitter {
         break
       }
       case 'ADD_CARD_TO_COLLECTION' : {
-        console.log('USERSTORE: Adding card to collection')
-        this.AddCardToCollection(action.userID, action.cardInfoStore)
+        // console.log('USERSTORE: Adding card to collection')
+        this.AddCardToCollection(action.userID, action.cardInfoStore, action.UserInfo)
         .then(()=> {
-          console.log(`Card Added Successfully`)
+          // console.log(`Card Added Successfully`)
         })
         .catch((err)=> {
           console.log(`Error in store when adding card ${err}`)
@@ -194,10 +230,10 @@ class UserStore extends EventEmitter {
         break
       }
       case 'REMOVE_CARD_FROM_COLLECTION' : {
-        console.log('USERSTORE: Removing card from collection')
-        this.RemoveCardFromCollection(action.collectionID, action.nbCardToRemove)
+        // console.log('USERSTORE: Removing card from collection')
+        this.RemoveCardFromCollection(action.collectionID, action.nbCardToRemove, action.UserInfo)
         .then(()=> {
-          console.log(`Card Removed Successfully`)
+          // console.log(`Card Removed Successfully`)
         })
         .catch((err)=> {
           console.log(`Error in store when removing card: ${err}`)
@@ -207,18 +243,18 @@ class UserStore extends EventEmitter {
       case 'ADD_DECK' : {
         this.AddDeck(action.DeckStore)
         .then(()=> {
-          console.log(`USERSTORE: deck successfuly added`)
+          // console.log(`USERSTORE: deck successfuly added`)
         })
         .catch((err) => {
-          console.log(`USERSTORE: Error when adding deck: ${err}`)
+          // console.log(`USERSTORE: Error when adding deck: ${err}`)
         })
         break
       }
       case 'DELETE_DECK': {
-        console.log(`USERSTORE: deleting deck ${action.deckID}`)
+        // console.log(`USERSTORE: deleting deck ${action.deckID}`)
         this.DeleteDeck(action.userID, action.deckID)
         .then(() => {
-          console.log(`Removed Deck Successfuly`)
+          // console.log(`Removed Deck Successfuly`)
         })
         .catch((err) => {
           console.log(`Error while deleting deck: ${err}`)

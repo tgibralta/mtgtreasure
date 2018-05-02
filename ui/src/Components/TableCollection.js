@@ -11,15 +11,17 @@ class TableCollection extends Component {
     
     data.forEach((element) => {
       let trend = element.trend
-      console.log(`Type of Trend: ${typeof(trend)}`)
-      let trendElement = [<i class="fas fa-minus"></i>]
+      // console.log(`Type of Trend: ${typeof(trend)}`)
+      let trendElement = []
       if (trend > 0) {
-        trendElement = [<i class="fas fa-angle-double-up"></i>]
+        trendElement.push(<i class="fas fa-angle-double-up"></i>)
       } else if (trend < 0) {
-        trendElement = [<i class="fas fa-angle-double-down"></i>]
+        trendElement.push(<i class="fas fa-angle-double-down"></i>)
+      } else {
+        trendElement.push(<i class="fas fa-minus"></i>)
       }
       trendElement.push(<p>{trend}%</p>)
-      console.log(`ELEMENT SENT: ${JSON.stringify(element)}`)
+      // console.log(`ELEMENT SENT: ${JSON.stringify(element)}`)
       let row = {
         buttons : element,
         number : element.allCardInfo.DB.number_of_card,
@@ -44,7 +46,7 @@ class TableCollection extends Component {
         let cardName = rowInfo.row.name
         SearchCardPerName(cardName)
         .then((history) => {
-          console.log(`History: ${JSON.stringify(history)}`)
+          // console.log(`History: ${JSON.stringify(history)}`)
           let uri = history[0].cardInfo.image_uris.normal
           let cardID = history[0].cardInfo.multiverse_ids[0]
           let currentPrice = history[0].cardInfo.usd
@@ -52,11 +54,11 @@ class TableCollection extends Component {
           let priceHistory = history[0].priceHistory.priceHistory
           let nameCard = rowInfo.row.name
 
-          console.log(`Image : ${uri}`)
-          console.log(`currentPrice : ${currentPrice}`)
-          console.log(`initPrice : ${initPrice}`)
-          console.log(`history : ${JSON.stringify(priceHistory)}`)
-          console.log(`Name: ${nameCard}`)
+          // console.log(`Image : ${uri}`)
+          // console.log(`currentPrice : ${currentPrice}`)
+          // console.log(`initPrice : ${initPrice}`)
+          // console.log(`history : ${JSON.stringify(priceHistory)}`)
+          // console.log(`Name: ${nameCard}`)
 
         })
         .catch((errHistory) => {

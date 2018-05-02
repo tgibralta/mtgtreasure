@@ -72,12 +72,14 @@ module.exports = {
             })
             .catch((errCred) => {
               client.end()
+              console.log(errCred)
               res.status(400).send(errCred)
               return reject(errCred)
             })
           })
           .catch((errUserExist) => {
             client.end()
+            console.log(errUserExist)
             res.status(400).send(errUserExist)
             return reject(errUserExist)
           })

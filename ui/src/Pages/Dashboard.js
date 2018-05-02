@@ -32,7 +32,7 @@ class Dashboard extends Component {
   }
 
   handleDeleteDeck(userID, deckID) {
-    console.log(`Delete trigger in Dashboard`)
+    // console.log(`Delete trigger in Dashboard`)
     DeleteDeck(userID, deckID)
     .then(() => {
       console.log(`Deck deleted`)

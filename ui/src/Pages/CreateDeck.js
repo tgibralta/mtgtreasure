@@ -83,11 +83,11 @@ class CreateDeck extends Component {
       sideboardObject.push(element)
     })
 
-    console.log(`Main: ${JSON.stringify(mainObject)}`)
-    console.log(`Sideboard: ${JSON.stringify(sideboardObject)}`)
+    // console.log(`Main: ${JSON.stringify(mainObject)}`)
+    // console.log(`Sideboard: ${JSON.stringify(sideboardObject)}`)
     AddDeck(userID, deckName, legality, mainObject, sideboardObject)
     .then((deckCreated) => {
-      console.log(`Now waiting to redirect: ${JSON.stringify(deckCreated)}`)
+      // console.log(`Now waiting to redirect: ${JSON.stringify(deckCreated)}`)
       // redirectToDeckPage.bind(this, deckCreated)
       SetDeck(deckCreated)
       .then(() => {

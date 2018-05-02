@@ -9,7 +9,7 @@ const getPriceHistoryCard = (cardInfo) => new Promise((resolve, reject) => {
   let optionsPrice = createOptionGetPriceHistory(cardID)
   rp(optionsPrice)
   .then((res) => {
-    console.log(`Response for history: ${JSON.stringify(res)}`)
+    // console.log(`Response for history: ${JSON.stringify(res)}`)
     return resolve({
       cardInfo,
       "priceHistory": JSON.parse(res)
@@ -30,7 +30,7 @@ export const SearchCardPerName = (cardName) => new Promise((resolve, reject) => 
     let promiseResult = Promise.all(pricePerResult)
     promiseResult
     .then((objectResult) => {
-      console.log(`SEARCH OBJECT: ${JSON.stringify(objectResult)}`)
+      // console.log(`SEARCH OBJECT: ${JSON.stringify(objectResult)}`)
       dispatcher.dispatch({
         type: 'SEARCH_CARD',
         objectResult

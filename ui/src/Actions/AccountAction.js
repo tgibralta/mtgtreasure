@@ -11,7 +11,9 @@ import {createOptionAddUser,
         createOptionCardPerNameQuery,
         createOptionAddDeck,
         createOptionDeleteDeck,
-        createOptionGetUserHistory} from './../Models/OptionsQuery'
+        createOptionGetUserHistory,
+        createOptionAddToUserHistory,
+        createOptionRemoveToUserHistory} from './../Models/OptionsQuery'
 
 
 export const CreateUser = (username, mail, password) => new Promise((resolve, reject) => {
@@ -228,35 +230,58 @@ export const AddCardToCollection = (userID, cardID, price_when_bought, number,to
         "Scryfall": totalInfo
       }
     }
-    dispatcher.dispatch({
-      type: 'ADD_CARD_TO_COLLECTION',
-      userID,
-      cardInfoStore
+    // console.log(`totalInfo: ${JSON.stringify(totalInfo)}`)
+    let optionsAddUserHistory = createOptionAddToUserHistory(userID, intNumber, totalInfo.usd,floatPrice)
+    rp(optionsAddUserHistory)
+    .then((UserInfo) => {
+      dispatcher.dispatch({
+        type: 'ADD_CARD_TO_COLLECTION',
+        userID,
+        cardInfoStore,
+        UserInfo
+      })
+      return resolve()
+    })
+    .catch((errAddUserHistory) => {
+      console.log(errAddUserHistory)
+      return reject(errAddUserHistory)
     })
   })
   .catch((errAddCardToCollection) => {
     console.log(errAddCardToCollection)
+    return reject(errAddCardToCollection)
   })
 })
 
 export function DeleteCardFromCollection (element){
   // console.log(JSON.stringify(element))
   let collectionID = element.allCardInfo.DB.collection_id
+  let userID = element.allCardInfo.DB.user_id
   let nbCardToRemove = element.allCardInfo.DB.number_of_card // TODO: change this after to be able to partially remove
   let nbCardAvailable = element.allCardInfo.DB.number_of_card
+  let value = element.allCardInfo.Scryfall.usd
+  let investment = element.allCardInfo.DB.init_price
   let optionsRemoveCardToCollection = createOptionDeleteCardFromCollection(collectionID, nbCardToRemove, nbCardAvailable)
   rp(optionsRemoveCardToCollection)
   .then((res) => {
-    dispatcher.dispatch({
-      type: 'REMOVE_CARD_FROM_COLLECTION',
-      collectionID,
-      nbCardToRemove
+    let optionRemoveFromUserHistory = createOptionRemoveToUserHistory(userID, nbCardToRemove, value,investment)
+    rp(optionRemoveFromUserHistory)
+    .then((UserInfo) => {
+      dispatcher.dispatch({
+        type: 'REMOVE_CARD_FROM_COLLECTION',
+        collectionID,
+        nbCardToRemove,
+        UserInfo
+      })
+    })
+    .catch((errRemove) => {
+      console.log(errRemove)
     })
   })
   .catch((err) => {
+    console.log(err)
   })
 }
-
 
 const buildInfoCardDeckMain = (card) => new Promise((resolve, reject) => {
   // Ask the information about the card to the middleware

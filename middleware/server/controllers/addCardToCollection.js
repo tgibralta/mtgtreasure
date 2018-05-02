@@ -1,5 +1,6 @@
 const config = require('config')
 const { Client } = require('pg')
+const currentDate = require('./../helpers/currentDate').currentDate
 
 // CHECK IF CARD IS ALREADY IN TABLE AT THE SAME PRICE OR IF CARD ALREADY IN DB WITH NUMBER = 0
 const checkIfCardInCollection = (user_id, card_id, price_buy) => new Promise((resolve, reject) => {
@@ -120,8 +121,7 @@ const createEntryInCollection = (user_id, card_id, price_buy, number) => new Pro
     if (errConnect) {
       return reject(errConnect)
     } else {
-      let date = ''
-      currentDate = currentDate()
+      let date = currentDate()
       client.query(`INSERT INTO ${config.get('DB.PGTABLECOLLECTION.NAME')} (${config.get('DB.PGTABLECOLLECTION.COLUMN1')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN2')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN3')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN4')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN5')}, ${config.get('DB.PGTABLECOLLECTION.COLUMN6')}) VALUES ('${user_id}', '${card_id}', ${price_buy}, ${number}, '${date}', '${date}')`)
       .then(() => {
         client.end()

@@ -6,15 +6,11 @@ class AddToCollection extends Component {
   handleSubmit() {
     let nbCard = 0
     let price = 0
-    if (document.getElementById('inputNumberCard')) {
-      nbCard = document.getElementById('inputNumberCard').value
-    }
-    if (document.getElementById("inputInitPrice")) {
-      price = document.getElementById("inputInitPrice").value
-    }
+    nbCard = document.getElementById('inputNumberCard').value
+    price = document.getElementById("inputInitPrice").value
     AddCardToCollection(this.props.user.userID, this.props.cardInfo.multiverse_ids[0], price, nbCard, this.props.cardInfo)
     .then(() => {
-      console.log(`Value Sent`)
+      // console.log(`Value Sent`)
     })
   }
 
