@@ -1,4 +1,69 @@
-.opinion-div {
-	margin-top: 30px;
-	margin-bottom: 60px;
+.logo-home {
+	display: block;
+    margin-left: auto;
+	margin-right: auto;
+	margin-top: 120px;
+	height: 150px;
 }
+
+.text-title {
+	font-size: 100px;
+	color:  #d6eaf8 ;
+	margin-top: -120px;
+	margin-bottom: -120px;
+}
+
+.jumbotron-full {
+	height: 100vh;
+	background: linear-gradient(
+      rgba(0, 0, 0, 0.5), 
+      rgba(0, 0, 0, 0.5)
+    ), url(https://cdna.artstation.com/p/assets/images/images/000/229/358/large/yeong-hao-han-145248-island-lr.jpg?1412144036) ;
+	background-size: cover;
+}
+
+.jumbotron-main {
+	background: #212f3d ;
+}
+.jumbotron-white {
+	background: white ;
+}
+
+.text-title {
+	line-height: 4;
+	color: white;
+}
+
+.container-logo {
+	margin-top: 25px;
+	margin-bottom: 40px;
+}
+
+.container-button {
+	display: flex;
+	justify-content: center;
+	margin-top: 100px;
+}
+
+.btn-join {
+	padding: 40px 120px;
+	background-color:    #1a5276 ;
+	font-size: 30px;
+	border-radius: 4px;
+	text-align: center;
+	margin:auto;
+}
+
+.text-button {
+	margin-top: -20px;
+}
+
+.rounded-circle {
+	height: 250px;
+	width: 250px;
+}
+
+.circle-left {
+	margin-right: -40px
+}
+

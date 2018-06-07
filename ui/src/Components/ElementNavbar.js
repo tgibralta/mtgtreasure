@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import * as AccountActions from './../Actions/AccountAction'
+import './Style/ElementNavbar.css'
 
 
 class ElementNavabar extends Component {

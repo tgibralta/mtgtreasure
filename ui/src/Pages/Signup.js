@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import "./Style/Signup.css"
+import imgLogo from './../logo-mtg-treasure.png'
 import Footer from './../Components/Footer'
+import Navbar from './../Components/Navbar'
 const CreateUser = require('./../Actions/AccountAction').CreateUser
 
 class Signup extends Component {
@@ -22,10 +24,11 @@ class Signup extends Component {
   render() {
     return (
       <div>
-        <div className="jumbotron">
-          <div className = 'card card-container'>
-            <h1 className="text-center">MTG</h1>
-            <h1 className="text-center">Treasure</h1>
+        <div className="jumbotron jumbotron-sign">
+          <Navbar/>
+          <br/><br/>
+          <div className = 'card card-container card-sign'>
+            <img className="logo-form" src={imgLogo}/>
             <form className='form-signin' onSubmit={this.handleSubmit}>
               <input type='text' id='inputUsername' className="form-control" placeholder='Username' required autoFocus/>
               <input type='email' id='inputEmail' className="form-control" placeholder='Mail' required autoFocus/>

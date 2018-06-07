@@ -1,0 +1,10 @@
+a {
+    font-size: 20px;
+    margin-right: 80px;
+    color: white;
+}
+
+li > a:hover {
+    color: white;
+    background-color: white;
+}

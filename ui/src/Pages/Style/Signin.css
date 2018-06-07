@@ -1,3 +1,20 @@
 display-5 {
     margin-bottom: 30px;
 }
+
+.jumbotron-sign{
+	background: linear-gradient(
+      rgba(0, 0, 0.1, 0.75), 
+      rgba(0, 0, 0.1, 0.75)
+    ), url(https://cdna.artstation.com/p/assets/images/images/000/229/358/large/yeong-hao-han-145248-island-lr.jpg?1412144036) ;
+	background-size: cover;
+}
+
+.logo-form {
+    height: 50%;
+    width: 50%;
+}
+
+.forgot-password {
+    color: white;
+}

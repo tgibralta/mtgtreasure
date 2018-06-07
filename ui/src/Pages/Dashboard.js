@@ -100,6 +100,46 @@ class Dashboard extends Component {
     return (<PanelCollection initialInvestment={investment} currentValue={currentValue} nbCard={currentNbCard} chartDataInvestment={chartDataInvestment} chartDataValue={chartDataValue} chartDataNbCard={chartDataNbCard}/>)
   }
 
+  // ReturnTop5Positive(collection) {
+  //   collection.sort(function(a, b) {
+  //     let trendA = a.trend
+  //     let trendB = b.trend
+  //     return trendA>trendB ? 1 : trendA<trendB ? -1 : 0
+  //   })
+  // }
+
+  // ReturnTop5Negative(collection) {
+  //   collection.sort(function(a, b) {
+  //     let trendA = a.trend
+  //     let trendB = b.trend
+  //     return trendA<trendB ? 1 : trendA<trendB ? -1 : 0
+  //   })
+  // }
+
+  CreateTop5PriceIncrease(props) {
+    let collection = props.collection
+    console.log(`COLLECTION: ${JSON.stringify(collection)}`)
+      let top5 = collection.sort(function(a, b) {
+      let trendA = a.trend
+      let trendB = b.trend
+      return trendA<trendB ? 1 : trendA>trendB ? -1 : 0
+    }).slice(0,4)
+    // console.log(`TOP5 Positive: ${JSON.stringify(collection)}`)
+    return (<TableCollection collection={top5}/>)
+  }
+
+  CreateTop5PriceDecrease(props) {
+    let collection = props.collection
+    console.log(`COLLECTION: ${JSON.stringify(collection)}`)
+    let top5 = collection.sort(function(a, b) {
+      let trendA = a.trend
+      let trendB = b.trend
+      return trendA>trendB ? 1 : trendA<trendB ? -1 : 0
+    }).slice(0,4)
+    // console.log(`TOP5 negative: ${JSON.stringify(collection)}`)
+    return (<TableCollection collection={top5}/>)
+  }
+
   
   render() {
     return (
@@ -109,8 +149,6 @@ class Dashboard extends Component {
           <Sidebar username={this.state.user.username}/>
         </div>
         <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-          
-          {/* <PanelCollection initialInvestment={this.state.user.initialInvestment} currentValue={this.state.user.currentValue} nbCard={this.state.user.nbCardInCollection}/> */}
           <this.CreateDataChartHistoryUser user={this.state.user} />
           <hr/>
           <div className='row'>
@@ -123,6 +161,11 @@ class Dashboard extends Component {
           </div>
           <hr/>
           <CreateDeckDisplay decks={this.state.user.decks} user={this.state.user} delete={this.handleDeleteDeck.bind(this)} goTo={redirectToDeckPage.bind(this)}/>
+          <hr/>
+          <h3>Top 5 Price Increase</h3>
+          <this.CreateTop5PriceIncrease collection={this.state.user.collection}/>
+          <h3>Top 5 Price Decrease</h3>
+          <this.CreateTop5PriceDecrease collection={this.state.user.collection}/>
         </main>
       </div>
     </div>

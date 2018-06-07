@@ -17,7 +17,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar/>
+        {/* <Navbar/> */}
         <Switch>
           <Route exact path='/' component={HomePage}/>
           <Route exact path='/signin' component={Signin}/>

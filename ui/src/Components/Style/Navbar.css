@@ -1,3 +1,15 @@
-navbar-brand-img {
-    size: 40px;
+.logo-navbar {
+    height: 50px;
+    margin-right: 50px;
+}
+
+.navbar-default {
+    background:transparent;
+	/* border-color:   #1a5276; */
+	border: transparent;
+    color: white;
+}
+
+.navbar-inner {
+    background:transparent;
 }

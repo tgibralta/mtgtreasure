@@ -37,6 +37,9 @@ body, html {
     -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 }
+.card-sign {
+    background-color:  #212f3d ;
+}
 
 .profile-img-card {
     width: 96px;
@@ -139,4 +142,21 @@ body, html {
 .forgot-password:active,
 .forgot-password:focus{
     color: grey;
+}
+
+.jumbotron-full {
+	background: linear-gradient(
+      rgba(0, 0, 0.1, 0.75), 
+      rgba(0, 0, 0.1, 0.75)
+    ), url(https://cdna.artstation.com/p/assets/images/images/000/229/358/large/yeong-hao-han-145248-island-lr.jpg?1412144036) ;
+	background-size: cover;
+}
+
+.logo-form {
+    height: 50%;
+    width: 50%;
+    margin-bottom:30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

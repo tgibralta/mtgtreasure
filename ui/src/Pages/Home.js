@@ -1,49 +1,72 @@
 import React, { Component } from 'react';
 import Footer from './../Components/Footer'
+import imgLogo from './../logo-mtg-treasure.png'
+import Navbar from './../Components/Navbar'
+import logo from './../logo-mtg-treasure.png'
+import userStore from './../Stores/UserStore'
 import './Style/Home.css'
 
 class Home extends Component {
   render() {
     return (
       <div>
-        <div className="jumbotron">
-          <div className="container">
-            <h1 className="display-3">MTG Treasure</h1>
-            <h1 className="">A complete platform for every MTG player</h1>
-            <p><a className="btn btn-primary btn-medium" href="/signin" role="button">Signin &raquo;</a></p>
+        <div className="jumbotron jumbotron-full">
+          <Navbar/>
+          <img className="logo-home" src={imgLogo}/>
+          <h1 class="text-center  font-weight-bold text-title">MTG TREASURE</h1>
+          <h3 class="text-center text-white">The essential financial and deck-building tool for every Magic The Gathering cards owner.</h3>
+          <div className="container container-button">
+            <p><a type="button" class="btn btn-primary btn-lg btn-join" href="/signup"><p className="text-button">Join</p></a></p>
           </div>
         </div>
-        <div className="container">
-          <div className="row">
-            <div className="col-md-4">
-              <h2>Maximize value</h2>
-              <p>Manage your collection and use MTG Treasure to know its price in real time.</p> 
-              <p>Do not miss on opportunities to sell and buy cards at the right time thanks to the embedded assistant functionnality.</p>
-              <p>Compare prices in different shops and countries to have the best opportunities globally.</p>
-              <p><a className="btn btn-secondary" href="/about/collection" role="button">View details &raquo;</a></p>
-            </div>
-            <div className="col-md-4">
-              <h2>Build like a pro</h2>
-              <p>MTG Treasure offers a lot of tools to build and analyze the decks that you want. Don't miss out on the tools to take it to the next level.</p>
-              <p>Build, manage, playtest and share your decks with other users to have all the feedback you need to prepare for events.</p>
-              <p></p>
-              <p><a className="btn btn-secondary" href="/about/deck" role="button">View details &raquo;</a></p>
-            </div>
-            <div className="col-md-4">
-              <h2>Stay up to date</h2>
-              <p>Don't miss out on recent events, stay up to date with personnalized information depending on the decks that you like to build regarding the recent MTG events and their influence on the cards value</p>
-              <p><a className="btn btn-secondary" href="about/news" role="button">View details &raquo;</a></p>
-            </div>
-          </div>
-        </div>
-        <div className="jumbotron">
+        <div className="jumbotron jumbotron-white">
           <div className="container">
-            <h1>Your opinion matters</h1>
-              <div className="col-md-4 opinion-div">
-                <p>Give us your feedback. We will come back to you as soon as possible and make MTG Treasure evolve to fit your need.</p>
-                <p><a className="btn btn-primary" href="/feedback" role="button">Provide Feedback &raquo;</a></p>
-              </div>
             <div className="row">
+              <div className="col-md-4 col-sm-4">
+                <img class="rounded-circle circle-left" src="https://img.scryfall.com/cards/art_crop/en/vma/4.jpg?1517813031" alt="Generic placeholder image" width="140" height="140"/>
+              </div>
+              <div className="col-md-8 col-sm-8">
+                <div class="card">
+                  <div class="card-body">
+                    <h2 class="card-title">Track the value of your collection</h2>
+                    <p class="card-text">Enter your collection in our database and enjoy services as price tracking, analysis and sell/buy advice.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="jumbotron jumbotron-main">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-8 col-sm-8">
+                <div class="card">
+                <div class="card-body">
+                  <h2 class="card-title">Build decks like a Pro</h2>
+                  <p class="card-text">Enjoy the deck building tools to tune and build the best decks for your FNM or other events.</p>
+                </div>
+              </div>
+              </div>
+              <div className="col-md-4 col-sm-4">
+                <img class="rounded-circle circle-right" src="https://img.scryfall.com/cards/art_crop/en/a25/36.jpg?1521724900" alt="Generic placeholder image" width="140" height="140"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="jumbotron jumbotron-white">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-4 col-sm-4">
+                <img class="rounded-circle circle-left" src="http://media.wizards.com/2015/images/daily/cardart_160402.jpg" alt="Generic placeholder image" width="140" height="140"/>
+              </div>
+              <div className="col-md-8 col-sm-8">
+                <div class="card">
+                  <div class="card-body">
+                    <h2 class="card-title">Stay up to date</h2>
+                    <p class="card-text">Have access to the latest results from all over the world and their impact on card prices.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

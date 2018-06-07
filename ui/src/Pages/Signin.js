@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './Style/Signin.css'
+import imgLogo from './../logo-mtg-treasure.png'
 import Footer from './../Components/Footer'
+import Navbar from './../Components/Navbar'
 const SigninUser = require('./../Actions/AccountAction').SigninUser
 
 class Signin extends Component {
@@ -21,27 +23,24 @@ class Signin extends Component {
   render() {
     return (
       <div>
-        <div className="jumbotron">
-        <div className="card card-container">
-            <h1 className="text-center">MTG</h1>
-            <h1 className="text-center">Treasure</h1>
-            <p id="profile-name" className="profile-name-card"></p>
-            <form className="form-signin">
-                <span id="reauth-email" className="reauth-email"></span>
-                <input type="text" id="inputUsername" className="form-control" placeholder="Username" required autoFocus/>
-                <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
-                <div id="remember" className="checkbox">
-                    <label>
-                        <input type="checkbox" value="remember-me"/> Remember me
-                    </label>
-                </div>
-            </form>
-            <button className="btn btn-lg btn-primary btn-block btn-signin" onClick={this.handleSubmit.bind(this)}>Sign In</button>
-            <a href="/" className="forgot-password">
-              Forgot the password?
-            </a>
+        <div className="jumbotron jumbotron-sign">
+          <Navbar/>
+          <br/><br/>
+          <div className="card card-container card-sign">
+              <img className="logo-form" src={imgLogo}/>
+              <p id="profile-name" className="profile-name-card"></p>
+              <form className="form-signin">
+                  <span id="reauth-email" className="reauth-email"></span>
+                  <input type="text" id="inputUsername" className="form-control" placeholder="Username" required autoFocus/>
+                  <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
+
+              </form>
+              <button className="btn btn-lg btn-primary btn-block btn-signin" onClick={this.handleSubmit.bind(this)}>Sign In</button>
+              <a href="/" className="forgot-password">
+                Forgot the password?
+              </a>
+          </div>
         </div>
-      </div>
       <div className="container">
         NEWS BANNER
       </div>
