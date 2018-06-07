@@ -24,10 +24,10 @@ class Signup extends Component {
   render() {
     return (
       <div>
-        <div className="jumbotron jumbotron-sign">
+        <div className="jumbotron jumbotron-sign jumbotron-full">
           <Navbar/>
           <br/><br/>
-          <div className = 'card card-container card-sign'>
+          <div className = 'card card-container card-sign card-transparent'>
             <img className="logo-form" src={imgLogo}/>
             <form className='form-signin' onSubmit={this.handleSubmit}>
               <input type='text' id='inputUsername' className="form-control" placeholder='Username' required autoFocus/>
@@ -36,9 +36,6 @@ class Signup extends Component {
             </form>
             <button className='btn btn-lg btn-block btn-primary btn-signin' onClick={this.handleSubmit.bind(this)}>Signup</button>
           </div>
-        </div>
-        <div className="container">
-          NEWS BANNER
         </div>
       </div>
     );

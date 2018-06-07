@@ -11,12 +11,11 @@ class Home extends Component {
     return (
       <div>
         <div className="jumbotron jumbotron-full">
-          <Navbar/>
-          <img className="logo-home" src={imgLogo}/>
-          <h1 class="text-center  font-weight-bold text-title">MTG TREASURE</h1>
-          <h3 class="text-center text-white">The essential financial and deck-building tool for every Magic The Gathering cards owner.</h3>
-          <div className="container container-button">
-            <p><a type="button" class="btn btn-primary btn-lg btn-join" href="/signup"><p className="text-button">Join</p></a></p>
+          <div className="container container-main">
+            <Navbar/>
+            <img className="logo-home" src={imgLogo}/>
+            <h1 class="text-center  font-weight-bold text-title">MTG TREASURE</h1>
+            <h3 class="text-center text-white">The essential financial and deck-building tool for every Magic The Gathering cards owner.</h3>
           </div>
         </div>
         <div className="jumbotron jumbotron-white">
@@ -40,9 +39,9 @@ class Home extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-8 col-sm-8">
-                <div class="card">
+                <div class="card card-white">
                 <div class="card-body">
-                  <h2 class="card-title">Build decks like a Pro</h2>
+                  <h2 class="card-title ">Build decks like a Pro</h2>
                   <p class="card-text">Enjoy the deck building tools to tune and build the best decks for your FNM or other events.</p>
                 </div>
               </div>

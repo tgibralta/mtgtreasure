@@ -26,7 +26,7 @@ class Signin extends Component {
         <div className="jumbotron jumbotron-sign">
           <Navbar/>
           <br/><br/>
-          <div className="card card-container card-sign">
+          <div className="card card-container card-sign card-transparent">
               <img className="logo-form" src={imgLogo}/>
               <p id="profile-name" className="profile-name-card"></p>
               <form className="form-signin">

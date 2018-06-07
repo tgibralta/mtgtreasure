@@ -2,7 +2,7 @@
 	display: block;
     margin-left: auto;
 	margin-right: auto;
-	margin-top: 120px;
+	margin-top: 70px;
 	height: 150px;
 }
 
@@ -16,10 +16,11 @@
 .jumbotron-full {
 	height: 100vh;
 	background: linear-gradient(
-      rgba(0, 0, 0, 0.5), 
-      rgba(0, 0, 0, 0.5)
+      rgba(0, 0, 0, 0.7), 
+      rgba(0, 0, 0, 0.7)
     ), url(https://cdna.artstation.com/p/assets/images/images/000/229/358/large/yeong-hao-han-145248-island-lr.jpg?1412144036) ;
 	background-size: cover;
+	text-align: center;
 }
 
 .jumbotron-main {
@@ -42,7 +43,7 @@
 .container-button {
 	display: flex;
 	justify-content: center;
-	margin-top: 100px;
+	
 }
 
 .btn-join {
@@ -51,7 +52,11 @@
 	font-size: 30px;
 	border-radius: 4px;
 	text-align: center;
-	margin:auto;
+	margin-top: 50px;
+}
+
+.card-white {
+	background-color: white;
 }
 
 .text-button {
