@@ -8,33 +8,23 @@ class Footer extends Component {
     return (
       <div>
         <footer className="page-footer font-small stylish-color-dark pt-4 mt-4">
-          <div className="text-center">
-            <ul className="list-unstyled list-inline">
-              <li className="list-inline-item">
-                <a className="btn-floating btn-sm btn-fb mx-1">
-                  <FontAwesome name="fas fa-facebook-square"/>
-                </a>
-              </li>
-              <li className="list-inline-item">
-                <a className="btn-floating btn-sm btn-tw mx-1">
-                  <FontAwesome name="fa fa-twitter icon-social"/>
-                </a>
-              </li>
-              <li className="list-inline-item">
-                <a className="btn-floating btn-sm btn-gplus mx-1">
-                  <FontAwesome name="fa fa-google-plus icon-social"/>
-                </a>
-              </li>
-              <li className="list-inline-item">
-                <a className="btn-floating btn-sm btn-li mx-1">
-                  <FontAwesome name="fa fa-instagram icon-social"/>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className ="footer-copyright py-3 text-center">
-            © 2018 Copyright:
-            <a className= "copyright-link" href="/"> MTGTreasure </a>
+          <div className="container">
+            <div className="row">
+              <div className="col-md-3">
+              </div>
+              <div className="col-md-2">
+                <p>Contacts</p>
+              </div>
+              <div className="col-md-2">
+                <p>Partners</p>
+              </div>
+              <div className="col-md-2">
+                <p>Developers</p>
+              </div>
+              <div className="col-md-3">
+                
+              </div>
+            </div>
           </div>
         </footer>
       </div>

@@ -1,18 +1,19 @@
-.footer-copyright {
-  background-color:  #17202a
-  positio
-}
+
 .page-footer {
-    position: fixed;
+    position: absolute; 
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: black;
+    background: linear-gradient(
+      rgba(0, 0, 0, 0.2), 
+      rgba(0, 0, 0, 0.2)
+    );
+    background-color: transparent;
     color: white;
     text-align: center;
 }
+
 .copyright-link {
-  color: white
-}
-.icon-social {
+  color: white;
+  font-size: 15px;
 }

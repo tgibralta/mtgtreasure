@@ -3,6 +3,7 @@ import userStore from './../Stores/UserStore'
 import TableCollection from './../Components/TableCollection'
 import Footer from './../Components/Footer'
 import Sidebar from './../Components/Sidebar'
+import Navbar from './../Components/Navbar'
 import './Style/Dashboard.css'
 import PanelCollection from './../Components/PanelCollection'
 import DeckDisplay from './../Components/DeckDisplay'
@@ -100,22 +101,6 @@ class Dashboard extends Component {
     return (<PanelCollection initialInvestment={investment} currentValue={currentValue} nbCard={currentNbCard} chartDataInvestment={chartDataInvestment} chartDataValue={chartDataValue} chartDataNbCard={chartDataNbCard}/>)
   }
 
-  // ReturnTop5Positive(collection) {
-  //   collection.sort(function(a, b) {
-  //     let trendA = a.trend
-  //     let trendB = b.trend
-  //     return trendA>trendB ? 1 : trendA<trendB ? -1 : 0
-  //   })
-  // }
-
-  // ReturnTop5Negative(collection) {
-  //   collection.sort(function(a, b) {
-  //     let trendA = a.trend
-  //     let trendB = b.trend
-  //     return trendA<trendB ? 1 : trendA<trendB ? -1 : 0
-  //   })
-  // }
-
   CreateTop5PriceIncrease(props) {
     let collection = props.collection
     console.log(`COLLECTION: ${JSON.stringify(collection)}`)
@@ -143,7 +128,14 @@ class Dashboard extends Component {
   
   render() {
     return (
-      <div className="container-fluid">
+      <div>
+        <div className="jumbotron jumbotron-dashboard">
+          <Navbar/>
+          <div className="container">
+            <h4 className="text-center text-title-jumbo">DASHBOARD</h4>
+            <hr className="hr-white"/>
+          </div>
+        </div>
       <div className="row">
         <div className="col-md-2 no-float">
           <Sidebar username={this.state.user.username}/>
@@ -166,8 +158,10 @@ class Dashboard extends Component {
           <this.CreateTop5PriceIncrease collection={this.state.user.collection}/>
           <h3>Top 5 Price Decrease</h3>
           <this.CreateTop5PriceDecrease collection={this.state.user.collection}/>
+          <Footer/>
         </main>
       </div>
+      
     </div>
     )
   }

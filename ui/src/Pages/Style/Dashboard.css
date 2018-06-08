@@ -1,1 +1,17 @@
+.jumbotron-dashboard {
+	background: linear-gradient(
+      rgba(0, 0, 0, 0.7), 
+      rgba(0, 0, 0, 0.7)
+    ), url(https://cdna.artstation.com/p/assets/images/images/000/229/358/large/yeong-hao-han-145248-island-lr.jpg?1412144036) ;
+	background-size: cover;
+	text-align: center;
+}
 
+.text-title-jumbo {
+    color: white;
+    font-size: 6vh;
+}
+
+.hr-white {
+    background-color: white;
+}

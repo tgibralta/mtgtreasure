@@ -11,9 +11,9 @@ class ElementNavabar extends Component {
   render() {
     if (!this.props.isLoggedIn) {
       return (
-          <ul className="navbar-nav mr-auto">
+        <ul className="navbar-nav mr-auto">
           <li className="nav-item">
-            <a className="nav-link" href="/signup">Signup</a>
+            <a className="nav-link" href="/signup">Singup</a>
           </li>
           <li className="nav-item">
             <a className="nav-link" href="/signin">Signin</a>
@@ -21,19 +21,37 @@ class ElementNavabar extends Component {
           <li className="nav-item">
             <a className="nav-link" href="/about">About</a>
           </li>
+          <li className="nav-item">
+            <i class="fas fa-search"></i>
+          </li>
         </ul>
       )
     } else {
       return (
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
-            <a className="nav-link" href="/about">About</a>
+            <a className="nav-link" href="/signup">Dashboard</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link pull-right" href="/option">Options</a>
+            <a className="nav-link" href="/signin">Collection</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link pull-right" href="/">Logout</a>
+            <a className="nav-link" href="/about">Decks</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/about">Shopping</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/about">Investment</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/about">Winning Lists</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/about">Events</a>
+          </li>
+          <li className="nav-item">
+            <i class="fas fa-search"></i>
           </li>
         </ul>
       )

@@ -23,9 +23,8 @@ class Signin extends Component {
   render() {
     return (
       <div>
-        <div className="jumbotron jumbotron-sign">
+        <div className="jumbotron jumbotron-full">
           <Navbar/>
-          <br/><br/>
           <div className="card card-container card-sign card-transparent">
               <img className="logo-form" src={imgLogo}/>
               <p id="profile-name" className="profile-name-card"></p>
@@ -33,17 +32,14 @@ class Signin extends Component {
                   <span id="reauth-email" className="reauth-email"></span>
                   <input type="text" id="inputUsername" className="form-control" placeholder="Username" required autoFocus/>
                   <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
-
               </form>
               <button className="btn btn-lg btn-primary btn-block btn-signin" onClick={this.handleSubmit.bind(this)}>Sign In</button>
               <a href="/" className="forgot-password">
                 Forgot the password?
               </a>
           </div>
+        <Footer/>
         </div>
-      <div className="container">
-        NEWS BANNER
-      </div>
       </div>
     );
   }

@@ -8,6 +8,8 @@
 	/* border-color:   #1a5276; */
 	border: transparent;
     color: white;
+    margin-top: -5vh;
+    margin-bottom: 5vh;
 }
 
 .navbar-inner {
