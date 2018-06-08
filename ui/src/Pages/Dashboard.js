@@ -109,7 +109,6 @@ class Dashboard extends Component {
       let trendB = b.trend
       return trendA<trendB ? 1 : trendA>trendB ? -1 : 0
     }).slice(0,4)
-    // console.log(`TOP5 Positive: ${JSON.stringify(collection)}`)
     return (<TableCollection collection={top5}/>)
   }
 
@@ -121,7 +120,6 @@ class Dashboard extends Component {
       let trendB = b.trend
       return trendA>trendB ? 1 : trendA<trendB ? -1 : 0
     }).slice(0,4)
-    // console.log(`TOP5 negative: ${JSON.stringify(collection)}`)
     return (<TableCollection collection={top5}/>)
   }
 
@@ -131,36 +129,45 @@ class Dashboard extends Component {
       <div>
         <div className="jumbotron jumbotron-dashboard">
           <Navbar/>
-          <div className="container">
+          <div className="container container-text-jumbo">
             <h4 className="text-center text-title-jumbo">DASHBOARD</h4>
-            <hr className="hr-white"/>
           </div>
         </div>
-      <div className="row">
-        <div className="col-md-2 no-float">
-          <Sidebar username={this.state.user.username}/>
-        </div>
-        <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-          <this.CreateDataChartHistoryUser user={this.state.user} />
-          <hr/>
-          <div className='row'>
-            <div className="col-md-2">
-              <h2>Decks</h2>
-            </div>
-            <div className="col-md-3">
-              <button className="btn btn-lg btn-signin btn-primary btn-block" onClick={this.handleClickNewDeck.bind(this)}>New Deck</button>
-            </div>
+      <div className="container">
+        {/* <this.CreateDataChartHistoryUser user={this.state.user} /> */}
+        <h3 className="subtitle">COLLECTION SUMMARY</h3>
+        <PanelCollection user={this.state.user}/>
+        <hr/>
+        <div className="row">
+          <div className="col-md-6 col-sm-6">
+            <p className="text-center">Include here the top 5 progression</p>
           </div>
-          <hr/>
-          <CreateDeckDisplay decks={this.state.user.decks} user={this.state.user} delete={this.handleDeleteDeck.bind(this)} goTo={redirectToDeckPage.bind(this)}/>
-          <hr/>
-          <h3>Top 5 Price Increase</h3>
-          <this.CreateTop5PriceIncrease collection={this.state.user.collection}/>
-          <h3>Top 5 Price Decrease</h3>
-          <this.CreateTop5PriceDecrease collection={this.state.user.collection}/>
-          <Footer/>
-        </main>
+          <div className="col-md-6 col-sm-6">
+          <p className="text-center">Include here the top 5 regression</p>
+          </div>
+        </div>
       </div>
+      <div className="jumbotron jumbotron-deck">
+        <div className="container">
+          <h3 className="subtitle">DECKS</h3>
+        </div>
+      </div>
+        {/* <div className='row'>
+          <div className="col-md-2">
+            <h2>Decks</h2>
+          </div>
+          <div className="col-md-3">
+            <button className="btn btn-lg btn-signin btn-primary btn-block" onClick={this.handleClickNewDeck.bind(this)}>New Deck</button>
+          </div>
+        </div>
+        <hr/>
+        <CreateDeckDisplay decks={this.state.user.decks} user={this.state.user} delete={this.handleDeleteDeck.bind(this)} goTo={redirectToDeckPage.bind(this)}/>
+        <hr/>
+        <h3>Top 5 Price Increase</h3>
+        <this.CreateTop5PriceIncrease collection={this.state.user.collection}/>
+        <h3>Top 5 Price Decrease</h3>
+        <this.CreateTop5PriceDecrease collection={this.state.user.collection}/>
+      </div> */}
       
     </div>
     )

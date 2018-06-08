@@ -12,6 +12,18 @@
     font-size: 6vh;
 }
 
+.container-text-jumbo {
+    margin-bottom: -30px;
+}
+
 .hr-white {
     background-color: white;
+}
+
+.jumbotron-deck {
+    background-color: #E5E7E9;
+}
+
+.subtitle {
+    margin-bottom: 7vh;
 }

@@ -1,3 +1,15 @@
 card {
     height: 10rem
 }
+
+.icon-dashboard {
+    color: #1A5276;
+}
+
+.container-logo {
+    text-align: center;
+}
+
+.text-user {
+    font-size: 5vh;
+}

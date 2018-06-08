@@ -2,10 +2,12 @@
 	display: block;
     margin-left: auto;
 	margin-right: auto;
-	margin-top: 20vh;
 	height: 150px;
 }
 
+.container-title {
+	margin-bottom: 10vh;
+}
 .text-title {
 	font-size: 100px;
 	color:  #d6eaf8 ;

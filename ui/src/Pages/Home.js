@@ -12,9 +12,11 @@ class Home extends Component {
       <div>
         <div className="jumbotron jumbotron-full">
           <Navbar/>
-          <img className="logo-home" src={imgLogo}/>
-          <h1 class="text-center  font-weight-bold text-title">MTG TREASURE</h1>
-          <h3 class="text-center text-white">The essential financial and deck-building tool for every Magic The Gathering cards owner.</h3>
+          <div className="container container-title">
+            <img className="logo-home" src={imgLogo}/>
+            <h1 class="text-center  font-weight-bold text-title">MTG TREASURE</h1>
+            <h3 class="text-center text-white">The essential financial and deck-building tool for every Magic The Gathering cards owner.</h3>
+          </div>
           <Footer />
         </div>
         <div className="jumbotron jumbotron-white">

@@ -13,8 +13,6 @@ class Navbar extends Component {
   }
   componentWillMount () {
     userStore.on('change', () => {
-      console.log('Change emitted from UserStore')
-      console.log(`New State: ${userStore.getIsLoggedIn()}`)
       this.setState({
         isLoggedIn: userStore.getIsLoggedIn()
       })

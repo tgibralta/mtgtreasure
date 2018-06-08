@@ -13,7 +13,7 @@ class ElementNavabar extends Component {
       return (
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
-            <a className="nav-link" href="/signup">Singup</a>
+            <a className="nav-link" href="/signup">Signup</a>
           </li>
           <li className="nav-item">
             <a className="nav-link" href="/signin">Signin</a>
