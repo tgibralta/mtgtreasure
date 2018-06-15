@@ -38,6 +38,7 @@ class UserStore extends EventEmitter {
     this.user.history = history
     // console.log(`Collection: ${JSON.stringify(this.user.collection)}`)
     // console.log(`Decks: ${JSON.stringify(this.user.decks)}`)
+    console.log(`Userstore - emit change from Signin : ${JSON.stringify(this.user)}`)
     this.emit('change')
   }
   SignoutUser() {

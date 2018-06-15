@@ -10,19 +10,23 @@ import DeckDisplay from './../Components/DeckDisplay'
 import {CreateDeckDisplay} from './../Functions/CreateDeckDisplay'
 import {redirectToDeckPage} from './../Functions/redirectToDeckPage'
 import ChartPriceHistory from './../Components/ChartPriceHistory'
+import ElementTop5 from './../Components/ElementTop5'
 const DeleteDeck = require('./../Actions/AccountAction').DeleteDeck
 
 class Dashboard extends Component {
   constructor () {
     super()
     this.state = {
-      user : userStore.getUser()
+      user : userStore.getUser(),
+      isLoggedIn: userStore.getIsLoggedIn()
     }
   }
   componentWillMount () {
     userStore.on('change', () => {
+      console.log(`Dashboard - change emitted. new user: ${JSON.stringify(userStore.getUser())}`)
       this.setState({
-        user: userStore.getUser()
+        user: userStore.getUser(),
+        isLoggedIn: userStore.getIsLoggedIn()
       })
     })
   }
@@ -32,14 +36,19 @@ class Dashboard extends Component {
     this.props.history.push(`/user/${this.state.user.username}/createdeck`)
   }
 
+  handleClickCollection () {
+    // console.log(`Go to collection clicked. Username: ${this.state.user.username}`)
+    this.props.history.push(`/user/${this.state.user.username}/collection`)
+  }
+
   handleDeleteDeck(userID, deckID) {
     // console.log(`Delete trigger in Dashboard`)
     DeleteDeck(userID, deckID)
     .then(() => {
-      console.log(`Deck deleted`)
+      // console.log(`Deck deleted`)
     })
     .catch((err) => {
-      console.log(`Error while deleting Deck`)
+      // console.log(`Error while deleting Deck`)
     })
   }
 
@@ -48,7 +57,7 @@ class Dashboard extends Component {
     let investment = props.user.initialInvestment
     let currentValue = props.user.currentValue
     let currentNbCard = props.user.nbCardInCollection
-    console.log(`History: ${JSON.stringify(history)}`)
+    // console.log(`History: ${JSON.stringify(history)}`)
     let labels = history.map(function(x) {
       return x.date
     })
@@ -103,24 +112,34 @@ class Dashboard extends Component {
 
   CreateTop5PriceIncrease(props) {
     let collection = props.collection
-    console.log(`COLLECTION: ${JSON.stringify(collection)}`)
+    // console.log(`COLLECTION: ${JSON.stringify(collection)}`)
       let top5 = collection.sort(function(a, b) {
       let trendA = a.trend
       let trendB = b.trend
       return trendA<trendB ? 1 : trendA>trendB ? -1 : 0
     }).slice(0,4)
-    return (<TableCollection collection={top5}/>)
+    // return (<TableCollection collection={top5}/>)
+    let top5Display = top5.map((element) => {
+      // console.log(`card in top5: ${JSON.stringify(element)}`)
+      return(<ElementTop5 card={element}/>)
+    })
+    return top5Display
   }
 
   CreateTop5PriceDecrease(props) {
     let collection = props.collection
-    console.log(`COLLECTION: ${JSON.stringify(collection)}`)
+    // console.log(`COLLECTION: ${JSON.stringify(collection)}`)
     let top5 = collection.sort(function(a, b) {
       let trendA = a.trend
       let trendB = b.trend
       return trendA>trendB ? 1 : trendA<trendB ? -1 : 0
     }).slice(0,4)
-    return (<TableCollection collection={top5}/>)
+    // return (<TableCollection collection={top5}/>)
+    let top5Display = top5.map((element) => {
+      // console.log(`card in top5: ${JSON.stringify(element)}`)
+      return(<ElementTop5 card={element}/>)
+    })
+    return top5Display
   }
 
   
@@ -128,28 +147,64 @@ class Dashboard extends Component {
     return (
       <div>
         <div className="jumbotron jumbotron-dashboard">
-          <Navbar/>
+          <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username}/>
           <div className="container container-text-jumbo">
             <h4 className="text-center text-title-jumbo">DASHBOARD</h4>
           </div>
         </div>
       <div className="container">
-        {/* <this.CreateDataChartHistoryUser user={this.state.user} /> */}
-        <h3 className="subtitle">COLLECTION SUMMARY</h3>
-        <PanelCollection user={this.state.user}/>
-        <hr/>
         <div className="row">
-          <div className="col-md-6 col-sm-6">
-            <p className="text-center">Include here the top 5 progression</p>
+          <div className="col-md-10">
+            <h2 className="display-4 "><strong>COLLECTION SUMMARY</strong></h2>
           </div>
-          <div className="col-md-6 col-sm-6">
-          <p className="text-center">Include here the top 5 regression</p>
+          <div className="col-md-2">
+            {/* <button className="fas fa-arrow-circle-right icon-dashboard fa-3x icon-goto" onClick={this.handleClickCollection.bind(this)}></button> */}
+            <button type="button" className="btn btn-lg btn-block btn-primary btn-signin" onClick={this.handleClickCollection.bind(this)}> View </button>
+          </div>
+        </div>
+        <hr/>
+        <PanelCollection user={this.state.user}/>
+        <div className="row">
+          <div className="col-md-6 col-sm-6 col-lg-6">
+            <div className="card border-primary mb-3 card-dashboard">
+              <div className="card-header"><strong>TOP 5</strong></div>
+              <div className="card-body">
+                <this.CreateTop5PriceIncrease collection={this.state.user.collection}/>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6 col-sm-6  col-lg-6">
+            <div className="card border-primary mb-3 card-dashboard icon-goto">
+              <div className="card-header"><strong>BOTTOM 5</strong></div>
+              <div className="card-body">
+                <this.CreateTop5PriceDecrease collection={this.state.user.collection}/>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div className="jumbotron jumbotron-deck">
         <div className="container">
-          <h3 className="subtitle">DECKS</h3>
+          <div className="row">
+            <div className="col-md-10">
+              <h2 className="display-4 "><strong className="text-white">DECK</strong></h2>
+            </div>
+            <div className="col-md-2">
+              <button class="fas fa-arrow-circle-right icon-dashboard fa-3x text-white"></button>
+            </div>
+          </div>
+          <hr className="hr-white"/>
+        
+
+
+          <div className="card">
+          <img className="card-img-top" src="..." alt="Card image cap"/>
+          <div className="card-body">
+            <h5 className="card-title">Card title</h5>
+            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
         </div>
       </div>
         {/* <div className='row'>

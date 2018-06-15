@@ -3,10 +3,15 @@ import * as AccountActions from './../Actions/AccountAction'
 import './Style/ElementNavbar.css'
 
 
-class ElementNavabar extends Component {
+class ElementNavbar extends Component {
+  
   handleSubmit() {
     AccountActions.SignoutUser()
     this.props.history.push(`/`)
+  }
+
+  displayNavbar () {
+    
   }
   render() {
     if (!this.props.isLoggedIn) {
@@ -30,25 +35,19 @@ class ElementNavabar extends Component {
       return (
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
-            <a className="nav-link" href="/signup">Dashboard</a>
+            <a className="nav-link" href={`/user/${this.props.username}/`}>Dashboard</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/signin">Collection</a>
+            <a className="nav-link" href={`/user/${this.props.username}/collection/`}>Collection</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/about">Decks</a>
+            <a className="nav-link" href={`/user/${this.props.username}/decks/`}>Decks</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/about">Shopping</a>
+            <a className="nav-link" href={`/user/${this.props.username}/shopping/`}>Shopping</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/about">Investment</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/about">Winning Lists</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/about">Events</a>
+            <a className="nav-link" onClick={this.handleSubmit.bind(this)}>Logout</a>
           </li>
           <li className="nav-item">
             <i class="fas fa-search"></i>
@@ -60,4 +59,4 @@ class ElementNavabar extends Component {
   }
 }
 
-export default ElementNavabar
+export default ElementNavbar

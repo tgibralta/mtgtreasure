@@ -7,11 +7,28 @@ import userStore from './../Stores/UserStore'
 import './Style/Home.css'
 
 class Home extends Component {
+  constructor () {
+    super()
+    this.state = {
+      user: userStore.getUser(),
+      isLoggedIn: userStore.getIsLoggedIn()
+    }
+  }
+
+  componentWillMount () {
+    userStore.on('change', () => {
+      this.setState({
+        user: userStore.getUser(),
+        isLoggedIn: userStore.getIsLoggedIn()
+      })
+    })
+  }
+
   render() {
     return (
       <div>
         <div className="jumbotron jumbotron-full">
-          <Navbar/>
+          <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username}/>
           <div className="container container-title">
             <img className="logo-home" src={imgLogo}/>
             <h1 class="text-center  font-weight-bold text-title">MTG TREASURE</h1>

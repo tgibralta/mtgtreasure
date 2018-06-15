@@ -138,6 +138,7 @@ export const SigninUser = (username, password) => new Promise((resolve, reject) 
     rp(optionsCollection)
     .then((resCollection) => {
       let JSONReply = JSON.parse(resCollection)
+      console.log(`Response server: ${resCollection}`)
       loopOverArray(JSONReply)
       .then((nbCardAndInfo) => {
         let nbCardInCollection = nbCardAndInfo.totalNbCard
@@ -163,7 +164,7 @@ export const SigninUser = (username, password) => new Promise((resolve, reject) 
           rp(optionsUserHistory)
           .then ((historyDB) => {
             let history = JSON.parse(historyDB)
-            console.log(`History received: ${JSON.stringify(history)}`)
+            // console.log(`History received: ${JSON.stringify(history)}`)
             dispatcher.dispatch({
               type: 'SIGNIN_USER',
               username,

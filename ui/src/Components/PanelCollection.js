@@ -3,6 +3,13 @@ import ChartPriceHistory from './ChartPriceHistory'
 import './Style/PanelCollection.css'
 
 class PanelCollection extends Component {
+
+  getPourcentageEvolution(props) {
+    let investment = props.investment
+    let currentValue = props.currentValue
+    let percentage = Math.ceil(100 * (currentValue - investment) / investment)
+    return (<p className="text-user" >{percentage} %</p>)
+  }
   
   render() {
 
@@ -42,7 +49,7 @@ class PanelCollection extends Component {
             </div> */}
             <div className="container-logo">
               <i class="fas fa-chart-line icon-dashboard fa-7x"></i>
-              <p className="text-user" >{this.props.user.currentValue} $</p>
+              < this.getPourcentageEvolution investment={this.props.user.initialInvestment} currentValue={this.props.user.currentValue}/>
             </div>
           </div>
         </div>

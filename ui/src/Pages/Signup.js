@@ -3,9 +3,27 @@ import "./Style/Signup.css"
 import imgLogo from './../logo-mtg-treasure.png'
 import Footer from './../Components/Footer'
 import Navbar from './../Components/Navbar'
+import userStore from './../Stores/UserStore'
 const CreateUser = require('./../Actions/AccountAction').CreateUser
 
 class Signup extends Component {
+
+  constructor () {
+    super()
+    this.state = {
+      user: userStore.getUser(),
+      isLoggedIn: userStore.getIsLoggedIn()
+    }
+  }
+
+  // componentWillMount () {
+  //   userStore.on('change', () => {
+  //     this.setState({
+  //       user: userStore.getUser(),
+  //       isLoggedIn: userStore.getIsLoggedIn()
+  //     })
+  //   })
+  // }
 
   handleSubmit() {
     let username = document.getElementById('inputUsername').value
@@ -25,7 +43,7 @@ class Signup extends Component {
     return (
       <div>
         <div className="jumbotron jumbotron-sign jumbotron-full">
-          <Navbar/>
+          <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username}/>
           <div className = 'card card-container card-sign card-transparent'>
             <img className="logo-form" src={imgLogo}/>
             <form className='form-signin' onSubmit={this.handleSubmit}>

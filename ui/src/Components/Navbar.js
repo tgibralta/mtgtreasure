@@ -5,18 +5,6 @@ import logo from './../logo-mtg-treasure.png'
 import './Style/Navbar.css'
 
 class Navbar extends Component {
-  constructor () {
-    super()
-    this.state = {
-      isLoggedIn : false
-    }
-  }
-  componentWillMount () {
-    userStore.on('change', () => {
-      console.log(`Change emitted from UserStore`)
-      this.state.isLoggedIn = userStore.getIsLoggedIn()
-    })
-  }
 
   render() {
     return (
@@ -24,7 +12,7 @@ class Navbar extends Component {
         <nav className="navbar navbar-expand-lg navbar-default navbar-dark">
           <a className="navbar-brand" href="/"><img className="logo-navbar" src={logo}/></a>
           <div className="collapse navbar-collapse" id="navbarColor01">
-            <ElementNavbar isLoggedIn={this.state.isLoggedIn} />
+            <ElementNavbar isLoggedIn={this.props.isLoggedIn} username={this.props.username}/>
           </div>
         </nav>
       </div>
