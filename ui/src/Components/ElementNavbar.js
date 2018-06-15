@@ -5,10 +5,7 @@ import './Style/ElementNavbar.css'
 
 class ElementNavbar extends Component {
   
-  handleSubmit() {
-    AccountActions.SignoutUser()
-    this.props.history.push(`/`)
-  }
+  
 
   displayNavbar () {
     
@@ -47,7 +44,7 @@ class ElementNavbar extends Component {
             <a className="nav-link" href={`/user/${this.props.username}/shopping/`}>Shopping</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" onClick={this.handleSubmit.bind(this)}>Logout</a>
+            <a className="nav-link" onClick={this.props.Logout}>Logout</a>
           </li>
           <li className="nav-item">
             <i class="fas fa-search"></i>

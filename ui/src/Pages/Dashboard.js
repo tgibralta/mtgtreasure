@@ -11,7 +11,9 @@ import {CreateDeckDisplay} from './../Functions/CreateDeckDisplay'
 import {redirectToDeckPage} from './../Functions/redirectToDeckPage'
 import ChartPriceHistory from './../Components/ChartPriceHistory'
 import ElementTop5 from './../Components/ElementTop5'
+import * as AccountActions from './../Actions/AccountAction'
 const DeleteDeck = require('./../Actions/AccountAction').DeleteDeck
+
 
 class Dashboard extends Component {
   constructor () {
@@ -34,6 +36,10 @@ class Dashboard extends Component {
   
   handleClickNewDeck () {
     this.props.history.push(`/user/${this.state.user.username}/createdeck`)
+  }
+
+  handleClickDecks () {
+    this.props.history.push(`/user/${this.state.user.username}/decks`)
   }
 
   handleClickCollection () {
@@ -142,12 +148,17 @@ class Dashboard extends Component {
     return top5Display
   }
 
+  Logout() {
+    AccountActions.SignoutUser()
+    this.props.history.push(`/`)
+  }
+
   
   render() {
     return (
       <div>
         <div className="jumbotron jumbotron-dashboard">
-          <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username}/>
+          <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username} Logout={this.Logout.bind(this)}/>
           <div className="container container-text-jumbo">
             <h4 className="text-center text-title-jumbo">DASHBOARD</h4>
           </div>
@@ -190,7 +201,7 @@ class Dashboard extends Component {
               <h2 className="display-4 "><strong className="text-white">DECK</strong></h2>
             </div>
             <div className="col-md-2">
-              <button class="fas fa-arrow-circle-right icon-dashboard fa-3x text-white"></button>
+              <button type="button" className="btn btn-lg btn-block btn-secondary btn-signin" onClick={this.handleClickDecks.bind(this)}> View </button>
             </div>
           </div>
           <hr className="hr-white"/>

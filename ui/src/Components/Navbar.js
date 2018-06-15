@@ -12,7 +12,7 @@ class Navbar extends Component {
         <nav className="navbar navbar-expand-lg navbar-default navbar-dark">
           <a className="navbar-brand" href="/"><img className="logo-navbar" src={logo}/></a>
           <div className="collapse navbar-collapse" id="navbarColor01">
-            <ElementNavbar isLoggedIn={this.props.isLoggedIn} username={this.props.username}/>
+            <ElementNavbar isLoggedIn={this.props.isLoggedIn} username={this.props.username} Logout={this.props.Logout}/>
           </div>
         </nav>
       </div>

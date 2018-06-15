@@ -4,6 +4,7 @@ import imgLogo from './../logo-mtg-treasure.png'
 import Navbar from './../Components/Navbar'
 import logo from './../logo-mtg-treasure.png'
 import userStore from './../Stores/UserStore'
+import * as AccountActions from './../Actions/AccountAction'
 import './Style/Home.css'
 
 class Home extends Component {
@@ -24,11 +25,16 @@ class Home extends Component {
     })
   }
 
+  Logout() {
+    AccountActions.SignoutUser()
+    this.props.history.push(`/`)
+  }
+
   render() {
     return (
       <div>
         <div className="jumbotron jumbotron-full">
-          <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username}/>
+          <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username} Logout={this.Logout.bind(this)}/>
           <div className="container container-title">
             <img className="logo-home" src={imgLogo}/>
             <h1 class="text-center  font-weight-bold text-title">MTG TREASURE</h1>
