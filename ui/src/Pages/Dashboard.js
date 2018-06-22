@@ -9,6 +9,7 @@ import PanelCollection from './../Components/PanelCollection'
 import DeckDisplay from './../Components/DeckDisplay'
 import {CreateDeckDisplay} from './../Functions/CreateDeckDisplay'
 import {redirectToDeckPage} from './../Functions/redirectToDeckPage'
+import {RedirectNavbar} from './../Functions/RedirectNavbar'
 import ChartPriceHistory from './../Components/ChartPriceHistory'
 import ElementTop5 from './../Components/ElementTop5'
 import * as AccountActions from './../Actions/AccountAction'
@@ -153,12 +154,11 @@ class Dashboard extends Component {
     this.props.history.push(`/`)
   }
 
-  
   render() {
     return (
       <div>
         <div className="jumbotron jumbotron-dashboard">
-          <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username} Logout={this.Logout.bind(this)}/>
+          <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username} Logout={this.Logout.bind(this)} Redirect={RedirectNavbar} history={this.props.history}/>
           <div className="container container-text-jumbo">
             <h4 className="text-center text-title-jumbo">DASHBOARD</h4>
           </div>
@@ -198,43 +198,18 @@ class Dashboard extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-10">
-              <h2 className="display-4 "><strong className="text-white">DECK</strong></h2>
+              <h2 className="display-4 "><strong className="text-white">DECKS</strong></h2>
             </div>
             <div className="col-md-2">
-              <button type="button" className="btn btn-lg btn-block btn-secondary btn-signin" onClick={this.handleClickDecks.bind(this)}> View </button>
+              <button type="button" className="btn btn-lg btn-block btn-primary btn-white" onClick={this.handleClickDecks.bind(this)}> View </button>
             </div>
           </div>
           <hr className="hr-white"/>
-        
-
-
-          <div className="card">
-          <img className="card-img-top" src="..." alt="Card image cap"/>
-          <div className="card-body">
-            <h5 className="card-title">Card title</h5>
-            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+          <div className = "row">
+            <CreateDeckDisplay decks={this.state.user.decks} user={this.state.user} delete={this.handleDeleteDeck.bind(this)} goTo={redirectToDeckPage.bind(this)}/>
           </div>
-        </div>
         </div>
       </div>
-        {/* <div className='row'>
-          <div className="col-md-2">
-            <h2>Decks</h2>
-          </div>
-          <div className="col-md-3">
-            <button className="btn btn-lg btn-signin btn-primary btn-block" onClick={this.handleClickNewDeck.bind(this)}>New Deck</button>
-          </div>
-        </div>
-        <hr/>
-        <CreateDeckDisplay decks={this.state.user.decks} user={this.state.user} delete={this.handleDeleteDeck.bind(this)} goTo={redirectToDeckPage.bind(this)}/>
-        <hr/>
-        <h3>Top 5 Price Increase</h3>
-        <this.CreateTop5PriceIncrease collection={this.state.user.collection}/>
-        <h3>Top 5 Price Decrease</h3>
-        <this.CreateTop5PriceDecrease collection={this.state.user.collection}/>
-      </div> */}
-      
     </div>
     )
   }

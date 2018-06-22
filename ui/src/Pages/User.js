@@ -7,6 +7,7 @@ import DeckPage from './Deck'
 import OptionsPage from './Options'
 import NotFoundPage from './NotFound'
 import CreateDeckPage from './CreateDeck'
+import AddCardPage from './AddCard'
 
 class User extends Component {
   render() {
@@ -20,6 +21,7 @@ class User extends Component {
           <Route exact path={`${this.props.match.url}/createdeck`} component={CreateDeckPage}/>
           <Route exact path={`${this.props.match.url}/deck/:deckid`} component={DeckPage}/>
           <Route exact path={`${this.props.match.url}/options`} component={OptionsPage}/>
+          <Route exact path={`${this.props.match.url}/addCard/:multiverseid`} component={AddCardPage}/>
           <Route exact path='*' component={NotFoundPage}/>
         </Switch>
       </div>

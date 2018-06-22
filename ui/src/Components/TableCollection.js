@@ -10,26 +10,16 @@ class TableCollection extends Component {
     let outputData = []
     
     data.forEach((element) => {
-      let trend = element.trend
-      // console.log(`Type of Trend: ${typeof(trend)}`)
-      let trendElement = []
-      if (trend > 0) {
-        trendElement.push(<i class="fas fa-angle-double-up"></i>)
-      } else if (trend < 0) {
-        trendElement.push(<i class="fas fa-angle-double-down"></i>)
-      } else {
-        trendElement.push(<i class="fas fa-minus"></i>)
-      }
-      trendElement.push(<p>{trend}%</p>)
-      // console.log(`ELEMENT SENT: ${JSON.stringify(element)}`)
+      // let trend = element.trend
+      let trend = Math.ceil(100 * (element.allCardInfo.Scryfall.usd - element.allCardInfo.DB.init_price)/element.allCardInfo.DB.init_price)
       let row = {
         buttons : element,
         number : element.allCardInfo.DB.number_of_card,
         name : element.allCardInfo.Scryfall.name,
-        set : element.allCardInfo.Scryfall.set_name,
-        initPrice : element.allCardInfo.DB.init_price,
+        // set : element.allCardInfo.Scryfall.set_name,
+        // initPrice : element.allCardInfo.DB.init_price,
         currentPrice : element.allCardInfo.Scryfall.usd,
-        trend: trendElement
+        trend: trend
       }
       outputData.push(row)
     })
@@ -72,50 +62,58 @@ class TableCollection extends Component {
   render() {
     const columns = [
     {
-      Header: <p className="text-uppercase font-weight-bold">#</p>,
+      Header: <i className="fab fa-slack-hash icon-dashboard fa-3x"></i>,
       accessor: 'number',
       Cell: props => <p className="text-center text-name">{props.value}</p>,
+      minWidth: "10vh"
     },
     {
-      Header: <p className="text-uppercase font-weight-bold">Name</p>,
+      Header: <i class="fas fa-info icon-dashboard fa-3x"></i>,
       accessor: 'name',
       Cell: props => <p className="text-center">{props.value}</p>,
+      filterable: true,
+      minWidth: "10vh"
     },
     {
-      Header: <p className="text-uppercase font-weight-bold">Set</p>,
-      accessor: 'set',
-      Cell: props => <p className="text-center">{props.value}</p>,
-    },
-    {
-      Header: <p className="text-uppercase font-weight-bold">Inital Price ($)</p>,
-      accessor: 'initPrice',
-      Cell: props => <p className="text-center">{props.value}</p>
-    },
-    {
-      Header: <p className="text-uppercase font-weight-bold">Current Price ($)</p>,
+      Header: <i class="fas fa-dollar-sign icon-dashboard fa-3x"></i>,
       accessor: 'currentPrice',
-      Cell: props => <p className="text-center">{props.value}</p>
+      Cell: props => <p className="text-center">{props.value}</p>,
+      minWidth: "10vh"
     },
     {
-      Header: <p className="text-uppercase font-weight-bold">Trend (%)</p>,
+      Header: <i class="fas fa-chart-line icon-dashboard fa-3x"></i>,
       accessor: 'trend',
-      Cell: props => <p className="text-center">{props.value}</p>
+      Cell: props => <div style={{
+        backgroundColor:  props.value > 0 ? "#a3e4d7" :
+                          props.value < 0 ? "#f1948a" :  "#d6eaf8"
+      }}><p className="text-center">{props.value} %</p> </div>,
+      minWidth: "10vh",
+       
+
     },
     {
       Header: '',
       accessor: 'buttons',
-      Cell: props => <button type="button" class="btn btn-danger btn-small" onClick={this.handleSubmit.bind(this, props.original.buttons)}>X</button>,
+      Cell: props => <button className="btn btn-lg btn-block btn-primary btn-signin" onClick={this.handleSubmit.bind(this, props.original.buttons)}><i class="far fa-trash-alt"></i></button>,
+      minWidth: "10vh"
     }]
 
     return (
       <div>
-        <h2>List</h2>
         <div className="table-responsive">
           <ReactTable className="table table-striped table-sm"
             data={this.allocateData(this.props.collection)}
             columns={columns}
-            defaultPageSize={5}
+            defaultPageSize={10}
             getTrProps={this.onRowClick.bind(this)}
+            defaultSorted={[
+            {
+              id: "currentPrice",
+              desc: true
+            }
+          ]}
+          defaultPageSize={10}
+          className="-striped -highlight"
           />
         </div>
       </div>

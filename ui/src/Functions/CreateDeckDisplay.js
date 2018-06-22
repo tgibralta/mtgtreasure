@@ -17,10 +17,14 @@ export function CreateDeckDisplay(props) {
       let nbMain = deck.nb_card_in_main
       let nbSideboard = deck.nb_card_in_sideboard
       let legality = deck.legality
-      console.log(`ALL STUFFS DEFINED in CreateDeckDisplay`)
-      return <DeckDisplay imageDeck={imageGallery} deckname={deckName} nbMain={nbMain} nbSideboard={nbSideboard} 
-      legality={legality} delete={props.delete.bind(this, user.userID, deckName)}
-      goTo={props.goTo.bind(this, deck)}/>
+      let imageDeck = deck.thumbnail
+      // console.log(`ALL STUFFS DEFINED in CreateDeckDisplay`)
+      return (
+        <div className="col-md-3 col-sm-3 col-lg-3">
+          <DeckDisplay imageDeck={imageDeck} deckname={deckName} nbMain={nbMain} nbSideboard={nbSideboard} 
+          legality={legality} delete={props.delete.bind(this, user.userID, deckName)}
+          goTo={props.goTo.bind(this, deck)}/>
+        </div>)
     })
     return listComponents
   } else {

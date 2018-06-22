@@ -1,0 +1,19 @@
+.img-card {
+    height: 180px;
+    width: 130px;
+}
+
+.card-header-search {
+    background-color: #154360;
+    color: white;
+    font-size: 18px;
+    width: 100%;
+    height: 100%;
+    align-self: center;
+}
+
+.card-search {
+    width: 100%;
+    display: center;
+    background-color:  #f2f3f4 
+}

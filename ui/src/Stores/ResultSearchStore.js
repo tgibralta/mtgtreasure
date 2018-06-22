@@ -60,7 +60,8 @@ class  ResultSearchStore extends EventEmitter {
             "usd" : 0,
             "type_line" : "",
             "image_uris": {
-              "large" : "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg"
+              "large" : "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
+              "small" : "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg"
             }
           }])
         }

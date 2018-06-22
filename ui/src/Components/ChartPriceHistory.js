@@ -5,7 +5,13 @@ class ChartPriceHistory extends Component {
   render() {
     return (
       <div>
-        <Line data={this.props.chartData} options={{}}/>
+        <Line data={this.props.chartData} options={
+          {
+            legend: {
+              display: false
+            }
+          }
+        }/>
       </div>
     )
   }

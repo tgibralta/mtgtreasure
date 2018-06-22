@@ -1,0 +1,16 @@
+/* .card-deck {
+    height: 300px;
+    width: 100%;
+} */
+
+.card-header {
+    height: 70px;
+    width: 100%;
+    /* background-color: #154360; */
+    /* color: white; */
+
+}
+
+.card-body {
+    display: center;
+}

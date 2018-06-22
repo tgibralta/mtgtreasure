@@ -5,11 +5,6 @@ import './Style/ElementNavbar.css'
 
 class ElementNavbar extends Component {
   
-  
-
-  displayNavbar () {
-    
-  }
   render() {
     if (!this.props.isLoggedIn) {
       return (
@@ -32,16 +27,16 @@ class ElementNavbar extends Component {
       return (
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
-            <a className="nav-link" href={`/user/${this.props.username}/`}>Dashboard</a>
+            <a className="nav-link" onClick={this.props.Redirect.bind(this, this.props.username,'', this.props.history)}>Dashboard</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href={`/user/${this.props.username}/collection/`}>Collection</a>
+            <a className="nav-link" onClick={this.props.Redirect.bind(this, this.props.username,'collection/', this.props.history)}>Collection</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href={`/user/${this.props.username}/decks/`}>Decks</a>
+            <a className="nav-link" onClick={this.props.Redirect.bind(this, this.props.username,'decks/', this.props.history)}>Decks</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href={`/user/${this.props.username}/shopping/`}>Shopping</a>
+            <a className="nav-link" onClick={this.props.Redirect.bind(this, this.props.username,'shopping/', this.props.history)}>Shopping</a>
           </li>
           <li className="nav-item">
             <a className="nav-link" onClick={this.props.Logout}>Logout</a>
