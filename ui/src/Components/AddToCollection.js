@@ -10,7 +10,7 @@ class AddToCollection extends Component {
     price = document.getElementById("inputInitPrice").value
     AddCardToCollection(this.props.user.userID, this.props.cardInfo.multiverse_ids[0], price, nbCard, this.props.cardInfo)
     .then(() => {
-      // console.log(`Value Sent`)
+      console.log(`Value Sent`)
     })
   }
 

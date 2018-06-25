@@ -7,6 +7,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import SearchCardDisplay from './../Components/SearchCardDisplay'
 import 'react-tabs/style/react-tabs.css'
 import {RedirectNavbar} from './../Functions/RedirectNavbar'
+
 const SearchCardPerName = require('./../Actions/SearchAction').SearchCardPerName
 
 class AddCard extends Component {
@@ -16,7 +17,7 @@ class AddCard extends Component {
     this.state = {
       user: userStore.getUser(),
       result: resultSearchStore.getResults(),
-      isLoggedIn: userStore.getIsLoggedIn()
+      isLoggedIn: userStore.getIsLoggedIn(),
     }
   }
 
@@ -45,7 +46,7 @@ class AddCard extends Component {
           let imageGallery = result.cardInfo.image_uris.large
           let history = result.priceHistory.priceHistory
           let lengthhistory = history.length - 1
-          let labels = history.map(function(x) {
+          let labels = history.map(function(x, index) {
             let splitDate = x.date.split("/")
             return splitDate[1]
           })
@@ -153,8 +154,7 @@ class AddCard extends Component {
           </div>
           <div className="jumbotron">
             <div className="container">
-              <this.CreateCardDisplayElements results={this.state.result} user={this.state.user} />
-              {/* <this.CreateCardDisplayElements results={this.state.result} user={this.state.user} goToAddCard={this.goToAddCard.bind(this)}/> */}
+              <this.CreateCardDisplayElements results={this.state.result} user={this.state.user}/>
             </div>
           </div>
         </div>

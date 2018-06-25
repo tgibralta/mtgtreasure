@@ -5,6 +5,7 @@ import Gallery from 'react-grid-gallery'
 import ChartPriceHistory from './ChartPriceHistory'
 import configuration from './../config/Config'
 import './Style/SearchCardDisplay.css'
+import PopupAddCard from './../Components/PopupAddCard'
 
 class SearchCardDisplay extends Component {
   
@@ -39,7 +40,8 @@ class SearchCardDisplay extends Component {
                 </div>
                 <hr/>
                 <ChartPriceHistory chartData={this.props.chartData}/>
-                <button className="btn btn-lg btn-signin  btn-primary btn-block my-2 my-sm-0" type="submit">ADD</button>
+                <hr/>
+                <PopupAddCard cardInfo={this.props.infoCardGallery} trend={this.props.trend} chartData={this.props.chartData} user={this.props.user}/>
                 {/* <button className="btn btn-lg btn-signin  btn-primary btn-block my-2 my-sm-0" type="submit" onClick={this.props.goToAddCard.bind(this)}>ADD</button> */}
               {/* </div> */}
             </div>

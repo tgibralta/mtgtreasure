@@ -8,7 +8,16 @@ class ChartPriceHistory extends Component {
         <Line data={this.props.chartData} options={
           {
             legend: {
-              display: false
+              display: false,
+            },
+            options: {
+              scales: {
+                xAxes: [{
+                  ticks: {
+                    stepSize: 1
+                  }
+                }]
+              }
             }
           }
         }/>
