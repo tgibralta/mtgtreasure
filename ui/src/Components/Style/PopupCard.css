@@ -1,0 +1,14 @@
+.img-popup {
+    height: 320px;
+    width: 220px;
+}
+
+.img-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modal {
+  width: 200px;
+}

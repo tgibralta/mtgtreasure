@@ -6,6 +6,11 @@ import DisplayCardInDeck from './../Components/DisplayCardInDeck'
 import {setEditDeck, setImage} from './../Actions/DisplayDeckAction'
 import Gallery from 'react-grid-gallery'
 import configuration from './../config/Config'
+import Navbar from './../Components/Navbar'
+import * as AccountActions from './../Actions/AccountAction'
+import {RedirectNavbar} from './../Functions/RedirectNavbar'
+import {Bar} from 'react-chartjs-2'
+
 
 class Deck extends Component {
   constructor (props) {
@@ -13,7 +18,8 @@ class Deck extends Component {
     this.state = {
       user: userStore.getUser(),
       deck: displayDeckStore.getDeck(),
-      activeImage: displayDeckStore.getImage()
+      activeImage: displayDeckStore.getImage(),
+      isLoggedIn: userStore.getIsLoggedIn()
     }
   }
 
@@ -21,6 +27,7 @@ class Deck extends Component {
     userStore.on('change', () => {
       this.setState({
         user: userStore.getUser(),
+        isLoggedIn: userStore.getIsLoggedIn()
       })
     })
     displayDeckStore.on('change', () => {
@@ -45,9 +52,80 @@ class Deck extends Component {
     })
   }
 
+  Logout() {
+    AccountActions.SignoutUser()
+    this.props.history.push(`/`)
+  }
+
+
+
+  CreateBarManaCost (props) {
+    let mainBoard = props.mainBoard
+    let nbCardCMC1 = mainBoard.reduce((accumulator, element) => {
+      
+      if (element.cmc === '1') {
+        accumulator += 1
+      }
+      return accumulator
+    }, 0)
+    let nbCardCMC2 = mainBoard.reduce((accumulator, element) => {
+      if (element.cmc === '2') {
+        console.log(`CMC: ${element.cmc}`)
+        console.log(`Type CMC: ${typeof(element.cmc)}`)
+        accumulator += element.number
+      }
+      console.log(`Accumulator: ${accumulator}`)
+      return accumulator
+    }, 0)
+    let nbCardCMC3 = mainBoard.reduce((accumulator, element) => {
+      if (element.cmc === '3') {
+        accumulator += element.number
+      }
+      return accumulator
+    }, 0)
+    let nbCardCMC4 = mainBoard.reduce((accumulator, element) => {
+      if (element.cmc === '4') {
+        accumulator += element.number
+      }
+      return accumulator
+    }, 0)
+    let nbCardCMC5ORMORE = mainBoard.reduce((accumulator, element) => {
+      if (parseInt(element.cmc) >= 5) {
+        accumulator += element.number
+      }
+      return accumulator
+    }, 0)
+
+    let labels = ["1","2","3","4","5+"]
+    let dataCMC = [nbCardCMC1, nbCardCMC2, nbCardCMC3 ,nbCardCMC4, nbCardCMC5ORMORE]
+    console.log(`CMC: ${JSON.stringify(dataCMC)}`)
+    let dataBar = {
+      labels: labels,
+      datasets: [
+        {
+          borderColor: '#154360',
+          label: 'CMC',
+          data: dataCMC,
+          fill: false,
+          backgroundColor: ['#d1f2eb', ' #a3e4d7 ', ' #76d7c4 ', ' #48c9b0 ', '#1abc9c'],
+          borderColor: '#117864'
+        }
+      ]
+    }
+
+    return (
+      <Bar 
+        data={dataBar}
+        width={"100%"}
+        height={"100%"}
+      />
+    )
+  }
+
   DisplayCards (props) {
     let board = props.board
     let isMain = props.isMain
+    console.log(`Mainboard: ${board}`)
     if (isMain) {
       let Display_elements = []
       let enableLand = 0
@@ -56,12 +134,12 @@ class Deck extends Component {
       let enableCreature = 0
       let listComponentsLand = board.map((card) => {
         let type = card.type.split(' ')
-        console.log(`words in type: ${JSON.stringify(type)}`)
+        // console.log(`words in type: ${JSON.stringify(type)}`)
         let typeIsLand = 0
         type.forEach((typeCard) => {
           if (typeCard.toLowerCase() === 'land') {
             typeIsLand = 1
-            console.log(`It's a Land`)
+            // console.log(`It's a Land`)
           }
         })
         if (typeIsLand) {
@@ -76,17 +154,19 @@ class Deck extends Component {
             thumbnailWidth: configuration.IMAGE.FULLCARD.LARGE.WIDTH,
             thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
           }]
-          return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
+          // return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
+          return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price}/>
         }
       })
 
       let listComponentsCreature = board.map((card) => {
+        // console.log(`CARD: ${JSON.stringify(card)}`)
         let type = card.type.split(' ')
         let typeIsCreature = 0
-        console.log(`words in type: ${JSON.stringify(type)}`)
+        // console.log(`words in type: ${JSON.stringify(type)}`)
         type.forEach((typeCard) => {
           if (typeCard.toLowerCase() === 'creature') {
-            console.log(`It's a Creature`)
+            // console.log(`It's a Creature`)
             typeIsCreature = 1
           }
         })
@@ -102,17 +182,18 @@ class Deck extends Component {
             thumbnailWidth: configuration.IMAGE.FULLCARD.LARGE.WIDTH,
             thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
           }]
-          return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
+          // return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
+          return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price}/>
         }
       })
 
       let listComponentsPlaneswalker = board.map((card) => {
         let type = card.type.split(' ')
-        console.log(`words in type: ${JSON.stringify(type)}`)
+        // console.log(`words in type: ${JSON.stringify(type)}`)
         let typeIsPlaneswalker = 0
         type.forEach((typeCard) => {
           if (typeCard.toLowerCase() === 'planeswalker') {
-            console.log(`It's a Planeswalker`)
+            // console.log(`It's a Planeswalker`)
             typeIsPlaneswalker = 1
           }
         })
@@ -128,17 +209,18 @@ class Deck extends Component {
             thumbnailWidth: configuration.IMAGE.FULLCARD.LARGE.WIDTH,
             thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
           }]
-          return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
+          // return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
+          return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price}/>
         }
       })
 
       let listComponentsElse = board.map((card) => {
         let type = card.type.split(' ')
-        console.log(`words in type: ${JSON.stringify(type)}`)
+        // console.log(`words in type: ${JSON.stringify(type)}`)
         let typeIsElse = 1
         type.forEach((typeCard) => {
           if (typeCard.toLowerCase() === 'planeswalker' | typeCard.toLowerCase() === 'creature' | typeCard.toLowerCase() === 'land') {
-            console.log(`It's not a Spell`)
+            // console.log(`It's not a Spell`)
             typeIsElse = 0
           }
         })
@@ -154,24 +236,29 @@ class Deck extends Component {
             thumbnailWidth: configuration.IMAGE.FULLCARD.LARGE.WIDTH,
             thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
           }]
-          return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
+          // return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
+          return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price}/>
         }
       })
 
-      if (listComponentsCreature.length !== 0) {
-        Display_elements.push(<p className="font-weight-bold text-uppercase">Creatures</p>)
+      if (listComponentsCreature) {
+        Display_elements.push(<h3 className="text-left "><strong>Creatures</strong></h3>)
+        Display_elements.push(<hr/>)
         Display_elements.push(listComponentsCreature)
       }
-      if (listComponentsPlaneswalker.length !== 0) {
-        Display_elements.push(<p className="font-weight-bold text-uppercase">Planewalkers</p>)
+      if (listComponentsPlaneswalker) {
+        Display_elements.push(<h3 className="text-left"><strong>Planewalkers</strong></h3>)
+        Display_elements.push(<hr/>)
         Display_elements.push(listComponentsPlaneswalker)
       }
-      if (listComponentsElse.length !== 0) {
-        Display_elements.push(<p className="font-weight-bold text-uppercase">Spells</p>)
+      if (listComponentsElse) {
+        Display_elements.push(<h3 className="text-left"><strong>Spells</strong></h3>)
+        Display_elements.push(<hr/>)
         Display_elements.push(listComponentsElse)
       }
-      if (listComponentsLand.length !== 0) {
-        Display_elements.push(<p className="font-weight-bold text-uppercase">Lands</p>)
+      if (listComponentsLand) {
+        Display_elements.push(<h3 className="text-left"><strong>Lands</strong></h3>)
+        Display_elements.push(<hr/>)
         Display_elements.push(listComponentsLand)
       }
       return Display_elements
@@ -188,7 +275,8 @@ class Deck extends Component {
           thumbnailWidth: configuration.IMAGE.FULLCARD.LARGE.WIDTH,
           thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
         }]
-        return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
+        // return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
+        return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price}/>
       })
       return Display_elements
     }
@@ -210,15 +298,17 @@ class Deck extends Component {
   render() {
     
     return (
-      <div className="container-fluid">
-      <div className="row">
-        <div className="col-md-2 no-float">
-          <Sidebar username={this.state.user.username}/>
+      <div>
+        <div className="jumbotron jumbotron-dashboard">
+          <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username} Logout={this.Logout.bind(this)} Redirect={RedirectNavbar} history={this.props.history}/>
+          <div className="container container-text-jumbo">
+            <h4 className="text-center text-title-jumbo">{this.state.deck.deckname}</h4>
+          </div>
         </div>
-        <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        <div className="container">
           <div className ="row">
             <div className="col-md-9">
-              <h3>{this.state.deck.deckname} - {this.state.deck.legality} - {this.state.deck.price} $</h3>
+              <h3><strong>Format: {this.state.deck.legality} - {Math.ceil(this.state.deck.price)} $</strong></h3>
             </div>
             <div className="col-md-3">
               <button className="btn btn-lg btn-signin btn-primary btn-block" onClick={this.handleEdit.bind(this, this.state.deck)}>Edit Deck</button>
@@ -226,27 +316,51 @@ class Deck extends Component {
           </div>
           <hr/>
           <div className="row">
-            <div className="col-md-4">
-              <h4>Main ({this.state.deck.nb_card_in_main})</h4>
-              <hr/>
-              <this.DisplayCards board={this.state.deck.main} isMain={true} handleClick={this.handleClick.bind(this)}/>
+            <div className="col-md-6">
+              <div className="card border-primary mb-3 card-search">
+                <div className="card-header card-header-search">Main ({this.state.deck.nb_card_in_main})</div>
+                <div className="card-body">
+                  <this.DisplayCards board={this.state.deck.main} isMain={true} handleClick={this.handleClick.bind(this)}/>
+                </div>
+              </div>
             </div>
-            <div className="col-md-4">
-              <h4>Sideboard ({this.state.deck.nb_card_in_sideboard})</h4>
-              <hr/>
-              <this.DisplayCards board={this.state.deck.sideboard} isMain={false} handleClick={this.handleClick.bind(this)}/>
-            </div>
-            <div className="col-md-4">
-              <h4>Info</h4>
-              <hr/>
-              <div className="text-center pagination-centered">
-                <Gallery images={this.state.activeImage} rowHeight={configuration.IMAGE.FULLCARD.SMALL.WIDTH}/>
+            <div className="col-md-6">
+              <div className="card border-primary mb-3 card-search">
+                <div className="card-header card-header-search">Sideboard ({this.state.deck.nb_card_in_sideboard})</div>
+                <div className="card-body">
+                  <this.DisplayCards board={this.state.deck.sideboard} isMain={false} handleClick={this.handleClick.bind(this)}/>
+                </div>
               </div>
             </div>
           </div>
-        </main>
+        </div>
+        <div className="jumbotron jumbotron-deck">
+          <div className="container">
+            <h2 className="display-4 "><strong className="text-white">Analysis</strong></h2>
+            <hr className="hr-white"/>
+            <div className="row">
+              <div className="col-md-4 col-lg-4">
+                <div className="card border-primary mb-3 card-search">
+                  <div className="card-header card-header-search">Converted Mana Cost</div>
+                  <this.CreateBarManaCost mainBoard={this.state.deck.main}/> 
+                </div>
+              </div>
+              <div className="col-md-4 col-lg-4">
+                <div className="card border-primary mb-3 card-search">
+                  <div className="card-header card-header-search">Land Drop probability</div>
+                  {/* <this.CreateBarManaCost mainBoard={this.state.deck.main}/>  */}
+                </div>
+              </div>
+              <div className="col-md-4 col-lg-4">
+                <div className="card border-primary mb-3 card-search">
+                  <div className="card-header card-header-search">Mana symbols/Land</div>
+                  {/* <this.CreateBarManaCost mainBoard={this.state.deck.main}/>  */}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
     );
   }
 }

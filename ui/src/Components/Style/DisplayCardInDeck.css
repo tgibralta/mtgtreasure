@@ -1,20 +1,18 @@
-.circle-black {
-    color: black;
-    font-size: 1.2em;
+.ms-c {
+    background-color: grey;
 }
-.circle-white {
-    color: white;
-    font-size: 1.2em;
+.ms-u {
+    background-color:  #85c1e9;
 }
-.circle-blue {
-    color: blue;
-    font-size: 1.2em;
+.ms-w {
+    background-color:  #fef9e7;
 }
-.circle-green {
-    color: green;
-    font-size: 1.2em;
+.ms-g {
+    background-color:   #48c9b0 ;
 }
-.circle-red {
-    color: red;
-    font-size: 1.2em;
+.ms-r {
+    background-color:  #e74c3c ;
+}
+.ms-b {
+    background-color: black;
 }

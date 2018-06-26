@@ -4,6 +4,7 @@ import 'react-table/react-table.css'
 import {DeleteCardFromCollection} from './../Actions/AccountAction'
 import {SearchCardPerName} from './../Actions/SearchAction'
 import './Style/TableCollection.css'
+import PopupCardCollection from './PopupCardCollection'
 
 class TableCollection extends Component {
   allocateData(data) {
@@ -11,11 +12,39 @@ class TableCollection extends Component {
     
     data.forEach((element) => {
       // let trend = element.trend
+      console.log(`CARD OBJECT IN TABLE COLLECTION: ${JSON.stringify(element)}`)
       let trend = Math.ceil(100 * (element.allCardInfo.Scryfall.usd - element.allCardInfo.DB.init_price)/element.allCardInfo.DB.init_price)
+
+
+      let labels = element.allCardInfo.DB.priceHistory.map(function(x, index) {
+        let splitDate = x.date.split("/")
+          return splitDate[1]
+      })
+      let data = element.allCardInfo.DB.priceHistory.map(function(x) {
+        return x.price
+      })
+      let chartData = {
+        labels: labels,
+        datasets: [
+          {
+            borderColor: '#154360',
+            label: '$',
+            data: data,
+            display: false,
+          }
+        ]
+      }
       let row = {
         buttons : element,
         number : element.allCardInfo.DB.number_of_card,
-        name : element.allCardInfo.Scryfall.name,
+        name : {
+          name: element.allCardInfo.Scryfall.name,
+          uri: element.allCardInfo.Scryfall.image_uris.normal,
+          price: element.allCardInfo.Scryfall.usd,
+          trend: trend,
+          initPrice: element.allCardInfo.DB.init_price,
+          chartData: chartData
+        },
         // set : element.allCardInfo.Scryfall.set_name,
         // initPrice : element.allCardInfo.DB.init_price,
         currentPrice : element.allCardInfo.Scryfall.usd,
@@ -65,12 +94,14 @@ class TableCollection extends Component {
       Header: <i className="fab fa-slack-hash icon-dashboard fa-3x"></i>,
       accessor: 'number',
       Cell: props => <p className="text-center text-name">{props.value}</p>,
+      
       minWidth: "10vh"
     },
     {
       Header: <i class="fas fa-info icon-dashboard fa-3x"></i>,
       accessor: 'name',
-      Cell: props => <p className="text-center">{props.value}</p>,
+      // Cell: props => <p className="text-center">{props.value}</p>,
+      Cell: props => <PopupCardCollection name={props.value.name} uri={props.value.uri} price={props.value.price} initPrice={props.value.initPrice} chartData={props.value.chartData} trend={props.value.trend}/>,
       filterable: true,
       minWidth: "10vh"
     },

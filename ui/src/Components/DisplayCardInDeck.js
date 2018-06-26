@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './Style/DisplayCardInDeck.css'
+import PopupCard from './PopupCard'
 
 class DisplayCardInDeck extends Component {
 
@@ -56,19 +57,21 @@ class DisplayCardInDeck extends Component {
     return (
       <div>
         <div className='row'>
-          <div className="col-md-1">
-            <p>{this.props.number}</p>
+          <div className="col-md-2">
+            <p>{this.props.cardInfo.number}</p>
           </div>
           <div className="col-md-7">
-            <a onClick={this.props.handleClick.bind(this)}>{this.props.name}</a>
+            <PopupCard name={this.props.cardInfo.name} uri={this.props.cardInfo.uri} price={this.props.cardInfo.price}/>
           </div>
-          <div className="col-md-2">
-            {/* <p>{this.props.manacost} </p> */}
+          <div className="col-md-3">
+            <this.ConvertManaCost manacost={this.props.manacost}/>
+          </div>
+          {/* <div className="col-md-2">
             <this.ConvertManaCost manacost={this.props.manacost}/>
           </div>
           <div className="col-md-2">
             <p>{this.props.price} $</p>
-          </div>
+          </div> */}
         </div>
       </div>
     )
