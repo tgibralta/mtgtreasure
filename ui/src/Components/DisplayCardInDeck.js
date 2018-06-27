@@ -44,7 +44,8 @@ class DisplayCardInDeck extends Component {
             return <i className="ms ms-p"/>
           }
           default : {
-            return <i className='ms'>{symbol}</i>
+            let classMana = 'ms ms-' + {symbol}
+            return <i className={classMana }>{symbol}</i>
             break
           }
         }

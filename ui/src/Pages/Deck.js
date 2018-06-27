@@ -9,7 +9,8 @@ import configuration from './../config/Config'
 import Navbar from './../Components/Navbar'
 import * as AccountActions from './../Actions/AccountAction'
 import {RedirectNavbar} from './../Functions/RedirectNavbar'
-import {Bar} from 'react-chartjs-2'
+import {Bar, Line} from 'react-chartjs-2'
+import ProbData from './../Assets/probLandDrop'
 
 
 class Deck extends Component {
@@ -57,7 +58,59 @@ class Deck extends Component {
     this.props.history.push(`/`)
   }
 
+  CreateLineLandDrop(props) {
+    let mainBoard = props.mainBoard
 
+    let arrayNbLand = mainBoard.map((card) => {
+      let type = card.type.split(' ')
+      // console.log(`words in type: ${JSON.stringify(type)}`)
+      let typeIsLand = 0
+      type.forEach((typeCard) => {
+        if (typeCard.toLowerCase() === 'land') {
+          typeIsLand = 1
+          // console.log(`It's a Land`)
+        }
+      })
+      if (typeIsLand) return card.number
+      else return 0
+    })
+
+    let nbLand = arrayNbLand.reduce((accumulator, element)=> {
+      accumulator = accumulator + element
+      return accumulator
+    }, 0)
+
+    let indexLand = nbLand - 17
+
+    let labels = [2,3,4,5]
+    let dataSetPlay = ProbData.ProbLandDropPlay[indexLand]
+    let dataSetDraw = ProbData.ProbLandDropDraw[indexLand]
+    let manaFlow = ProbData.ProbManaFlow[indexLand]
+
+    console.log(`Nb Land: ${nbLand}`)
+    console.log(`Object ProbData: ${JSON.stringify(ProbData)}`)
+    console.log(`Prob Play: ${JSON.stringify(dataSetPlay)}`)
+    console.log(`Prob Draw: ${JSON.stringify(dataSetDraw)}`)
+
+    let chartData = {
+      labels: labels,
+      datasets: [
+        {
+          borderColor: ' #f8c471 ',
+          label: 'Play',
+          data: dataSetPlay,
+          fill: false,
+        },
+        {
+          borderColor: ' #76d7c4',
+          label: 'Draw',
+          data: dataSetDraw,
+          fill: false,
+        }
+      ]
+    }
+    return <Line data={chartData} width={"100%"} height={"100%"}/>
+  }
 
   CreateBarManaCost (props) {
     let mainBoard = props.mainBoard
@@ -347,8 +400,8 @@ class Deck extends Component {
               </div>
               <div className="col-md-4 col-lg-4">
                 <div className="card border-primary mb-3 card-search">
-                  <div className="card-header card-header-search">Land Drop probability</div>
-                  {/* <this.CreateBarManaCost mainBoard={this.state.deck.main}/>  */}
+                  <div className="card-header card-header-search">Land Drop probability/Turn</div>
+                  <this.CreateLineLandDrop mainBoard={this.state.deck.main}/>
                 </div>
               </div>
               <div className="col-md-4 col-lg-4">
