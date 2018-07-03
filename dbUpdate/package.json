@@ -6,8 +6,8 @@
   "author": "Thierry GIBRALTA <thierry.gibralta@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start_local": "NODE_CONFIG_DIR=./server/config NODE_ENV=default node dbUpdate.js",
-    "start_dev": "NODE_CONFIG_DIR=./server/config NODE_ENV=dev node dbUpdate.js"
+    "start_local": "NODE_CONFIG_DIR=./server/config NODE_ENV=default node dbUpdate.js --max_old_space_size=4096",
+    "start_dev": "NODE_CONFIG_DIR=./server/config NODE_ENV=dev node dbUpdate.js --max_old_space_size=4096"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
