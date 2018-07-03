@@ -2,8 +2,8 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const express = require('express')
 const cors = require('cors')
-// const schedule = require('node-schedule')
-// const fetchPrice = require('./server/jobs/fetchPrices')
+const schedule = require('node-schedule')
+const fetchPrice = require('./server/jobs/fetchPrices')
 
 
 global.rootRequire = (name) => {
@@ -11,7 +11,7 @@ global.rootRequire = (name) => {
 }
 
 // PORT DEFINITION
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 8081
 const hostname = process.env.HOSTNAME
 
 // APP SETUP
@@ -22,8 +22,6 @@ app.use(cors())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
-// ROUTES
-require.main.require('./server/routes')(app)
 
 
 

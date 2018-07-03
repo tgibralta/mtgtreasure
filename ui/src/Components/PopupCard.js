@@ -9,7 +9,7 @@ class PopupCard extends Component {
   render() {
 
     return (
-      <Popup trigger={<a className="text-card-deck text-left">{this.props.name}</a>}  modal>
+      <Popup trigger={<a align="left" className="text-card-deck text-left">{this.props.name}</a>}  modal>
         <div>
           <div className="card border-primary mb-3 card-search">
             <img className="img-popup img-center"src={this.props.uri}/>

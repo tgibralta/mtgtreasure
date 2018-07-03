@@ -12,40 +12,40 @@ class DisplayCardInDeck extends Component {
         switch (symbol) {
           case 'C': {
             // return  <i className="far fa-circle circle-grey"/> 
-            return <i className="ms ms-c"/>
+            return <i align="right" className="ms ms-c"/>
             break
           }
           case 'U': {
             // return  <i className="far fa-circle circle-blue"/> 
-            return <i className="ms ms-u"/>
+            return <i align="right" className="ms ms-u"/>
             break
           }
           case 'W': {
             // return  <i className="far fa-circle circle-white"/> 
-            return <i className="ms ms-w"/>
+            return <i align="right" className="ms ms-w"/>
             break
           }
           case 'R': {
             // return  <i className="far fa-circle circle-red"/> 
-            return <i className="ms ms-r"/>
+            return <i align="right" className="ms ms-r"/>
             break
           }
           case 'G': {
             // return  <i className="far fa-circle circle-green"/> 
-            return <i className="ms ms-g"/>
+            return <i align="right" className="ms ms-g"/>
             break
           }
           case 'B': {
             // return  <i className="far fa-circle circle-black"/> 
-            return <i className="ms ms-b"/>
+            return <i align="right" className="ms ms-b"/>
             break
           }
           case 'P': {
-            return <i className="ms ms-p"/>
+            return <i align="right" className="ms ms-p"/>
           }
           default : {
             let classMana = 'ms ms-' + {symbol}
-            return <i className={classMana }>{symbol}</i>
+            return <i align="right" className={classMana }>{symbol}</i>
             break
           }
         }
@@ -58,21 +58,12 @@ class DisplayCardInDeck extends Component {
     return (
       <div>
         <div className='row'>
-          <div className="col-md-2">
-            <p>{this.props.cardInfo.number}</p>
+          <div className="col-md-9 col-sm-9">
+            <p align="left">{this.props.cardInfo.number} <PopupCard name={this.props.cardInfo.name} uri={this.props.cardInfo.uri} price={this.props.cardInfo.price}/></p>
           </div>
-          <div className="col-md-7">
-            <PopupCard name={this.props.cardInfo.name} uri={this.props.cardInfo.uri} price={this.props.cardInfo.price}/>
-          </div>
-          <div className="col-md-3">
+          <div className="col-md-3 col-sm-3">
             <this.ConvertManaCost manacost={this.props.manacost}/>
           </div>
-          {/* <div className="col-md-2">
-            <this.ConvertManaCost manacost={this.props.manacost}/>
-          </div>
-          <div className="col-md-2">
-            <p>{this.props.price} $</p>
-          </div> */}
         </div>
       </div>
     )

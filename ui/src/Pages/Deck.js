@@ -112,6 +112,33 @@ class Deck extends Component {
     return <Line data={chartData} width={"100%"} height={"100%"}/>
   }
 
+  CreateManaFlowProb (props) {
+    let mainBoard = props.mainBoard
+    let arrayNbLand = mainBoard.map((card) => {
+      let type = card.type.split(' ')
+      // console.log(`words in type: ${JSON.stringify(type)}`)
+      let typeIsLand = 0
+      type.forEach((typeCard) => {
+        if (typeCard.toLowerCase() === 'land') {
+          typeIsLand = 1
+          // console.log(`It's a Land`)
+        }
+      })
+      if (typeIsLand) return card.number
+      else return 0
+    })
+
+    let nbLand = arrayNbLand.reduce((accumulator, element)=> {
+      accumulator = accumulator + element
+      return accumulator
+    }, 0)
+
+    let indexLand = nbLand - 17
+    let manaFlow = ProbData.ProbManaFlow[indexLand]
+
+    return (<h3>{manaFlow} %</h3>)
+  }
+
   CreateBarManaCost (props) {
     let mainBoard = props.mainBoard
     let nbCardCMC1 = mainBoard.reduce((accumulator, element) => {
@@ -406,8 +433,8 @@ class Deck extends Component {
               </div>
               <div className="col-md-4 col-lg-4">
                 <div className="card border-primary mb-3 card-search">
-                  <div className="card-header card-header-search">Mana symbols/Land</div>
-                  {/* <this.CreateBarManaCost mainBoard={this.state.deck.main}/>  */}
+                  <div className="card-header card-header-search">Mana Flow Probability</div>
+                  <this.CreateManaFlowProb mainBoard={this.state.deck.main}/>
                 </div>
               </div>
             </div>
