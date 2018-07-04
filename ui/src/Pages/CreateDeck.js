@@ -5,6 +5,9 @@ import displayDeckStore from './../Stores/DisplayDeckStore'
 import './Style/CreateDeck.css'
 import FormEditDeck from './../Components/FormEditDeck'
 import {redirectToDeckPage} from './../Functions/redirectToDeckPage'
+import Navbar from './../Components/Navbar'
+import {RedirectNavbar} from './../Functions/RedirectNavbar'
+import * as AccountActions from './../Actions/AccountAction'
 const SearchCardPerName = require('./../Actions/SearchAction').SearchCardPerName
 const SetDeck = require('./../Actions/DisplayDeckAction').SetDeck
 const AddDeck = require('./../Actions/AccountAction').AddDeck
@@ -14,6 +17,7 @@ class CreateDeck extends Component {
     super()
     this.state = {
       user: userStore.getUser(),
+      isLoggedIn: userStore.getIsLoggedIn(),
       newDeck : displayDeckStore.getDeckEdited(),
       textCardMain : displayDeckStore.getTextMain(),
       textCardSideboard : displayDeckStore.getTextSideboard()
@@ -24,7 +28,8 @@ class CreateDeck extends Component {
   componentWillMount () {
     userStore.on('change', () => {
       this.setState({
-        user: userStore.getUser()
+        user: userStore.getUser(),
+        isLoggedIn: userStore.getIsLoggedIn()
       }) 
     })
     displayDeckStore.on('change', () => {
@@ -34,6 +39,11 @@ class CreateDeck extends Component {
         textCardSideboard : displayDeckStore.getTextSideboard()
       }) 
     })
+  }
+
+  Logout() {
+    AccountActions.SignoutUser()
+    this.props.history.push(`/`)
   }
 
   Submit(user) {
@@ -105,22 +115,41 @@ class CreateDeck extends Component {
 
   render() {
     return (
-      <div className="container-fluid">
-      <div className="row">
-        <div className="col-md-2 no-float">
-          <Sidebar username={this.state.user.username}/>
+    //   <div className="container-fluid">
+      // <div className="row">
+      //   <div className="col-md-2 no-float">
+      //     <Sidebar username={this.state.user.username}/>
+      //   </div>
+        // <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        //   <h3>Edit Deck</h3>
+        //   <hr/>
+        //   <div className="row">
+        //     <label for="inputName">Name</label>
+        //     <input className="form-control" id="inputName" placeholder="Name Deck" type="text" defaultValue={this.state.newDeck.deckname}/>
+        //     <div className="col-md-4">
+        //       <FormEditDeck deckInfo={this.state.newDeck} submit={this.Submit.bind(this,this.state.user)} valueMain={this.state.textCardMain} valueSideboard={this.state.textCardSideboard}/>
+        //     </div>
+        //   </div>
+        // </main>
+      // </div>
+    // </div>
+    <div>
+      <div className="jumbotron jumbotron-dashboard">
+        <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username} Logout={this.Logout.bind(this)} Redirect={RedirectNavbar} history={this.props.history}/>
+        <div className="container container-text-jumbo">
+          <h4 className="text-center text-title-jumbo">DASHBOARD</h4>
         </div>
-        <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-          <h3>Edit Deck</h3>
-          <hr/>
-          <div className="row">
-            <label for="inputName">Name</label>
-            <input className="form-control" id="inputName" placeholder="Name Deck" type="text" defaultValue={this.state.newDeck.deckname}/>
-            <div className="col-md-4">
-              <FormEditDeck deckInfo={this.state.newDeck} submit={this.Submit.bind(this,this.state.user)} valueMain={this.state.textCardMain} valueSideboard={this.state.textCardSideboard}/>
-            </div>
+      </div>
+      <div className="container">
+        <h3>Edit Deck</h3>
+        <hr/>
+        <div className="row">
+          <label for="inputName">Name</label>
+          <input className="form-control" id="inputName" placeholder="Name Deck" type="text" defaultValue={this.state.newDeck.deckname}/>
+          <div className="col-md-4">
+            <FormEditDeck deckInfo={this.state.newDeck} submit={this.Submit.bind(this,this.state.user)} valueMain={this.state.textCardMain} valueSideboard={this.state.textCardSideboard}/>
           </div>
-        </main>
+        </div>
       </div>
     </div>
     );
