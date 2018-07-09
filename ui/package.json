@@ -16,6 +16,7 @@
     "react-fontawesome": "^1.6.1",
     "react-global-configuration": "^1.2.1",
     "react-grid-gallery": "^0.4.8",
+    "react-loader": "^2.4.5",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-hash-link": "^1.2.0",

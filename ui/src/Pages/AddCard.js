@@ -7,6 +7,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import SearchCardDisplay from './../Components/SearchCardDisplay'
 import 'react-tabs/style/react-tabs.css'
 import {RedirectNavbar} from './../Functions/RedirectNavbar'
+import Loader from 'react-loader'
 
 const SearchCardPerName = require('./../Actions/SearchAction').SearchCardPerName
 
@@ -18,6 +19,7 @@ class AddCard extends Component {
       user: userStore.getUser(),
       result: resultSearchStore.getResults(),
       isLoggedIn: userStore.getIsLoggedIn(),
+      loaded: true
     }
   }
 
@@ -68,7 +70,7 @@ class AddCard extends Component {
               }
             ]
           }
-          return <SearchCardDisplay imageGallery={imageGallery}  infoCardGallery={result.cardInfo} user={user} chartData={chartData} trend={trend}/>// goToAddCard={props.goToAddCard.bind(this)}/>
+          return <SearchCardDisplay imageGallery={imageGallery}  infoCardGallery={result.cardInfo} user={user} chartData={chartData} trend={trend}/>
         } else {
           return (<h3>Error display</h3>)
         }      
@@ -124,13 +126,21 @@ class AddCard extends Component {
   }
 
   handleSearch () {
+    this.setState({
+      loaded: false
+    })
     let cardName = document.getElementById('inputSearch').value
     SearchCardPerName(cardName)
     .then(() => {
-      // console.log(`Results of the search returned from Action`)
+      this.setState({
+        loaded: true
+      })
     })
     .catch((err) => {
       console.log(err)
+      this.setState({
+        loaded: true
+      })
     })
   }
     Logout() {
@@ -152,11 +162,13 @@ class AddCard extends Component {
             <input className="form-control mr-sm-2" id="inputSearch" placeholder="Search for a card to add to your collection" type="text"/>
             <button className="btn btn-lg btn-signin  btn-primary btn-block my-2 my-sm-0" type="submit" onClick={this.handleSearch.bind(this)}><i class="fas fa-search"></i></button>
           </div>
-          <div className="jumbotron">
-            <div className="container">
-              <this.CreateCardDisplayElements results={this.state.result} user={this.state.user}/>
+          <Loader loaded={this.state.loaded} className="loader-spinner">
+            <div className="jumbotron">
+              <div className="container">
+                <this.CreateCardDisplayElements results={this.state.result} user={this.state.user}/>
+              </div>
             </div>
-          </div>
+          </Loader>
         </div>
       </div>
     );

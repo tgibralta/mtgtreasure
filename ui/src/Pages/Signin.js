@@ -4,6 +4,7 @@ import imgLogo from './../logo-mtg-treasure.png'
 import Footer from './../Components/Footer'
 import Navbar from './../Components/Navbar'
 import userStore from './../Stores/UserStore'
+import Loader from 'react-loader'
 const SigninUser = require('./../Actions/AccountAction').SigninUser
 
 class Signin extends Component {
@@ -12,27 +13,30 @@ class Signin extends Component {
     super()
     this.state = {
       user: userStore.getUser(),
-      isLoggedIn: userStore.getIsLoggedIn()
+      isLoggedIn: userStore.getIsLoggedIn(),
+      loaded: true
     }
   }
 
-  // componentWillMount () {
-  //   userStore.on('change', () => {
-  //     this.setState({
-  //       user: userStore.getUser(),
-  //       isLoggedIn: userStore.getIsLoggedIn()
-  //     })
-  //   })
-  // }
+  componentWillMount () {
+    this.setState({
+      user: userStore.getUser(),
+      isLoggedIn: userStore.getIsLoggedIn(),
+      loaded: true
+    })
+  }
 
   handleSubmit() {
+    this.setState({ loaded: false })
     let username = document.getElementById('inputUsername').value
     let password = document.getElementById('inputPassword').value
+    console.log(`Value loaded was changed: ${this.state.loaded}`)
     SigninUser(username, password)
     .then(() => {
       this.props.history.push(`/user/${username}/`)
     })
     .catch((err) => {
+      this.setState({ loaded: true })
       console.log(err)
     })
     
@@ -41,23 +45,25 @@ class Signin extends Component {
   render() {
     return (
       <div>
-        <div className="jumbotron jumbotron-full">
-          <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username}/>
-          <div className="card card-container card-sign card-transparent">
-              <img className="logo-form" src={imgLogo}/>
-              <p id="profile-name" className="profile-name-card"></p>
-              <form className="form-signin">
-                  <span id="reauth-email" className="reauth-email"></span>
-                  <input type="text" id="inputUsername" className="form-control" placeholder="Username" required autoFocus/>
-                  <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
-              </form>
-              <button className="btn btn-lg btn-primary btn-block btn-signin" onClick={this.handleSubmit.bind(this)}>Sign In</button>
-              <a href="/" className="forgot-password">
-                Forgot the password?
-              </a>
+        <Loader loaded={this.state.loaded} className="loader-spinner-white">
+          <div className="jumbotron jumbotron-full">
+            <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username}/>
+            <div className="card card-container card-sign card-transparent">
+                <img className="logo-form" src={imgLogo}/>
+                <p id="profile-name" className="profile-name-card"></p>
+                <form className="form-signin">
+                    <span id="reauth-email" className="reauth-email"></span>
+                    <input type="text" id="inputUsername" className="form-control" placeholder="Username" required autoFocus/>
+                    <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
+                </form>
+                <button className="btn btn-lg btn-primary btn-block btn-signin" onClick={this.handleSubmit.bind(this)}>Sign In</button>
+                <a href="/" className="forgot-password">
+                  Forgot the password?
+                </a>
+            </div>
+            <Footer/>
           </div>
-        <Footer/>
-        </div>
+        </Loader>
       </div>
     );
   }
