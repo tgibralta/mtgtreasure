@@ -15,7 +15,7 @@ const queryToDB = (data, client) => new Promise((resolve, reject) => {
   client.query(`INSERT INTO ${config.get("DB.PGTABLEPRICETRACKED.NAME")} (${config.get("DB.PGTABLEPRICETRACKED.COLUMN0")}, ${config.get("DB.PGTABLEPRICETRACKED.COLUMN1")}, ${config.get("DB.PGTABLEPRICETRACKED.COLUMN2")}) 
                 VALUES ('${card_id}', '${price}', '${date}')`)
   .then(() => {
-    
+    // client.release()
     return resolve()
   })
   .catch((err) => {
@@ -23,63 +23,6 @@ const queryToDB = (data, client) => new Promise((resolve, reject) => {
     return reject(err)
   })  
 })
-
-const requestToAPI = (options) => new Promise ((resolve, reject) => {
-  
-  let optionsQuery = options
-  rp(optionsQuery)
-  .then((res) => {
-    const pool = new Pool({
-      user: config.get('DB.PGUSER'),
-      host: config.get('DB.PGHOST'),
-      database: config.get('DB.PGDATABASE'),
-      password: config.get('DB.PGPASSWORD'),
-      port: config.get('DB.PGPORT')
-    })
-    pool.connect()
-    .then((client) => {
-      let response = JSON.parse(res)
-      let has_more = response.has_more
-      let next_page = response.next_page
-      let data = response.data
-      let queries = data.map(function(rowData) {return queryToDB(rowData, client)})
-      let promiseQueries = Promise.all(queries)
-      promiseQueries
-      .then(() => {
-        if (has_more) {
-          optionsQuery = {
-            uri: next_page,
-            method: 'GET'
-          }
-          client.release()
-          pool.end()
-          console.log(next_page)
-          requestToAPI(optionsQuery)
-          .then(() => {
-            return resolve()
-          })
-          .catch((errInception) => {
-            return reject(errInception)
-          })
-        } else {
-          pool.end()
-          return resolve()
-        }
-      })
-      .catch((errQueries) => {
-        pool.end()
-        return reject(errQueries)
-      })
-    })
-    .catch((errPool) => {
-      return reject(errPool)
-    })
-  })
-  .catch((err) => {
-    console.log(`FetchPrice Job failed: ${err}`)
-  })
-})
-
 
 
 const getUsers = () => new Promise((resolve, reject) => {
@@ -229,8 +172,6 @@ const getCollection = (user) => new Promise((resolve, reject) => {
 })
 
 
-
-
 const updateClientHistory = () => new Promise((resolve, reject) => {
   getUsers()
   .then ((users) => {
@@ -252,32 +193,104 @@ const updateClientHistory = () => new Promise((resolve, reject) => {
 })
 
 
+const queryAPIOnePage = (urlPage) => new Promise((resolve, reject) => {
+  console.log(urlPage)
+  let options = {
+    uri: urlPage,
+    method: 'GET'
+  }
+  rp(options)
+  .then((res) => {
+    return resolve(JSON.parse(res))
+  })
+  .catch((err) => {
+    return reject(`Error page ${pageNb}: ${err}`)
+  })
+})
+
+const updatePricesOnePage = (urlPage) => new Promise((resolve, reject) => {
+  console.log(`updatePricesOnePage input: ${urlPage}`)
+  const pool = new Pool({
+    user: config.get('DB.PGUSER'),
+    host: config.get('DB.PGHOST'),
+    database: config.get('DB.PGDATABASE'),
+    password: config.get('DB.PGPASSWORD'),
+    port: config.get('DB.PGPORT')
+  })
+  pool.connect()
+  .then((client) => {
+    queryAPIOnePage(urlPage)
+    .then((response) => {
+      let has_more = response.has_more
+      let next_page = response.next_page
+      let data = response.data
+      let queries = data.map(function(rowData) {return queryToDB(rowData, client)})
+      let promiseQueries = Promise.all(queries)
+      promiseQueries.then(()=> {
+        client.release()
+        pool.end()
+        console.log(`HAS MORE: ${has_more}, Next page: ${next_page}`)
+        return resolve({has_more, next_page})
+      })
+      .catch((errorPromise) => {
+        client.release()
+        pool.end()
+        return reject(errorPromise)
+      })
+    })
+    .catch((err) => {
+      client.release()
+      pool.end()
+      return reject(err)
+    })
+  })
+  .catch((errorAPI) => {
+    return reject(errorAPI)
+  })
+})
+
+const updatePrices = (urlPage) => new Promise((resolve, reject) => {
+  updatePricesOnePage(urlPage)
+  .then((response) => {
+    if (response.has_more) {
+      let newPage = response.next_page
+      console.log(`Page increase from ${urlPage} to ${newPage}`)
+      updatePrices(newPage)
+      .then(() => {
+        return resolve()
+      })
+      .catch((errRecursive) => {
+        return reject(errRecursive)
+      })
+    } else {
+      console.log(`Last Page: ${urlPage}`)
+      return resolve()
+    }
+  })
+  .catch((error) => {
+    return reject(error)
+  })
+})
+
 let rule = new schedule.RecurrenceRule()
 rule.hour = config.get("SCHEDULE_FETCH_PRICE.H")
 rule.minute = config.get("SCHEDULE_FETCH_PRICE.MIN")
-// rule.second = new schedule.Range(0,59,30)
 
 let scheduleFetchPrice = schedule.scheduleJob(rule, function(){
 
-  let pageNb = 1
-  let url = urlSearch + pageNb.toString()
-  console.log(url)
-  let options = {
-    uri: url,
-    method: 'GET'
-  }
-  requestToAPI(options)
+  let initPage = urlSearch + "1"
+  updatePrices(initPage)
   .then(() => {
     console.log(`Schedule Job gracefully completed. Now updating the client history`)
     updateClientHistory()
     .then (() => {
-      console.log(`History Job gracefully completed`)
+      console.log(`History Job gracefully completed :)`)
     })
     .catch((errUpdate) => {
-      console.log(`History Update sadly failed: ${errUpdate}`)
+      console.log(`History Update sadly failed :(: ${errUpdate}`)
     })
   })
-  .catch((errRequest) => {
-    console.log(`Schedule Job sadly failed: ${errRequest}`)
+  .catch((errUpdPricese) => {
+    console.log(`Error updatePrices: ${errUpdPricese}`)
   })
 })
