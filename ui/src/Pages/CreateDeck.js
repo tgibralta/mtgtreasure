@@ -9,6 +9,9 @@ import Navbar from './../Components/Navbar'
 import {RedirectNavbar} from './../Functions/RedirectNavbar'
 import * as AccountActions from './../Actions/AccountAction'
 import Loader from 'react-loader'
+import Alert from 'react-s-alert'
+import 'react-s-alert/dist/s-alert-default.css'
+import 'react-s-alert/dist/s-alert-css-effects/slide.css'
 const SearchCardPerName = require('./../Actions/SearchAction').SearchCardPerName
 const SetDeck = require('./../Actions/DisplayDeckAction').SetDeck
 const AddDeck = require('./../Actions/AccountAction').AddDeck
@@ -50,9 +53,9 @@ class CreateDeck extends Component {
   }
 
   Submit(user) {
-    this.setState({
-      loaded: false
-    })
+    // this.setState({
+    //   loaded: false
+    // })
     let userID = user.userID
     let username = user.username
     // Parse the content of the text area for the Main
@@ -99,32 +102,72 @@ class CreateDeck extends Component {
       sideboardObject.push(element)
     })
 
-    // console.log(`Main: ${JSON.stringify(mainObject)}`)
-    // console.log(`Sideboard: ${JSON.stringify(sideboardObject)}`)
-    AddDeck(userID, deckName, legality, mainObject, sideboardObject)
-    .then((deckCreated) => {
-      // console.log(`Now waiting to redirect: ${JSON.stringify(deckCreated)}`)
-      // redirectToDeckPage.bind(this, deckCreated)
-      SetDeck(deckCreated)
-      .then(() => {
-        this.props.history.push(`/user/${this.state.user.username}/deck/${deckCreated.deckname}`)
-        this.setState({
-          loaded: true
+    let nbInMain = mainObject.reduce((accumulator, element) => {
+      accumulator += parseInt(element.number)
+      return accumulator
+    }, 0)
+    let nbInSide = sideboardObject.reduce((accumulator, element) => {
+      accumulator += parseInt(element.number)
+      return accumulator
+    }, 0)
+
+    console.log(`nbInMain: ${nbInMain}`)
+    console.log(`nbInSide: ${nbInSide}`)
+
+    if (nbInMain < 60 | nbInSide !== 15) {
+      if (nbInMain < 60) {
+        Alert.error(`Cards in main: ${nbInMain}`, {
+          position: 'bottom-right',
+          effect: 'slide',
+          beep: false,
+          timeout: 2000,
+          offset: 100,
+          html: true
+        })
+      }
+      if (nbInSide !== 15) {
+        Alert.error(`Cards in sideboard: ${nbInSide}`, {
+          position: 'bottom-right',
+          effect: 'slide',
+          beep: false,
+          timeout: 2000,
+          offset: 100,
+          html: true
+        })
+      }
+    } else {
+      this.setState({
+        loaded: false
+      })
+      // console.log(`Main: ${JSON.stringify(mainObject)}`)
+      // console.log(`Sideboard: ${JSON.stringify(sideboardObject)}`)
+      AddDeck(userID, deckName, legality, mainObject, sideboardObject)
+      .then((deckCreated) => {
+        // console.log(`Now waiting to redirect: ${JSON.stringify(deckCreated)}`)
+        // redirectToDeckPage.bind(this, deckCreated)
+        SetDeck(deckCreated)
+        .then(() => {
+          this.props.history.push(`/user/${this.state.user.username}/deck/${deckCreated.deckname}`)
+          this.setState({
+            loaded: true
+          })
+        })
+        .catch((err) => {
+          console.log(`Error when trying to redirect: ${err}`)
+          this.setState({
+            loaded: true
+          })
         })
       })
       .catch((err) => {
-        console.log(`Error when trying to redirect: ${err}`)
+        console.log(`Err during deck creation: ${err}`)
         this.setState({
           loaded: true
         })
       })
-    })
-    .catch((err) => {
-      console.log(`Err during deck creation: ${err}`)
-      this.setState({
-        loaded: true
-      })
-    })
+    }
+
+    
 
   }
 
@@ -141,6 +184,7 @@ class CreateDeck extends Component {
         <div className="container">
           <h3>Edit Deck</h3>
           <hr/>
+          <Alert stack={{limit: 3}} />
           <div className="row">
             <label for="inputName">Name</label>
             <input className="form-control" id="inputName" placeholder="Name Deck" type="text" defaultValue={this.state.newDeck.deckname}/>

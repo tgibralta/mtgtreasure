@@ -8,6 +8,9 @@ import SearchCardDisplay from './../Components/SearchCardDisplay'
 import 'react-tabs/style/react-tabs.css'
 import {RedirectNavbar} from './../Functions/RedirectNavbar'
 import Loader from 'react-loader'
+import Alert from 'react-s-alert'
+import 'react-s-alert/dist/s-alert-default.css'
+import 'react-s-alert/dist/s-alert-css-effects/slide.css'
 
 const SearchCardPerName = require('./../Actions/SearchAction').SearchCardPerName
 
@@ -126,22 +129,43 @@ class AddCard extends Component {
   }
 
   handleSearch () {
-    this.setState({
-      loaded: false
-    })
+    
     let cardName = document.getElementById('inputSearch').value
-    SearchCardPerName(cardName)
-    .then(() => {
-      this.setState({
-        loaded: true
+    if (cardName === '') {
+      Alert.error('Empty search', {
+          position: 'bottom-right',
+          effect: 'slide',
+          beep: false,
+          timeout: 2000,
+          offset: 100,
+          html: true
       })
-    })
-    .catch((err) => {
-      console.log(err)
+    } else {
       this.setState({
-        loaded: true
+        loaded: false
       })
-    })
+      SearchCardPerName(cardName)
+      .then(() => {
+        this.setState({
+          loaded: true
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        this.setState({
+          loaded: true
+        })
+        Alert.error('Error: no card to display', {
+          position: 'bottom-right',
+          effect: 'slide',
+          beep: false,
+          timeout: 2000,
+          offset: 100,
+          html: true
+        })
+      })
+    }
+    
   }
     Logout() {
     AccountActions.SignoutUser()
@@ -158,6 +182,7 @@ class AddCard extends Component {
           </div>
         </div>
         <div className="container">
+          <Alert stack={{limit: 3}} />
           <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 ">
             <input className="form-control mr-sm-2" id="inputSearch" placeholder="Search for a card to add to your collection" type="text"/>
             <button className="btn btn-lg btn-signin  btn-primary btn-block my-2 my-sm-0" type="submit" onClick={this.handleSearch.bind(this)}><i class="fas fa-search"></i></button>

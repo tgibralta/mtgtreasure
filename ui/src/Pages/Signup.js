@@ -5,6 +5,9 @@ import Footer from './../Components/Footer'
 import Navbar from './../Components/Navbar'
 import userStore from './../Stores/UserStore'
 import Loader from 'react-loader'
+import Alert from 'react-s-alert'
+import 'react-s-alert/dist/s-alert-default.css'
+import 'react-s-alert/dist/s-alert-css-effects/slide.css'
 const CreateUser = require('./../Actions/AccountAction').CreateUser
 
 class Signup extends Component {
@@ -25,26 +28,61 @@ class Signup extends Component {
   }
 
   handleSubmit() {
-    this.setState({
-      loaded: false
-    })
+    
     let username = document.getElementById('inputUsername').value
     let password = document.getElementById('inputPassword').value
     let mail = document.getElementById('inputEmail').value
-    CreateUser(username, mail, password)
-    .then(() => {
-      console.log(`User successfuly created`)
-      this.props.history.push(`/user/${username}/`)
+    if (username === '' | password === '' | mail === '') {
+      if (username === '') {
+          Alert.error('Empty username', {
+            position: 'bottom-right',
+            effect: 'slide',
+            beep: false,
+            timeout: 2000,
+            offset: 100,
+            html: true
+        })
+      }
+      if (password === '') {
+          Alert.error('Empty password', {
+            position: 'bottom-right',
+            effect: 'slide',
+            beep: false,
+            timeout: 2000,
+            offset: 100,
+            html: true
+        })
+      }
+      if (mail === '') {
+          Alert.error('Empty mail', {
+            position: 'bottom-right',
+            effect: 'slide',
+            beep: false,
+            timeout: 2000,
+            offset: 100,
+            html: true
+        })
+      }
+    } else {
       this.setState({
-        loaded: true
+        loaded: false
       })
-    })
-    .catch((err) => {
-      console.log(`Failed to contact middleware: ${err}`)
-      this.setState({
-        loaded: true
+      CreateUser(username, mail, password)
+      .then(() => {
+        console.log(`User successfuly created`)
+        this.props.history.push(`/user/${username}/`)
+        this.setState({
+          loaded: true
+        })
       })
-    })
+      .catch((err) => {
+        console.log(`Failed to contact middleware: ${err}`)
+        this.setState({
+          loaded: true
+        })
+      })
+    }
+    
   }
 
   render() {
@@ -53,6 +91,7 @@ class Signup extends Component {
         <Loader loaded={this.state.loaded} className="loader-spinner-white">
           <div className="jumbotron jumbotron-sign jumbotron-full">
             <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username}/>
+            <Alert stack={{limit: 3}} />
             <div className = 'card card-container card-sign card-transparent'>
               <img className="logo-form" src={imgLogo}/>
               <form className='form-signin' onSubmit={this.handleSubmit}>

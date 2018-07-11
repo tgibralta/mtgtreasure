@@ -5,6 +5,9 @@ import Footer from './../Components/Footer'
 import Navbar from './../Components/Navbar'
 import userStore from './../Stores/UserStore'
 import Loader from 'react-loader'
+import Alert from 'react-s-alert'
+import 'react-s-alert/dist/s-alert-default.css'
+import 'react-s-alert/dist/s-alert-css-effects/slide.css'
 const SigninUser = require('./../Actions/AccountAction').SigninUser
 
 class Signin extends Component {
@@ -38,16 +41,26 @@ class Signin extends Component {
     .catch((err) => {
       this.setState({ loaded: true })
       console.log(err)
+      Alert.error('Invalid credentials', {
+          position: 'bottom-right',
+          effect: 'slide',
+          beep: false,
+          timeout: 2000,
+          offset: 100,
+          html: true
+      })
     })
     
   }
 
   render() {
     return (
+      
       <div>
         <Loader loaded={this.state.loaded} className="loader-spinner-white">
           <div className="jumbotron jumbotron-full">
             <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username}/>
+            <Alert stack={{limit: 3}} />
             <div className="card card-container card-sign card-transparent">
                 <img className="logo-form" src={imgLogo}/>
                 <p id="profile-name" className="profile-name-card"></p>
@@ -64,7 +77,9 @@ class Signin extends Component {
             <Footer/>
           </div>
         </Loader>
+        {/* </AlertProvider> */}
       </div>
+      
     );
   }
 }
