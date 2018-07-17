@@ -25,12 +25,14 @@ class  DisplayDeckStore extends EventEmitter {
     // console.log(`In store Display Deck: ${JSON.stringify(deck)}`)
     this.deck = deck
     this.emit('change')
+    console.log(`SetDeck emitted`)
   }
 
   setEditDeck(deck){
     // console.log(`Edited Deck: ${JSON.stringify(deck)}`)
     this.deckEdited = deck
     this.emit('change')
+    console.log(`setEditDeck emitted`)
   }
 
   setImageDeck(imageGallery){

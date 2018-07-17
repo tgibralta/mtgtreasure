@@ -172,6 +172,11 @@ class AddCard extends Component {
     this.props.history.push(`/`)
   }
 
+  Back (user) {
+    let username = user.username
+    this.props.history.push(`/user/${username}/collection/`)
+  }
+
   render() {
     return (
       <div>
@@ -183,10 +188,18 @@ class AddCard extends Component {
         </div>
         <div className="container">
           <Alert stack={{limit: 3}} />
-          <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 ">
-            <input className="form-control mr-sm-2" id="inputSearch" placeholder="Search for a card to add to your collection" type="text"/>
-            <button className="btn btn-lg btn-signin  btn-primary btn-block my-2 my-sm-0" type="submit" onClick={this.handleSearch.bind(this)}><i class="fas fa-search"></i></button>
+            <div className="row">
+              <div className="col-md-8 col-sm-8">
+                <input className="form-control mr-sm-2" id="inputSearch" placeholder="Search for a card to add to your collection" type="text"/>
+              </div>
+              <div className="col-md-2 col-sm-2">
+                <button className="btn btn-lg btn-signin  btn-primary btn-block" type="submit" onClick={this.handleSearch.bind(this)}>Search</button>
+              </div>
+              <div className="col-md-2 col-sm-2">
+                <button className="btn btn-lg btn-signin  btn-primary  btn-block" type="submit" onClick={this.Back.bind(this, this.state.user)}>Back</button>
+              </div>
           </div>
+          <hr/>
           <Loader loaded={this.state.loaded} className="loader-spinner">
             <div className="jumbotron">
               <div className="container">

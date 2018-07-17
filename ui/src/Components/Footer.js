@@ -7,7 +7,7 @@ class Footer extends Component {
   render() {
     return (
       <div>
-        <footer className="page-footer font-small stylish-color-dark pt-4 mt-4">
+        <footer className="page-footer font-small">
           <div className="container">
             <div className="row">
               <div className="col-md-3">
@@ -22,7 +22,6 @@ class Footer extends Component {
                 <p>Developers</p>
               </div>
               <div className="col-md-3">
-                
               </div>
             </div>
           </div>

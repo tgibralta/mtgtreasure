@@ -8,8 +8,6 @@ import UserPage from './Pages/User'
 import AboutPage from './Pages/About'
 import LastEventsPage from './Pages/LastEvents'
 import NotFoundPage from './Pages/NotFound'
-import Navbar from './Components/Navbar'
-
 
 
 
@@ -17,7 +15,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        {/* <Navbar/> */}
+        
         <Switch>
           <Route exact path='/' component={HomePage}/>
           <Route exact path='/signin' component={Signin}/>
@@ -27,7 +25,6 @@ class App extends Component {
           <Route exact path='/about' component={AboutPage}/>
           <Route exact path='*' component={NotFoundPage}/>
         </Switch>
-        {/* <Footer/> */}
       </div>
     )
   }

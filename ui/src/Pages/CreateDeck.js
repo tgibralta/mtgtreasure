@@ -29,7 +29,6 @@ class CreateDeck extends Component {
     }
   }
 
-
   componentWillMount () {
     userStore.on('change', () => {
       this.setState({
@@ -111,9 +110,6 @@ class CreateDeck extends Component {
       return accumulator
     }, 0)
 
-    console.log(`nbInMain: ${nbInMain}`)
-    console.log(`nbInSide: ${nbInSide}`)
-
     if (nbInMain < 60 | nbInSide !== 15) {
       if (nbInMain < 60) {
         Alert.error(`Cards in main: ${nbInMain}`, {
@@ -139,12 +135,8 @@ class CreateDeck extends Component {
       this.setState({
         loaded: false
       })
-      // console.log(`Main: ${JSON.stringify(mainObject)}`)
-      // console.log(`Sideboard: ${JSON.stringify(sideboardObject)}`)
       AddDeck(userID, deckName, legality, mainObject, sideboardObject)
       .then((deckCreated) => {
-        // console.log(`Now waiting to redirect: ${JSON.stringify(deckCreated)}`)
-        // redirectToDeckPage.bind(this, deckCreated)
         SetDeck(deckCreated)
         .then(() => {
           this.props.history.push(`/user/${this.state.user.username}/deck/${deckCreated.deckname}`)
@@ -166,9 +158,11 @@ class CreateDeck extends Component {
         })
       })
     }
+  }
 
-    
-
+  Cancel(user) {
+    let username = user.username
+    this.props.history.push(`/user/${username}/decks/`)
   }
 
   render() {
@@ -189,7 +183,7 @@ class CreateDeck extends Component {
             <label for="inputName">Name</label>
             <input className="form-control" id="inputName" placeholder="Name Deck" type="text" defaultValue={this.state.newDeck.deckname}/>
             <div className="col-md-4">
-              <FormEditDeck deckInfo={this.state.newDeck} submit={this.Submit.bind(this,this.state.user)} valueMain={this.state.textCardMain} valueSideboard={this.state.textCardSideboard}/>
+              <FormEditDeck cancel ={this.Cancel.bind(this,this.state.user)} deckInfo={this.state.newDeck} submit={this.Submit.bind(this,this.state.user)} valueMain={this.state.textCardMain} valueSideboard={this.state.textCardSideboard}/>
             </div>
           </div>
         </div>

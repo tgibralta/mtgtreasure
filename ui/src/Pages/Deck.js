@@ -142,7 +142,6 @@ class Deck extends Component {
   CreateBarManaCost (props) {
     let mainBoard = props.mainBoard
     let nbCardCMC1 = mainBoard.reduce((accumulator, element) => {
-      
       if (element.cmc === '1') {
         accumulator += 1
       }
@@ -375,6 +374,10 @@ class Deck extends Component {
     })
   }
 
+  redirectBack(username) {
+    this.props.history.push(`/user/${username}/decks/`)
+  }
+
   render() {
     
     return (
@@ -387,11 +390,14 @@ class Deck extends Component {
         </div>
         <div className="container">
           <div className ="row">
-            <div className="col-md-9">
+            <div className="col-md-8">
               <h3><strong>Format: {this.state.deck.legality} - {Math.ceil(this.state.deck.price)} $</strong></h3>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-2">
               <button className="btn btn-lg btn-signin btn-primary btn-block" onClick={this.handleEdit.bind(this, this.state.deck)}>Edit Deck</button>
+            </div>
+            <div className="col-md-2">
+              <button className="btn btn-lg btn-signin btn-primary btn-block" onClick={this.redirectBack.bind(this, this.state.user.username)}>Back</button>
             </div>
           </div>
           <hr/>

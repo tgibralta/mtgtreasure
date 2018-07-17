@@ -356,6 +356,7 @@ export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCar
   // console.log(`Legality: ${legality}`)
   // console.log(`Mainboard Cards: ${JSON.stringify(mainboardCards)}`)
   // console.log(`Sideboard Cards: ${JSON.stringify(sideboardCards)}`)
+  console.log(`Add Deck Called`)
   let main_element = mainboardCards.map(buildInfoCardDeckMain)
   let resultMain = Promise.all(main_element)
   resultMain.then((dataMain) => {
