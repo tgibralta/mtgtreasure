@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import userStore from './../Stores/UserStore'
-import TableCollection from './../Components/TableCollection'
-import Footer from './../Components/Footer'
-import Sidebar from './../Components/Sidebar'
 import Navbar from './../Components/Navbar'
 import './Style/Dashboard.css'
 import PanelCollection from './../Components/PanelCollection'
-import DeckDisplay from './../Components/DeckDisplay'
 import {CreateDeckDisplay} from './../Functions/CreateDeckDisplay'
 import {redirectToDeckPage} from './../Functions/redirectToDeckPage'
 import {RedirectNavbar} from './../Functions/RedirectNavbar'
-import ChartPriceHistory from './../Components/ChartPriceHistory'
 import ElementTop5 from './../Components/ElementTop5'
 import * as AccountActions from './../Actions/AccountAction'
 const DeleteDeck = require('./../Actions/AccountAction').DeleteDeck
@@ -77,9 +72,6 @@ class Dashboard extends Component {
     let dataNbCard = history.map(function(x) {
       return x.nb_card
     })
-    let dataProfit = history.map(function(x) {
-      return x.potential_profit
-    })
     let chartDataInvestment = {
       labels: labels,
       datasets: [
@@ -126,9 +118,9 @@ class Dashboard extends Component {
       return trendA<trendB ? 1 : trendA>trendB ? -1 : 0
     }).slice(0,4)
     // return (<TableCollection collection={top5}/>)
-    let top5Display = top5.map((element) => {
+    let top5Display = top5.map((element, index) => {
       // console.log(`card in top5: ${JSON.stringify(element)}`)
-      return(<ElementTop5 card={element}/>)
+      return(<ElementTop5 card={element} key={index}/>)
     })
     return top5Display
   }
@@ -142,9 +134,9 @@ class Dashboard extends Component {
       return trendA>trendB ? 1 : trendA<trendB ? -1 : 0
     }).slice(0,4)
     // return (<TableCollection collection={top5}/>)
-    let top5Display = top5.map((element) => {
+    let top5Display = top5.map((element, index) => {
       // console.log(`card in top5: ${JSON.stringify(element)}`)
-      return(<ElementTop5 card={element}/>)
+      return(<ElementTop5 card={element} key={index}/>)
     })
     return top5Display
   }

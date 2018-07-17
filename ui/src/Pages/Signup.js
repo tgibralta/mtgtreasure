@@ -93,7 +93,7 @@ class Signup extends Component {
             <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username}/>
             <Alert stack={{limit: 3}} />
             <div className = 'card card-container card-sign card-transparent'>
-              <img className="logo-form" src={imgLogo}/>
+              <img className="logo-form" alt="logo" src={imgLogo}/>
               <form className='form-signin' onSubmit={this.handleSubmit}>
                 <input type='text' id='inputUsername' className="form-control" placeholder='Username' required autoFocus/>
                 <input type='email' id='inputEmail' className="form-control" placeholder='Mail' required autoFocus/>

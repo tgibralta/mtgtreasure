@@ -65,20 +65,6 @@ class TableCollection extends Component {
         let cardName = rowInfo.row.name
         SearchCardPerName(cardName)
         .then((history) => {
-          // console.log(`History: ${JSON.stringify(history)}`)
-          let uri = history[0].cardInfo.image_uris.normal
-          let cardID = history[0].cardInfo.multiverse_ids[0]
-          let currentPrice = history[0].cardInfo.usd
-          let initPrice = rowInfo.row.initPrice
-          let priceHistory = history[0].priceHistory.priceHistory
-          let nameCard = rowInfo.row.name
-
-          // console.log(`Image : ${uri}`)
-          // console.log(`currentPrice : ${currentPrice}`)
-          // console.log(`initPrice : ${initPrice}`)
-          // console.log(`history : ${JSON.stringify(priceHistory)}`)
-          // console.log(`Name: ${nameCard}`)
-
         })
         .catch((errHistory) => {
           console.log(errHistory)
@@ -93,40 +79,34 @@ class TableCollection extends Component {
     {
       Header: <i className="fab fa-slack-hash icon-dashboard fa-3x"></i>,
       accessor: 'number',
-      Cell: props => <p className="text-center text-name">{props.value}</p>,
-      
-      minWidth: "10vh"
+      Cell: props => <p className="text-center text-name">{props.value}</p>
     },
     {
-      Header: <i class="fas fa-info icon-dashboard fa-3x"></i>,
+      Header: <i className="fas fa-info icon-dashboard fa-3x"></i>,
       accessor: 'name',
       // Cell: props => <p className="text-center">{props.value}</p>,
       Cell: props => <PopupCardCollection name={props.value.name} uri={props.value.uri} price={props.value.price} initPrice={props.value.initPrice} chartData={props.value.chartData} trend={props.value.trend}/>,
-      filterable: true,
-      minWidth: "10vh"
+      filterable: true
     },
     {
-      Header: <i class="fas fa-dollar-sign icon-dashboard fa-3x"></i>,
+      Header: <i className="fas fa-dollar-sign icon-dashboard fa-3x"></i>,
       accessor: 'currentPrice',
-      Cell: props => <p className="text-center">{props.value}</p>,
-      minWidth: "10vh"
+      Cell: props => <p className="text-center">{props.value}</p>
     },
     {
-      Header: <i class="fas fa-chart-line icon-dashboard fa-3x"></i>,
+      Header: <i className="fas fa-chart-line icon-dashboard fa-3x"></i>,
       accessor: 'trend',
       Cell: props => <div style={{
         backgroundColor:  props.value > 0 ? "#a3e4d7" :
                           props.value < 0 ? "#f1948a" :  "#d6eaf8"
-      }}><p className="text-center">{props.value} %</p> </div>,
-      minWidth: "10vh",
+      }}><p className="text-center">{props.value} %</p> </div>
        
 
     },
     {
       Header: '',
       accessor: 'buttons',
-      Cell: props => <button className="btn btn-lg btn-block btn-primary btn-signin" onClick={this.handleSubmit.bind(this, props.original.buttons)}><i class="far fa-trash-alt"></i></button>,
-      minWidth: "10vh"
+      Cell: props => <button className="btn btn-lg btn-block btn-primary btn-signin" onClick={this.handleSubmit.bind(this, props.original.buttons)}><i className="far fa-trash-alt"></i></button>
     }]
 
     return (
@@ -143,8 +123,6 @@ class TableCollection extends Component {
               desc: true
             }
           ]}
-          defaultPageSize={10}
-          className="-striped -highlight"
           />
         </div>
       </div>

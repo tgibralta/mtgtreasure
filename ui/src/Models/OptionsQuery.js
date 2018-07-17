@@ -1,4 +1,3 @@
-import config from 'react-global-configuration'
 import configuration from './../config/Config'
 
 export function createOptionAddUser (username, mail, password) {

@@ -16,7 +16,7 @@ class PopupAddCard extends Component {
             <div className="card-body">
               <div className="row">
                 <div className="col-md-6">
-                  <img className="img-card "src={this.props.cardInfo.image_uris.small}/>
+                  <img alt="img-card" className="img-card "src={this.props.cardInfo.image_uris.small}/>
                   <hr/>
                   <div className="row">
                     <div className="col-md-6 col-sm-6 col-lg-6">

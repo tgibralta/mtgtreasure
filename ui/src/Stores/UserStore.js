@@ -116,7 +116,7 @@ class UserStore extends EventEmitter {
     let indexCardToRemove = this.user.collection.findIndex(element => element.allCardInfo.DB.collection_id === collectionID)
     // console.log(JSON.stringify(this.user.collection))
     // console.log(`Index: ${indexCardToRemove}`)
-    if (indexCardToRemove != -1) {
+    if (indexCardToRemove !== -1) {
       // console.log(`Element removed: ${JSON.stringify(this.user.collection[indexCardToRemove].allCardInfo.Scryfall.name)}`)
       // console.log(`Nb Card to Remove: ${nbCardToRemove}`)
       // console.log(`Init Price: ${this.user.collection[indexCardToRemove].allCardInfo.DB.init_price}`)

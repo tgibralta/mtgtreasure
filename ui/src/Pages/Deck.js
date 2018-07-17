@@ -1,11 +1,8 @@
-import React, { Component } from 'react';
-import Sidebar from './../Components/Sidebar'
+import React, { Component } from 'react'
 import userStore from './../Stores/UserStore'
 import displayDeckStore from './../Stores/DisplayDeckStore'
 import DisplayCardInDeck from './../Components/DisplayCardInDeck'
 import {setEditDeck, setImage} from './../Actions/DisplayDeckAction'
-import Gallery from 'react-grid-gallery'
-import configuration from './../config/Config'
 import Navbar from './../Components/Navbar'
 import * as AccountActions from './../Actions/AccountAction'
 import {RedirectNavbar} from './../Functions/RedirectNavbar'
@@ -85,7 +82,6 @@ class Deck extends Component {
     let labels = [2,3,4,5]
     let dataSetPlay = ProbData.ProbLandDropPlay[indexLand]
     let dataSetDraw = ProbData.ProbLandDropDraw[indexLand]
-    let manaFlow = ProbData.ProbManaFlow[indexLand]
 
     console.log(`Nb Land: ${nbLand}`)
     console.log(`Object ProbData: ${JSON.stringify(ProbData)}`)
@@ -109,7 +105,7 @@ class Deck extends Component {
         }
       ]
     }
-    return <Line data={chartData} width={"100%"} height={"100%"}/>
+    return <Line data={chartData} width={100} height={100}/>
   }
 
   CreateManaFlowProb (props) {
@@ -169,7 +165,7 @@ class Deck extends Component {
       return accumulator
     }, 0)
     let nbCardCMC5ORMORE = mainBoard.reduce((accumulator, element) => {
-      if (parseInt(element.cmc) >= 5) {
+      if (parseInt(element.cmc, 10) >= 5) {
         accumulator += element.number
       }
       return accumulator
@@ -182,12 +178,11 @@ class Deck extends Component {
       labels: labels,
       datasets: [
         {
-          borderColor: '#154360',
           label: 'CMC',
           data: dataCMC,
           fill: false,
           backgroundColor: ['#d1f2eb', ' #a3e4d7 ', ' #76d7c4 ', ' #48c9b0 ', '#1abc9c'],
-          borderColor: '#117864'
+          borderColor: '#117864',
         }
       ]
     }
@@ -195,8 +190,8 @@ class Deck extends Component {
     return (
       <Bar 
         data={dataBar}
-        width={"100%"}
-        height={"100%"}
+        width={100}
+        height={100}
       />
     )
   }
@@ -207,11 +202,7 @@ class Deck extends Component {
     console.log(`Mainboard: ${board}`)
     if (isMain) {
       let Display_elements = []
-      let enableLand = 0
-      let enablePlaneswalker = 0
-      let enableSpell = 0
-      let enableCreature = 0
-      let listComponentsLand = board.map((card) => {
+      let listComponentsLand = board.map((card, index) => {
         let type = card.type.split(' ')
         // console.log(`words in type: ${JSON.stringify(type)}`)
         let typeIsLand = 0
@@ -222,23 +213,14 @@ class Deck extends Component {
           }
         })
         if (typeIsLand) {
-          let image = card.uri
           let number = card.number
-          let name = card.name
           let manacost = card.manaCost
           let price = card.price
-          let imageGallery = [{
-            src: image,
-            thumbnail: image,
-            thumbnailWidth: configuration.IMAGE.FULLCARD.LARGE.WIDTH,
-            thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
-          }]
-          // return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
-          return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price}/>
+          return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price} key={index}/>
         }
       })
 
-      let listComponentsCreature = board.map((card) => {
+      let listComponentsCreature = board.map((card, index) => {
         // console.log(`CARD: ${JSON.stringify(card)}`)
         let type = card.type.split(' ')
         let typeIsCreature = 0
@@ -250,23 +232,14 @@ class Deck extends Component {
           }
         })
         if (typeIsCreature) {
-          let image = card.uri
           let number = card.number
-          let name = card.name
           let manacost = card.manaCost
           let price = card.price
-          let imageGallery = [{
-            src: image,
-            thumbnail: image,
-            thumbnailWidth: configuration.IMAGE.FULLCARD.LARGE.WIDTH,
-            thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
-          }]
-          // return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
-          return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price}/>
+          return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price} key={index}/>
         }
       })
 
-      let listComponentsPlaneswalker = board.map((card) => {
+      let listComponentsPlaneswalker = board.map((card, index) => {
         let type = card.type.split(' ')
         // console.log(`words in type: ${JSON.stringify(type)}`)
         let typeIsPlaneswalker = 0
@@ -277,23 +250,14 @@ class Deck extends Component {
           }
         })
         if (typeIsPlaneswalker) {
-          let image = card.uri
           let number = card.number
-          let name = card.name
           let manacost = card.manaCost
           let price = card.price
-          let imageGallery = [{
-            src: image,
-            thumbnail: image,
-            thumbnailWidth: configuration.IMAGE.FULLCARD.LARGE.WIDTH,
-            thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
-          }]
-          // return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
-          return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price}/>
+          return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price} key={index}/>
         }
       })
 
-      let listComponentsElse = board.map((card) => {
+      let listComponentsElse = board.map((card, index) => {
         let type = card.type.split(' ')
         // console.log(`words in type: ${JSON.stringify(type)}`)
         let typeIsElse = 1
@@ -304,19 +268,10 @@ class Deck extends Component {
           }
         })
         if (typeIsElse) {
-          let image = card.uri
           let number = card.number
-          let name = card.name
           let manacost = card.manaCost
           let price = card.price
-          let imageGallery = [{
-            src: image,
-            thumbnail: image,
-            thumbnailWidth: configuration.IMAGE.FULLCARD.LARGE.WIDTH,
-            thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
-          }]
-          // return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
-          return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price}/>
+          return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price} key={index}/>
         }
       })
 
@@ -342,20 +297,11 @@ class Deck extends Component {
       }
       return Display_elements
     } else {
-      let Display_elements = board.map((card) => {
-        let image = card.uri
+      let Display_elements = board.map((card, index) => {
         let number = card.number
-        let name = card.name
         let manacost = card.manaCost
         let price = card.price
-        let imageGallery = [{
-          src: image,
-          thumbnail: image,
-          thumbnailWidth: configuration.IMAGE.FULLCARD.LARGE.WIDTH,
-          thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
-        }]
-        // return <DisplayCardInDeck image={imageGallery} number={number} name={name} manacost= {manacost} price={price} handleClick={props.handleClick.bind(this,imageGallery)}/>
-        return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price}/>
+        return <DisplayCardInDeck number={number} cardInfo={card} manacost= {manacost} price={price} key={index}/>
       })
       return Display_elements
     }

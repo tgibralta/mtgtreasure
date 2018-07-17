@@ -3,7 +3,6 @@ import userStore from './../Stores/UserStore'
 import resultSearchStore from './../Stores/ResultSearchStore'
 import TableCollection from './../Components/TableCollection'
 import PanelCollection from './../Components/PanelCollection'
-import configuration from './../config/Config'
 import Navbar from './../Components/Navbar'
 import * as AccountActions from './../Actions/AccountAction'
 import {RedirectNavbar} from './../Functions/RedirectNavbar'
@@ -67,9 +66,6 @@ class Collection extends Component {
     let dataNbCard = history.map(function(x) {
       return x.nb_card
     })
-    let dataProfit = history.map(function(x) {
-      return x.potential_profit
-    })
     let chartDataInvestment = {
       labels: labels,
       datasets: [
@@ -127,29 +123,6 @@ class Collection extends Component {
           
         </div>
       </div>
-      
-    //   <div className="container-fluid">
-    //   <div className="row">
-    //     <div className="col-md-2 no-float">
-    //       <Sidebar username={this.state.user.username}/>
-    //     </div>
-    //     <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-    //       {/* <PanelCollection initialInvestment={this.state.user.initialInvestment} currentValue={this.state.user.currentValue} nbCard={this.state.user.nbCardInCollection}/> */}
-    //       <this.CreateDataChartHistoryUser user={this.state.user} />
-    //       <hr/>
-    //       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 ">
-    //         <input className="form-control mr-sm-2" id="inputSearch" placeholder="Search for a card to add to your collection" type="text"/>
-    //         <button className="btn btn-lg btn-signin  btn-primary btn-block my-2 my-sm-0" type="submit" onClick={this.handleSearch.bind(this)}>Search</button>
-    //       </div>
-    //       <div className="jumbotron">
-    //         <div className="container">
-    //           <this.CreateCardDisplayElements results={this.state.result} user={this.state.user}/>
-    //         </div>
-    //       </div>
-    //       <TableCollection collection={this.state.user.collection} history={this.state.user.history}/>
-    //     </main>
-    //   </div>
-    // </div>
     )
   }
 }

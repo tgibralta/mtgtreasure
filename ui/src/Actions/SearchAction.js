@@ -1,6 +1,5 @@
 import dispatcher from '../Dispatchers/Dispatcher'
 import rp from 'request-promise'
-import cors from 'cors'
 import {createOptionCardPerNameQuery,
         createOptionGetPriceHistory} from './../Models/OptionsQuery'
 

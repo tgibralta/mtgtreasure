@@ -62,7 +62,7 @@ class Signin extends Component {
             <Navbar isLoggedIn={this.state.isLoggedIn} username={this.state.user.username}/>
             <Alert stack={{limit: 3}} />
             <div className="card card-container card-sign card-transparent">
-                <img className="logo-form" src={imgLogo}/>
+                <img alt="logo" className="logo-form" src={imgLogo}/>
                 <p id="profile-name" className="profile-name-card"></p>
                 <form className="form-signin">
                     <span id="reauth-email" className="reauth-email"></span>

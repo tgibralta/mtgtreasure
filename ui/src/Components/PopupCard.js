@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Popup from 'reactjs-popup'
-import ChartPriceHistory from './ChartPriceHistory'
 import './Style/PopupCard.css'
 
 class PopupCard extends Component {
@@ -12,7 +11,7 @@ class PopupCard extends Component {
       <Popup trigger={<a align="left" className="text-card-deck text-left">{this.props.name}</a>}  modal>
         <div>
           <div className="card border-primary mb-3 card-search">
-            <img className="img-popup img-center"src={this.props.uri}/>
+            <img className="img-popup img-center" alt="card-thumbnail" src={this.props.uri}/>
             <hr/>
             <h4><i class="fas fa-dollar-sign icon-dashboard fa-2x"></i> : {this.props.price}</h4>
           </div>

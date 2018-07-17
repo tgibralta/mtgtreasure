@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import * as AccountActions from './../Actions/AccountAction'
 import './Style/ElementNavbar.css'
 
 
@@ -19,7 +18,7 @@ class ElementNavbar extends Component {
             <a className="nav-link" href="/about">About</a>
           </li>
           <li className="nav-item">
-            <i class="fas fa-search"></i>
+            <i className="fas fa-search"></i>
           </li>
         </ul>
       )
@@ -42,7 +41,7 @@ class ElementNavbar extends Component {
             <a className="nav-link" onClick={this.props.Logout}>Logout</a>
           </li>
           <li className="nav-item">
-            <i class="fas fa-search"></i>
+            <i className="fas fa-search"></i>
           </li>
         </ul>
       )

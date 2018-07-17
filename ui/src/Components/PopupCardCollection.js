@@ -14,7 +14,7 @@ class PopupCardCollection extends Component {
           <div className="card border-primary mb-3 card-search">
             <div className="row">
               <div className="col-md-4 col-lg-4">
-                <img className="img-popup img-center"src={this.props.uri}/>
+                <img className="img-popup img-center" alt="card-thumbnail" src={this.props.uri}/>
               </div>
                <div className="col-md-8 col-lg-8">
                 <ChartPriceHistory chartData={this.props.chartData}/>

@@ -6,11 +6,11 @@ class ElementTop5 extends Component {
     faTrend(props) {
         let trend = props.trend
         if (trend > 0) {
-        return (<i class="fas fa-angle-double-up"></i>)
+        return (<i className="fas fa-angle-double-up"></i>)
       } else if (trend < 0) {
-        return (<i class="fas fa-angle-double-down"></i>)
+        return (<i className="fas fa-angle-double-down"></i>)
       } else {
-        return (<i class="fas fa-minus"></i>)
+        return (<i className="fas fa-minus"></i>)
       }
     }
 

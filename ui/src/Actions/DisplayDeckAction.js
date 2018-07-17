@@ -1,6 +1,4 @@
 import dispatcher from '../Dispatchers/Dispatcher'
-import rp from 'request-promise'
-import cors from 'cors'
 
 export const SetDeck = (deck) => new Promise((resolve, reject) => {
   if (deck) {

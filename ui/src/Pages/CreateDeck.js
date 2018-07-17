@@ -1,18 +1,15 @@
-import React, { Component } from 'react';
-import Sidebar from './../Components/Sidebar'
+import React, { Component } from 'react'
 import userStore from './../Stores/UserStore'
 import displayDeckStore from './../Stores/DisplayDeckStore'
 import './Style/CreateDeck.css'
 import FormEditDeck from './../Components/FormEditDeck'
-import {redirectToDeckPage} from './../Functions/redirectToDeckPage'
 import Navbar from './../Components/Navbar'
 import {RedirectNavbar} from './../Functions/RedirectNavbar'
 import * as AccountActions from './../Actions/AccountAction'
 import Loader from 'react-loader'
 import Alert from 'react-s-alert'
 import 'react-s-alert/dist/s-alert-default.css'
-import 'react-s-alert/dist/s-alert-css-effects/slide.css'
-const SearchCardPerName = require('./../Actions/SearchAction').SearchCardPerName
+import 'react-s-alert/dist/s-alert-css-effects/slide.css'   
 const SetDeck = require('./../Actions/DisplayDeckAction').SetDeck
 const AddDeck = require('./../Actions/AccountAction').AddDeck
 
@@ -52,11 +49,7 @@ class CreateDeck extends Component {
   }
 
   Submit(user) {
-    // this.setState({
-    //   loaded: false
-    // })
     let userID = user.userID
-    let username = user.username
     // Parse the content of the text area for the Main
     let mainObject = []
     let sideboardObject = []
@@ -102,11 +95,11 @@ class CreateDeck extends Component {
     })
 
     let nbInMain = mainObject.reduce((accumulator, element) => {
-      accumulator += parseInt(element.number)
+      accumulator += parseInt(element.number, 10)
       return accumulator
     }, 0)
     let nbInSide = sideboardObject.reduce((accumulator, element) => {
-      accumulator += parseInt(element.number)
+      accumulator += parseInt(element.number, 10)
       return accumulator
     }, 0)
 
@@ -180,7 +173,7 @@ class CreateDeck extends Component {
           <hr/>
           <Alert stack={{limit: 3}} />
           <div className="row">
-            <label for="inputName">Name</label>
+            <label htmlFor="inputName">Name</label>
             <input className="form-control" id="inputName" placeholder="Name Deck" type="text" defaultValue={this.state.newDeck.deckname}/>
             <div className="col-md-4">
               <FormEditDeck cancel ={this.Cancel.bind(this,this.state.user)} deckInfo={this.state.newDeck} submit={this.Submit.bind(this,this.state.user)} valueMain={this.state.textCardMain} valueSideboard={this.state.textCardSideboard}/>

@@ -1,6 +1,5 @@
 import dispatcher from '../Dispatchers/Dispatcher'
 import rp from 'request-promise'
-import cors from 'cors'
 import {createOptionAddUser, 
         createOptionCardPerIDQuery, 
         createOptionSignin,
@@ -43,7 +42,6 @@ export function DeleteUser(user) {
 
 const extractInfoElement = (element) => new Promise((resolve, reject) => {
   // console.log(`Entered extractInfoElement`)
-  let cardID = element.card_id
   let nbCardInElement = element.number_of_card
   let investmentElement = element.number_of_card * element.init_price
   let currentValueElement =0
@@ -208,7 +206,7 @@ export function SignoutUser(user) {
 }
 
 export const AddCardToCollection = (userID, cardID, price_when_bought, number,totalInfo) => new Promise((resolve, reject) => {
-  let intNumber = parseInt(number)
+  let intNumber = parseInt(number, 10)
   let floatPrice = parseFloat(price_when_bought)
   let optionsAddCardToCollection = createOptionAddCardToCollection(userID,cardID,floatPrice,intNumber)
   // console.log(JSON.stringify(optionsAddCardToCollection))
@@ -299,7 +297,7 @@ const buildInfoCardDeckMain = (card) => new Promise((resolve, reject) => {
       'cmc' : JSONRes.data[0].cmc,
       'manaCost' : JSONRes.data[0].mana_cost,
       'type' : JSONRes.data[0].type_line,
-      'number' : parseInt(card.number),
+      'number' : parseInt(card.number, 10),
       'uri' : JSONRes.data[0].image_uris.large,
       'price' : JSONRes.data[0].usd,
       'board': 'main',
@@ -326,7 +324,7 @@ const buildInfoCardDeckSide = (card) => new Promise((resolve, reject) => {
       'cmc' : JSONRes.data[0].cmc,
       'manaCost' : JSONRes.data[0].mana_cost,
       'type' : JSONRes.data[0].type_line,
-      'number' : parseInt(card.number),
+      'number' : parseInt(card.number, 10),
       'uri' : JSONRes.data[0].image_uris.large,
       'price' : JSONRes.data[0].usd,
       'board': 'side',
@@ -338,11 +336,6 @@ const buildInfoCardDeckSide = (card) => new Promise((resolve, reject) => {
     return reject(err)
   })
 })
-
-function reducerNbCard(accumulator, element) {
-  accumulator += element.number
-  return accumulator
-}
 
 function reducerPrice(accumulator, element){
   accumulator += element.price * element.number
