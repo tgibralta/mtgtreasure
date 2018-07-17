@@ -9,7 +9,7 @@ class PopupCardCollection extends Component {
   render() {
 
     return (
-      <Popup trigger={<a>{this.props.name}</a>} position="right center" modal>
+      <Popup trigger={<p>{this.props.name}</p>} position="right center" modal>
         <div>
           <div className="card border-primary mb-3 card-search">
             <div className="row">

@@ -119,7 +119,7 @@ class Dashboard extends Component {
     }).slice(0,4)
     // return (<TableCollection collection={top5}/>)
     let top5Display = top5.map((element, index) => {
-      // console.log(`card in top5: ${JSON.stringify(element)}`)
+      console.log(`card in top5: ${JSON.stringify(element)}`)
       return(<ElementTop5 card={element} key={index}/>)
     })
     return top5Display
