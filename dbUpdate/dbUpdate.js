@@ -4,6 +4,7 @@ const express = require('express')
 const cors = require('cors')
 const schedule = require('node-schedule')
 const fetchPrice = require('./server/jobs/fetchPrices')
+const createTop10 = require('./server/jobs/createTop10')
 
 
 global.rootRequire = (name) => {

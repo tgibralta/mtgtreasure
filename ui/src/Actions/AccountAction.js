@@ -306,7 +306,10 @@ const buildInfoCardDeckMain = (card) => new Promise((resolve, reject) => {
     return resolve(mainElement)
   })
   .catch((err) => {
-    return reject(err)
+    return reject({
+      error: err,
+      card: card.cardName
+    })
   })
 })
 
@@ -333,7 +336,10 @@ const buildInfoCardDeckSide = (card) => new Promise((resolve, reject) => {
     return resolve(mainElement)
   })
   .catch((err) => {
-    return reject(err)
+    return reject({
+      error: err,
+      card: card.cardName
+    })
   })
 })
 
@@ -344,7 +350,7 @@ function reducerPrice(accumulator, element){
 // const queryAddToDeck = (elementBoard) => new Promise((resolve, reject) => {
 // })
 
-export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCards) => new Promise((resolve, reject) => {
+export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCards, nbCardMain, nbCardSide) => new Promise((resolve, reject) => {
   // console.log(`Deck Name: ${deckName}`)
   // console.log(`Legality: ${legality}`)
   // console.log(`Mainboard Cards: ${JSON.stringify(mainboardCards)}`)
@@ -356,8 +362,6 @@ export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCar
     let side_element = sideboardCards.map(buildInfoCardDeckSide)
     let resultSide = Promise.all(side_element)
     resultSide.then((dataSide) => {
-      let nbCardMain = dataMain.reduce(reducerNbCard, 0)
-      let nbCardSide = dataSide.reduce(reducerNbCard, 0)
       let priceMain = dataMain.reduce(reducerPrice, 0)
       let priceSide = dataSide.reduce(reducerPrice, 0)
       let priceDeck = priceMain + priceSide
@@ -381,7 +385,8 @@ export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCar
         'legality' : legality,
         'price' : priceDeck
       }
-      // console.log(`Deck: ${JSON.stringify(newDeck)}`)
+      console.log(`New Deck: ${JSON.stringify(newDeck)}`)
+      console.log(`New DeckStore: ${JSON.stringify(DeckStore)}`)
       let optionsQuery = createOptionAddDeck(userID, newDeck)
       // console.log(`Option Query: ${JSON.stringify(optionsQuery)}`)
       rp(optionsQuery)
@@ -391,7 +396,6 @@ export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCar
           type: 'ADD_DECK',
           DeckStore,
           userID
-
         })
         return resolve(DeckStore)
       })
@@ -402,13 +406,13 @@ export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCar
       
     })
     .catch((errSide) => {
-      console.log(`Error in Query Sideboard: ${errSide}`)
-      return reject(errSide)
+      console.log(`Error in Query Sideboard: ${JSON.stringify(errSide)}`)
+      return reject(errSide.card)
     })
   })
   .catch((errMain) => {
-    console.log(`Error in Query Mainboard: ${errMain}`)
-    return reject(errMain)
+    console.log(`Error in Query Mainboard: ${JSON.stringify(errMain)}`)
+    return reject(errMain.card)
   })
 
 })

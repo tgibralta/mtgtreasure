@@ -54,6 +54,27 @@
       "COLUMN1" : "price",
       "COLUMN2" : "date"
     },
+    "PGTABLETRENDDAY" : {
+      "NAME" : "top10_trend_day",
+      "COLUMN0" : "card_id",
+      "COLUMN1" : "name",
+      "COLUMN2" : "trend",
+      "COLUMN3" : "price"
+    },
+    "PGTABLETRENDWEEK" : {
+      "NAME" : "top10_trend_week",
+      "COLUMN0" : "card_id",
+      "COLUMN1" : "name",
+      "COLUMN2" : "trend",
+      "COLUMN3" : "price"
+    },
+    "PGTABLETRENDMONTH" : {
+      "NAME" : "top10_trend_month",
+      "COLUMN0" : "card_id",
+      "COLUMN1" : "name",
+      "COLUMN2" : "trend",
+      "COLUMN3" : "price"
+    },
     "PGTABLEDAILYINFOUSER" : {
       "NAME" : "daily_info_users",
       "COLUMN0" : "user_id",
@@ -68,5 +89,9 @@
   "SCHEDULE_FETCH_PRICE" : {
     "H":12,
     "MIN" : 15
+  },
+  "SCHEDULE_TOP_10" : {
+    "H":17,
+    "MIN" : 41
   }
 }

@@ -29,6 +29,7 @@ class Deck extends Component {
       })
     })
     displayDeckStore.on('change', () => {
+      console.log(`Deck Page - Deck has been updated`)
       this.setState({
         deck: displayDeckStore.getDeck()
       })

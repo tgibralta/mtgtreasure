@@ -10,7 +10,6 @@ export const SetDeck = (deck) => new Promise((resolve, reject) => {
   } else {
     return reject(`Deck not defined`)
   }
-    
 })
 
 export const setEditDeck = (deck) => new Promise((resolve, reject) => {

@@ -224,7 +224,11 @@ const updatePricesOnePage = (urlPage) => new Promise((resolve, reject) => {
       let has_more = response.has_more
       let next_page = response.next_page
       let data = response.data
-      let queries = data.map(function(rowData) {return queryToDB(rowData, client)})
+      let queries = data.map(function(rowData) 
+        {
+          return queryToDB(rowData, client)
+        }
+      )
       let promiseQueries = Promise.all(queries)
       promiseQueries.then(()=> {
         client.release()
@@ -287,7 +291,7 @@ let scheduleFetchPrice = schedule.scheduleJob(rule, function(){
       console.log(`History Job gracefully completed :)`)
     })
     .catch((errUpdate) => {
-      console.log(`History Update sadly failed :(: ${errUpdate}`)
+      console.log(`History Update sadly failed :( ${errUpdate}`)
     })
   })
   .catch((errUpdPricese) => {

@@ -14,18 +14,18 @@ class  DisplayDeckStore extends EventEmitter {
       'sideboard': []
     }
     this.imageDisplay = [{
-          src: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
-          thumbnail: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
-          thumbnailWidth: configuration.IMAGE.FULLCARD.LARGE.WIDTH,
-          thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
-        }]
+      src: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
+      thumbnail: "https://magic.wizards.com/sites/mtg/files/image_legacy_migration/magic/images/mtgcom/fcpics/making/mr224_back.jpg",
+      thumbnailWidth: configuration.IMAGE.FULLCARD.LARGE.WIDTH,
+      thumbnailHeight: configuration.IMAGE.FULLCARD.LARGE.HEIGHT
+    }]
   }
 
   setDeck(deck){
     // console.log(`In store Display Deck: ${JSON.stringify(deck)}`)
     this.deck = deck
-    this.emit('change')
     console.log(`SetDeck emitted`)
+    this.emit('change')
   }
 
   setEditDeck(deck){

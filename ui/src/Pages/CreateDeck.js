@@ -103,6 +103,9 @@ class CreateDeck extends Component {
       return accumulator
     }, 0)
 
+    console.log(`nb Card In Main: ${nbInMain}`)
+    console.log(`nb Card In Side: ${nbInSide}`)
+
     if (nbInMain < 60 | nbInSide !== 15) {
       if (nbInMain < 60) {
         Alert.error(`Cards in main: ${nbInMain}`, {
@@ -128,26 +131,43 @@ class CreateDeck extends Component {
       this.setState({
         loaded: false
       })
-      AddDeck(userID, deckName, legality, mainObject, sideboardObject)
+      AddDeck(userID, deckName, legality, mainObject, sideboardObject, nbInMain, nbInSide)
       .then((deckCreated) => {
         SetDeck(deckCreated)
         .then(() => {
+          console.log(`Create Deck Page - Deck has been updated`)
           this.props.history.push(`/user/${this.state.user.username}/deck/${deckCreated.deckname}`)
           this.setState({
             loaded: true
           })
         })
-        .catch((err) => {
-          console.log(`Error when trying to redirect: ${err}`)
+        .catch((cardSetDeck) => {
+          console.log(`Error when trying to redirect: ${cardSetDeck}`)
           this.setState({
             loaded: true
           })
+          Alert.error(`Error: ${cardSetDeck}`, {
+            position: 'bottom-right',
+            effect: 'slide',
+            beep: false,
+            timeout: 2000,
+            offset: 100,
+            html: true
+          })
         })
       })
-      .catch((err) => {
-        console.log(`Err during deck creation: ${err}`)
+      .catch((cardAddDeck) => {
+        console.log(`Err during deck creation: ${cardAddDeck}`)
         this.setState({
           loaded: true
+        })
+        Alert.error(`Error: ${cardAddDeck}`, {
+          position: 'bottom-right',
+          effect: 'slide',
+          beep: false,
+          timeout: 2000,
+          offset: 100,
+          html: true
         })
       })
     }

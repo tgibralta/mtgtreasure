@@ -70,12 +70,17 @@ const queryInsertDB = (item, client, userID, deckID, date) => new Promise((resol
                 VALUES ('${userID}', '${item.cardID}', '${item.number}', '${date}', '${deckID}', '${item.uri}', '${item.board}' , '${nameInDB}', '${item.manaCost}', '${item.cmc}', '${item.type}', '${item.price}')`)
   .then((res) => {
     console.log(`CARD ${item.cardID} Successfully registered to Deck ${deckID} from User ${userID}`)
+    console.log(JSON.stringify(item))
     let msg = `CARD ${item.cardID} Successfully registered to Deck ${deckID} from User ${userID}`
     return resolve(msg)
   })
   .catch((errQuery) => {
     console.log(`Error when query: ${item.name}: ${errQuery}`)
-    return reject(errQuery)
+    return reject(
+      {
+        name: item.name,
+        error: errQuery
+      })
   })
 })
 
@@ -122,6 +127,7 @@ const addDeckToList = (userID, deckID, nbMain, nbSide, thumbnail, legality, pric
     if(errConect) {
       return reject(`Error during connection when addDeckToList`)
     } else {
+      console.log(`Elements addDeckToList: User: ${userID}', DeckID: '${deckID}', nbCard Main: '${nbMain}', nbCard Side: '${nbSide}', Img: '${thumbnail}', Legality: '${legality}', Price: '${priceDeck}`)
       client.query(`INSERT INTO ${config.get('DB.PGTABLELISTDECKS.NAME')} (${config.get('DB.PGTABLELISTDECKS.COLUMN0')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN1')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN2')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN3')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN4')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN5')}, ${config.get('DB.PGTABLELISTDECKS.COLUMN6')}) VALUES ('${userID}', '${deckID}', '${nbMain}', '${nbSide}', '${thumbnail}', '${legality}', '${priceDeck}')`)
       .then(() => {
         client.end()
@@ -155,7 +161,7 @@ const deleteDeckFromList = (userID, deckID) => new Promise((resolve, reject) => 
       })
       .catch((errAdd) => {
         client.end()
-        return reject(`Error while adding deck to decklist`)
+        return reject(`Error while deleting deck from decklist`)
       })
     }
   })
