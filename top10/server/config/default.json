@@ -1,0 +1,40 @@
+{
+  "DB": {
+    "PGHOST": "localhost",
+    "PGUSER": "mtgdb",
+    "PGDATABASE": "mtgdb",
+    "PGPASSWORD": "mtgpassword",
+    "PGTABLEPRICETRACKED" : {
+      "NAME" : "price_tracked_card",
+      "COLUMN0" : "card_id",
+      "COLUMN1" : "price",
+      "COLUMN2" : "date"
+    },
+    "PGTABLETRENDDAY" : {
+      "NAME" : "top10_trend_day",
+      "COLUMN0" : "card_id",
+      "COLUMN1" : "name",
+      "COLUMN2" : "trend",
+      "COLUMN3" : "price"
+    },
+    "PGTABLETRENDWEEK" : {
+      "NAME" : "top10_trend_week",
+      "COLUMN0" : "card_id",
+      "COLUMN1" : "name",
+      "COLUMN2" : "trend",
+      "COLUMN3" : "price"
+    },
+    "PGTABLETRENDMONTH" : {
+      "NAME" : "top10_trend_month",
+      "COLUMN0" : "card_id",
+      "COLUMN1" : "name",
+      "COLUMN2" : "trend",
+      "COLUMN3" : "price"
+    },
+    "PGPORT": 5432
+  },
+  "SCHEDULE_TOP_10" : {
+    "H":17,
+    "MIN" : 57
+  }
+}

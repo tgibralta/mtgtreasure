@@ -1,0 +1,24 @@
+{
+  "name": "top10",
+  "version": "1.0.0",
+  "main": "dbUpdate.js",
+  "repository": "https://github.com/tgibralta/mtgtreasure",
+  "author": "Thierry GIBRALTA <thierry.gibralta@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start_local": "NODE_CONFIG_DIR=./server/config NODE_ENV=default node top10.js --max_old_space_size=4096",
+    "start_dev": "NODE_CONFIG_DIR=./server/config NODE_ENV=dev node top10.js --max_old_space_size=4096"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "config": "^1.30.0",
+    "cors": "^2.8.4",
+    "express": "*",
+    "node-schedule": "^1.3.0",
+    "path": "*",
+    "pg": "^7.4.1",
+    "request": "*",
+    "request-promise": "^4.2.2",
+    "winston": "*"
+  }
+}
