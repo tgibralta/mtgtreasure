@@ -34,7 +34,7 @@
     "PGPORT": 5432
   },
   "SCHEDULE_TOP_10" : {
-    "H":17,
-    "MIN" : 57
+    "H":7,
+    "MIN" : 0
   }
 }

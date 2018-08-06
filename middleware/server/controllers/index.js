@@ -15,6 +15,7 @@ const getPriceHistory = rootRequire('server/controllers/getPriceHistory').getPri
 const getUserHistory = rootRequire('server/controllers/getUserHistory').getUserHistory
 const addUserHistory = rootRequire('server/controllers/addUserHistory').addUserHistory
 const updateUserHistory = rootRequire('server/controllers/updateUserHistory').updateUserHistory
+const getTop10 = rootRequire('server/controllers/getTop10').getTop10
 
 module.exports = {
     getCardPerName,
@@ -33,5 +34,6 @@ module.exports = {
     getPriceHistory,
     getUserHistory,
     addUserHistory,
-    updateUserHistory
+    updateUserHistory,
+    getTop10
 }

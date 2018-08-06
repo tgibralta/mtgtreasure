@@ -63,6 +63,27 @@
       "COLUMN4" : "potential_profit",
       "COLUMN5" : "date"
     },
+    "PGTABLETRENDDAY" : {
+      "NAME" : "top10_trend_day",
+      "COLUMN0" : "card_id",
+      "COLUMN1" : "name",
+      "COLUMN2" : "trend",
+      "COLUMN3" : "price"
+    },
+    "PGTABLETRENDWEEK" : {
+      "NAME" : "top10_trend_week",
+      "COLUMN0" : "card_id",
+      "COLUMN1" : "name",
+      "COLUMN2" : "trend",
+      "COLUMN3" : "price"
+    },
+    "PGTABLETRENDMONTH" : {
+      "NAME" : "top10_trend_month",
+      "COLUMN0" : "card_id",
+      "COLUMN1" : "name",
+      "COLUMN2" : "trend",
+      "COLUMN3" : "price"
+    },
     "PGPORT": 5432
   },
   "SCHEDULE_FETCH_PRICE" : {

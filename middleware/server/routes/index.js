@@ -15,6 +15,7 @@ const getPriceHistoryRoute = rootRequire('server/routes/getPriceHistory')
 const getUserHistoryRoute = rootRequire('server/routes/getUserHistory')
 const addUserHistoryRoute = rootRequire('server/routes/addUserHistory')
 const updateUserHistoryRoute = rootRequire('server/routes/updateUserHistory')
+const getTop10Route = rootRequire('server/routes/getTop10')
 const cors = require('cors')
 
 module.exports = (app) => {
@@ -41,4 +42,5 @@ module.exports = (app) => {
   app.use('/getuserhistory',getUserHistoryRoute)
   app.use('/adduserhistory',addUserHistoryRoute)
   app.use('/updateuserhistory',updateUserHistoryRoute)
+  app.use('/gettop10', getTop10Route)
 }
