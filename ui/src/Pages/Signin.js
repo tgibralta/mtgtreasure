@@ -74,7 +74,6 @@ class Signin extends Component {
                   Forgot the password?
                 </a>
             </div>
-            <Footer/>
           </div>
         </Loader>
         {/* </AlertProvider> */}

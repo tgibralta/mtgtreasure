@@ -25,6 +25,9 @@ class UserStore extends EventEmitter {
     history: []
     }
     this.isLoggedIn = false
+    this.top10 = {trendDay:[],
+                  trendWeek:[],
+                  trendMonth:[]}
   }
   SigninUser(username, userID, nbCardInCollection, initialInvestment, currentValue, cardsInfo, decks, history) {
     this.user.username = username
@@ -38,7 +41,7 @@ class UserStore extends EventEmitter {
     this.user.history = history
     // console.log(`Collection: ${JSON.stringify(this.user.collection)}`)
     // console.log(`Decks: ${JSON.stringify(this.user.decks)}`)
-    console.log(`Userstore - emit change from Signin : ${JSON.stringify(this.user)}`)
+    // console.log(`Userstore - emit change from Signin : ${JSON.stringify(this.user)}`)
     this.emit('change')
   }
   SignoutUser() {
@@ -64,6 +67,11 @@ class UserStore extends EventEmitter {
   getIsLoggedIn(){
     return this.isLoggedIn
   }
+
+  getTop10() {
+    return this.top10
+  }
+
   getDeck(deckID) {
     this.user.decks.forEach((deck) => {
       // console.log(`Deck we are trying to find: ${deckID}`)
@@ -102,7 +110,7 @@ class UserStore extends EventEmitter {
           "nb_card": userInfo.nbCard
         })
       }
-      console.log(`user history: ${JSON.stringify(this.user.history)}`)
+      // console.log(`user history: ${JSON.stringify(this.user.history)}`)
       this.emit('change')
       return resolve()
     } else {
@@ -151,6 +159,15 @@ class UserStore extends EventEmitter {
     }
   })
 
+  addTop10 = (trends) => new Promise((resolve, reject) => {
+    if (trends) {
+      this.top10 = trends
+      this.emit('change')
+      return resolve()
+    } else {
+      return reject('Empty trends')
+    }
+  })
 
 
   AddDeck = (newDeck) => new Promise((resolve, reject) => {
@@ -262,6 +279,17 @@ class UserStore extends EventEmitter {
         })
         break
       }
+      case 'TOP_10': {
+        this.addTop10(action.trends)
+        .then(() => {
+          console.log(`top10 updated: ${this.top10}`)
+        })
+        .catch((err) => {
+          console.log(`Err while updating top10: ${err}`)
+        })
+        break
+      }
+      
       default : {
         break
       }

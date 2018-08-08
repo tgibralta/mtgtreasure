@@ -17,13 +17,15 @@ class Signup extends Component {
     this.state = {
       user: userStore.getUser(),
       isLoggedIn: userStore.getIsLoggedIn(),
-      loaded: true
+      loaded: true,
+      trends: userStore.getTop10()
     }
   }
 
   componentWillMount () {
     this.setState({
-      loaded: true
+      loaded: true,
+      trends: userStore.getTop10()
     })
   }
 
@@ -101,7 +103,6 @@ class Signup extends Component {
               </form>
               <button className='btn btn-lg btn-block btn-primary btn-signin' onClick={this.handleSubmit.bind(this)}>Signup</button>
             </div>
-            <Footer/>
           </div>
         </Loader>
       </div>

@@ -49,6 +49,7 @@ const queryDB = () => new Promise((resolve, reject) => {
 
 module.exports = {
   getTop10(req, res) {
+    console.log(`Received request getTop10: ${req}`)
     queryDB()
     .then((trendObject) => {
       res.status(200).send(trendObject)

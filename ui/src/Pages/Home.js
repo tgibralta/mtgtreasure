@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import Footer from './../Components/Footer'
+import React, { Component } from 'react'
 import imgLogo from './../logo-mtg-treasure.png'
 import Navbar from './../Components/Navbar'
 import userStore from './../Stores/UserStore'
@@ -11,7 +10,8 @@ class Home extends Component {
     super()
     this.state = {
       user: userStore.getUser(),
-      isLoggedIn: userStore.getIsLoggedIn()
+      isLoggedIn: userStore.getIsLoggedIn(),
+      top10: userStore.getTop10()
     }
   }
 
@@ -19,7 +19,8 @@ class Home extends Component {
     userStore.on('change', () => {
       this.setState({
         user: userStore.getUser(),
-        isLoggedIn: userStore.getIsLoggedIn()
+        isLoggedIn: userStore.getIsLoggedIn(),
+        top10: userStore.getTop10()
       })
     })
   }
@@ -39,9 +40,8 @@ class Home extends Component {
             <h1 className="text-center  font-weight-bold text-title">MTG TREASURE</h1>
             <h3 className="text-center text-white">The essential financial and deck-building tool for every Magic The Gathering cards owner.</h3>
           </div>
-          <Footer />
         </div>
-        <div className="jumbotron jumbotron-white">
+        {/* <div className="jumbotron jumbotron-white">
           <div className="container">
             <div className="row">
               <div className="col-md-4 col-sm-4">
@@ -91,8 +91,7 @@ class Home extends Component {
               </div>
             </div>
           </div>
-        </div>
-        
+        </div> */}
       </div>
     );
   }

@@ -5,6 +5,7 @@ import {redirectToDeckPage} from './../Functions/redirectToDeckPage'
 import Navbar from './../Components/Navbar'
 import * as AccountActions from './../Actions/AccountAction'
 import {RedirectNavbar} from './../Functions/RedirectNavbar'
+import Footer from './../Components/Footer'
 
 const DeleteDeck = require('./../Actions/AccountAction').DeleteDeck
 
@@ -13,14 +14,16 @@ class Decks extends Component {
     super()
     this.state = {
       user: userStore.getUser(),
-      isLoggedIn: userStore.getIsLoggedIn()
+      isLoggedIn: userStore.getIsLoggedIn(),
+      trends: userStore.getTop10()
     }
   }
   componentWillMount () {
     userStore.on('change', () => {
       this.setState({
         user: userStore.getUser(),
-        isLoggedIn: userStore.getIsLoggedIn()
+        isLoggedIn: userStore.getIsLoggedIn(),
+      trends: userStore.getTop10()
       })
     })
   }

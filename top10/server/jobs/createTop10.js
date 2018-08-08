@@ -234,7 +234,8 @@ const createTop10 = (arrayTrends) => new Promise((resolve, reject) => {
 
 const queryDB = (client, infoCard, type) => new Promise((resolve, reject) => {
   let cardID = infoCard.cardID
-  let name = infoCard.name
+  let name = infoCard.name.replace(/'/g,'')
+  console.log(`Name: ${name}`)
   let price = infoCard.price
   console.log(`Querying the DB and updating the TOP10...: ${type}`)
   let trend = 0

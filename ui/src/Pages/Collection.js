@@ -6,6 +6,7 @@ import PanelCollection from './../Components/PanelCollection'
 import Navbar from './../Components/Navbar'
 import * as AccountActions from './../Actions/AccountAction'
 import {RedirectNavbar} from './../Functions/RedirectNavbar'
+import Footer from './../Components/Footer'
 
 
 
@@ -16,7 +17,8 @@ class Collection extends Component {
     this.state = {
       user: userStore.getUser(),
       result: resultSearchStore.getResults(),
-      isLoggedIn: userStore.getIsLoggedIn()
+      isLoggedIn: userStore.getIsLoggedIn(),
+      top10: userStore.getTop10()
     }
   }
 
@@ -31,7 +33,8 @@ class Collection extends Component {
     userStore.on('change', () => {
       this.setState({
         user: userStore.getUser(),
-        isLoggedIn: userStore.getIsLoggedIn()
+        isLoggedIn: userStore.getIsLoggedIn(),
+        top10: userStore.getTop10()
       })
     })
     resultSearchStore.on('change', () => {

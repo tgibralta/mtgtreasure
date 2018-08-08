@@ -11,6 +11,7 @@ import Loader from 'react-loader'
 import Alert from 'react-s-alert'
 import 'react-s-alert/dist/s-alert-default.css'
 import 'react-s-alert/dist/s-alert-css-effects/slide.css'
+import Footer from './../Components/Footer'
 
 const SearchCardPerName = require('./../Actions/SearchAction').SearchCardPerName
 
@@ -22,7 +23,8 @@ class AddCard extends Component {
       user: userStore.getUser(),
       result: resultSearchStore.getResults(),
       isLoggedIn: userStore.getIsLoggedIn(),
-      loaded: true
+      loaded: true,
+      top10: userStore.getTop10()
     }
   }
 
@@ -30,7 +32,8 @@ class AddCard extends Component {
     userStore.on('change', () => {
       this.setState({
         user: userStore.getUser(),
-        isLoggedIn: userStore.getIsLoggedIn()
+        isLoggedIn: userStore.getIsLoggedIn(),
+        top10: userStore.getTop10()
       })
     })
     resultSearchStore.on('change', () => {

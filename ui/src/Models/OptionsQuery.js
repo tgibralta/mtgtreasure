@@ -157,3 +157,11 @@ export function createOptionRemoveToUserHistory (userID, nbCard, Value, Investme
     json: true
   }
 }
+
+export function createOptionTop10 () {
+  return {
+    uri: configuration.MIDDLEWARE.GET_TOP_10.URI,
+    method: configuration.MIDDLEWARE.GET_TOP_10.METHOD,
+    origin: configuration.UI.URI,
+  }
+}

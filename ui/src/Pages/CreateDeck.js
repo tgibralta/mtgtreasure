@@ -9,7 +9,8 @@ import * as AccountActions from './../Actions/AccountAction'
 import Loader from 'react-loader'
 import Alert from 'react-s-alert'
 import 'react-s-alert/dist/s-alert-default.css'
-import 'react-s-alert/dist/s-alert-css-effects/slide.css'   
+import 'react-s-alert/dist/s-alert-css-effects/slide.css'
+import Footer from './../Components/Footer'
 const SetDeck = require('./../Actions/DisplayDeckAction').SetDeck
 const AddDeck = require('./../Actions/AccountAction').AddDeck
 
@@ -22,7 +23,8 @@ class CreateDeck extends Component {
       newDeck : displayDeckStore.getDeckEdited(),
       textCardMain : displayDeckStore.getTextMain(),
       textCardSideboard : displayDeckStore.getTextSideboard(),
-      loaded: true
+      loaded: true,
+      trends: userStore.getTop10()
     }
   }
 
@@ -31,7 +33,8 @@ class CreateDeck extends Component {
       this.setState({
         user: userStore.getUser(),
         isLoggedIn: userStore.getIsLoggedIn(),
-        loaded: true
+        loaded: true,
+      trends: userStore.getTop10()
       }) 
     })
     displayDeckStore.on('change', () => {

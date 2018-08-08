@@ -3,13 +3,13 @@ import Popup from 'reactjs-popup'
 import ChartPriceHistory from './ChartPriceHistory'
 import './Style/PopupCard.css'
 
-class PopupCardCollection extends Component {
+class PopupCardTop10 extends Component {
 
   
   render() {
 
     return (
-      <Popup trigger={<p><strong>{this.props.name}</strong></p>} position="right center" modal>
+      <Popup trigger={<p className="text-center"><strong>{this.props.name}: </strong>{this.props.price}$ (<green>+{this.props.trend}% {this.props.word}</green>),&nbsp;&nbsp;&nbsp;&nbsp;</p>}  position="right center" modal>
         <div>
           <div className="card border-primary mb-3 card-search">
             <div className="row">
@@ -23,13 +23,13 @@ class PopupCardCollection extends Component {
             <hr/>
             <div className="row">
               <div className="col-md-4 col-lg-4">
-                <h4><i class="fas fa-money-bill-alt icon-dashboard fa-2x"></i> : {this.props.initPrice} $</h4>
+                <h4><i className="fas fa-money-bill-alt icon-dashboard fa-2x"></i> : {this.props.initPrice} $</h4>
               </div>
               <div className="col-md-4 col-lg-4">
-                <h4><i class="fas fa-dollar-sign icon-dashboard fa-2x"></i> : {this.props.price} $</h4>
+                <h4><i className="fas fa-dollar-sign icon-dashboard fa-2x"></i> : {this.props.price} $</h4>
               </div>
               <div className="col-md-4 col-lg-4">
-                <h4><i class="fas fa-chart-line icon-dashboard fa-2x"></i> : {this.props.trend} %</h4>
+                <h4><i className="fas fa-chart-line icon-dashboard fa-2x"></i> : {this.props.trend} %</h4>
               </div>
             </div>
             
@@ -40,4 +40,4 @@ class PopupCardCollection extends Component {
   }
 }
 
-export default PopupCardCollection
+export default PopupCardTop10

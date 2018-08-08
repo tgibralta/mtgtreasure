@@ -8,6 +8,7 @@ import * as AccountActions from './../Actions/AccountAction'
 import {RedirectNavbar} from './../Functions/RedirectNavbar'
 import {Bar, Line} from 'react-chartjs-2'
 import ProbData from './../Assets/probLandDrop'
+import Footer from './../Components/Footer'
 
 
 class Deck extends Component {
@@ -17,7 +18,8 @@ class Deck extends Component {
       user: userStore.getUser(),
       deck: displayDeckStore.getDeck(),
       activeImage: displayDeckStore.getImage(),
-      isLoggedIn: userStore.getIsLoggedIn()
+      isLoggedIn: userStore.getIsLoggedIn(),
+      top10: userStore.getTop10()
     }
   }
 
@@ -25,7 +27,8 @@ class Deck extends Component {
     userStore.on('change', () => {
       this.setState({
         user: userStore.getUser(),
-        isLoggedIn: userStore.getIsLoggedIn()
+        isLoggedIn: userStore.getIsLoggedIn(),
+        top10: userStore.getTop10()
       })
     })
     displayDeckStore.on('change', () => {

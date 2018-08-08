@@ -8,6 +8,10 @@ import {redirectToDeckPage} from './../Functions/redirectToDeckPage'
 import {RedirectNavbar} from './../Functions/RedirectNavbar'
 import ElementTop5 from './../Components/ElementTop5'
 import * as AccountActions from './../Actions/AccountAction'
+import Footer from './../Components/Footer'
+import Top10Component from './../Components/Top10Component'
+import Popup from 'reactjs-popup'
+import ChartPriceHistory from './../Components/ChartPriceHistory'
 const DeleteDeck = require('./../Actions/AccountAction').DeleteDeck
 
 
@@ -16,7 +20,10 @@ class Dashboard extends Component {
     super()
     this.state = {
       user : userStore.getUser(),
-      isLoggedIn: userStore.getIsLoggedIn()
+      isLoggedIn: userStore.getIsLoggedIn(),
+      top10: userStore.getTop10(),
+      openPopup : false,
+      popupContent: <p>Test</p>
     }
   }
   componentWillMount () {
@@ -24,12 +31,80 @@ class Dashboard extends Component {
       console.log(`Dashboard - change emitted. new user: ${JSON.stringify(userStore.getUser())}`)
       this.setState({
         user: userStore.getUser(),
-        isLoggedIn: userStore.getIsLoggedIn()
+        isLoggedIn: userStore.getIsLoggedIn(),
+        top10: userStore.getTop10()
       })
     })
   }
 
-  
+  createChartData(trend) {
+    let labels = trend.priceHistory.priceHistory.map(function(x, index) {
+      let splitDate = x.date.split("/")
+        return splitDate[1]
+    })
+    let data = trend.priceHistory.priceHistory.map(function(x) {
+      return x.price
+    })
+    let chartData = {
+      labels: labels,
+      datasets: [
+        {
+          borderColor: '#154360',
+          label: '$',
+          data: data,
+          display: false,
+        }
+      ]
+    }
+    return chartData
+  }
+
+  setupPopup(elementTop10) {
+    console.log(`State when starting setupPopup: ${JSON.stringify(this.state)}`)
+    let name=elementTop10.Scryfall.name
+    let uri=elementTop10.Scryfall.image_uris.large
+    let price=elementTop10.Scryfall.usd
+    let chartData=this.createChartData(elementTop10)
+    let trend=elementTop10.trend
+    let initPrice = elementTop10.Scryfall.usd
+    this.setState ({
+      popupContent: <div>
+          <div className="card border-primary mb-3 card-search">
+            <div className="row">
+              <div className="col-md-4 col-lg-4">
+                <img className="img-popup img-center" alt="card-thumbnail" src={uri}/>
+              </div>
+               <div className="col-md-8 col-lg-8">
+                <ChartPriceHistory chartData={chartData}/>
+              </div> 
+            </div>
+            <hr/>
+            <div className="row">
+              <div className="col-md-4 col-lg-4">
+                <h4><i className="fas fa-money-bill-alt icon-dashboard fa-2x"></i> : {initPrice} $</h4>
+              </div>
+              <div className="col-md-4 col-lg-4">
+                <h4><i className="fas fa-dollar-sign icon-dashboard fa-2x"></i> : {price} $</h4>
+              </div>
+              <div className="col-md-4 col-lg-4">
+                <h4><i className="fas fa-chart-line icon-dashboard fa-2x"></i> : {trend} %</h4>
+              </div>
+            </div>
+          </div>
+        </div>,
+      openPopup: true
+    })
+    console.log(`State after starting setupPopup: ${JSON.stringify(this.state)}`)
+  }
+
+  closePopup () {
+    this.setState({
+      openPopup : false,
+      popupContent: <p>Test</p>
+    })
+    console.log(`State after closing Popup: ${JSON.stringify(this.state)}`)
+  }
+
   handleClickNewDeck () {
     this.props.history.push(`/user/${this.state.user.username}/createdeck`)
   }
@@ -155,7 +230,9 @@ class Dashboard extends Component {
             <h4 className="text-center text-title-jumbo">DASHBOARD</h4>
           </div>
         </div>
+        <Top10Component className="top10" trends={this.state.top10} popup={this.setupPopup.bind(this)}/>
       <div className="container">
+        <Popup trigger={<p></p>} position="right center" modal open={this.state.openPopup} children={this.state.popupContent} onClose={this.closePopup.bind(this)}/>
         <div className="row">
           <div className="col-md-10">
             <h2 className="display-4 "><strong>COLLECTION SUMMARY</strong></h2>

@@ -55,6 +55,10 @@ const configuration ={
     "UPDATE_USER_HISTORY": {
       "URI": MIDDLEWARE_URI + '/updateuserhistory',
       "METHOD": "PUT"
+    },
+    "GET_TOP_10": {
+      "URI": MIDDLEWARE_URI + '/gettop10',
+      "METHOD": "GET"
     }
   },
   "UI": {

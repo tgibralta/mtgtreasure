@@ -6,6 +6,7 @@
 	background-size: cover;
     text-align: center;
     height: 200px;
+    margin-bottom: 0;
 }
 
 .text-title-jumbo {
@@ -19,10 +20,6 @@
 
 .hr-white {
     background-color: white;
-}
-
-.jumbotron-deck {
-    background-color: #E5E7E9;
 }
 
 .subtitle {
@@ -45,6 +42,11 @@ strong {
 
 .jumbotron-deck {
     background-color: #154360;
+}
+
+.jumbotron-top10 {
+    background-color:  #e5e8e8 ;
+    margin-top: 0;
 }
 
 .btn-primary {
@@ -81,4 +83,15 @@ strong {
     transition: all 0.218s;
 }
 
+green {
+  color:  #27ae60;
+}
 
+.top10 {
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.2), 
+    rgba(0, 0, 0, 0.2)
+  );
+  background-color: transparent;
+  color: white;
+}

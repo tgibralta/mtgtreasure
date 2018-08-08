@@ -22,10 +22,12 @@
     "react-router-hash-link": "^1.2.0",
     "react-s-alert": "^1.4.1",
     "react-scripts": "1.1.1",
+    "react-slick": "^0.23.1",
     "react-table": "^6.8.0",
     "react-tabs": "^2.2.2",
     "reactjs-popup": "^1.1.1",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "slick-carousel": "^1.8.1"
   },
   "scripts": {
     "start": "react-scripts start",

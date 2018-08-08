@@ -1,5 +1,5 @@
 {
-  "name": "ptrc_connector",
+  "name": "mtg_treasure_middleware",
   "version": "1.0.0",
   "main": "ptrc.js",
   "repository": "git@gitlab.jp.sbibits.com:thierry.gibralta/ptrc_software.git",

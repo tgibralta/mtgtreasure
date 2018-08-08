@@ -12,7 +12,9 @@ import {createOptionAddUser,
         createOptionDeleteDeck,
         createOptionGetUserHistory,
         createOptionAddToUserHistory,
-        createOptionRemoveToUserHistory} from './../Models/OptionsQuery'
+        createOptionRemoveToUserHistory,
+        createOptionTop10,
+        createOptionGetPriceHistory} from './../Models/OptionsQuery'
 
 
 export const CreateUser = (username, mail, password) => new Promise((resolve, reject) => {
@@ -163,18 +165,29 @@ export const SigninUser = (username, password) => new Promise((resolve, reject) 
           .then ((historyDB) => {
             let history = JSON.parse(historyDB)
             // console.log(`History received: ${JSON.stringify(history)}`)
-            dispatcher.dispatch({
-              type: 'SIGNIN_USER',
-              username,
-              userID,
-              nbCardInCollection,
-              initialInvestment,
-              currentValue,
-              cardsInfo,
-              listDecks,
-              history
+            getTop10()
+            .then((trends) => {
+              // console.log(`TRENDS FROM TOP 10: ${JSON.stringify(trends)}`)
+              dispatcher.dispatch({
+                type: 'TOP_10',
+                trends
+              })
+              dispatcher.dispatch({
+                type: 'SIGNIN_USER',
+                username,
+                userID,
+                nbCardInCollection,
+                initialInvestment,
+                currentValue,
+                cardsInfo,
+                listDecks,
+                history
+              })
+              return resolve()
             })
-            return resolve()
+            .catch((errtop10) => {
+              return reject(errtop10)
+            })
           })
           .catch((errHistory) => {
             return reject(errHistory)
@@ -385,8 +398,8 @@ export const AddDeck = (userID, deckName, legality, mainboardCards, sideboardCar
         'legality' : legality,
         'price' : priceDeck
       }
-      console.log(`New Deck: ${JSON.stringify(newDeck)}`)
-      console.log(`New DeckStore: ${JSON.stringify(DeckStore)}`)
+      // console.log(`New Deck: ${JSON.stringify(newDeck)}`)
+      // console.log(`New DeckStore: ${JSON.stringify(DeckStore)}`)
       let optionsQuery = createOptionAddDeck(userID, newDeck)
       // console.log(`Option Query: ${JSON.stringify(optionsQuery)}`)
       rp(optionsQuery)
@@ -430,5 +443,81 @@ export const DeleteDeck = (userID, deckID) => new Promise((resolve, reject) => {
   })
   .catch((err) => {
     return reject()
+  })
+})
+
+const buildArrayFromTop10 = (trendArray) => new Promise((resolve, reject) => {
+  let cardInfoDay= trendArray.map((card) => {
+      let options = createOptionCardPerIDQuery(card)
+      // console.log(JSON.stringify(options))
+      return (rp(options))
+    })
+    let cardInfoDayPromise = Promise.all(cardInfoDay)
+    cardInfoDayPromise.then((infoAPIDay) => {
+      console.log(`Card Info received from ID`)
+      let priceHistoryDay = trendArray.map((card) => {
+        let cardID = card.card_id
+        let options = createOptionGetPriceHistory(cardID)
+        // console.log(JSON.stringify(options))
+        return (rp(options))
+      })
+      let priceHistoryPromise = Promise.all(priceHistoryDay)
+      priceHistoryPromise.then((priceHistory) => {
+        let cardInfo = trendArray.map((element, index) => {
+          return ({
+            Scryfall: JSON.parse(infoAPIDay[index]),
+            priceHistory: JSON.parse(priceHistory[index]),
+            trend: element.trend
+          })
+        })
+        return resolve(cardInfo)
+      })
+      .catch((errHistory) => {
+        return reject (errHistory)
+      })
+    })
+    .catch((errDay) => {
+      return reject(errDay)
+    })
+})
+
+
+const getTop10 = () => new Promise((resolve, reject) =>{
+  let options = createOptionTop10()
+  // console.log(`Option trends:${JSON.stringify(options)}`)
+  rp(options)
+  .then((res) => {
+    let incTrendDay = JSON.parse(res).trendDay
+    let incTrendWeek = JSON.parse(res).trendWeek
+    let incTrendMonth = JSON.parse(res).trendMonth
+    console.log(`TOP10 DAY`)
+    buildArrayFromTop10(incTrendDay)
+    .then((trendDay) => {
+      console.log(`TOP10 WEEK`)
+      buildArrayFromTop10(incTrendWeek)
+      .then((trendWeek) => {
+        console.log(`TOP10 MONTH`)
+        buildArrayFromTop10(incTrendMonth)
+        .then((trendMonth) => {
+          return resolve({
+            trendDay,
+            trendWeek,
+            trendMonth
+          })
+        })
+        .catch((errMonth) => {
+          return reject(errMonth)
+        })
+      })
+      .catch((errWeek) => {
+        return reject(errWeek)
+      })
+    })
+    .catch((errDay) => {
+      return reject(errDay)
+    })
+  })
+  .catch((err) => {
+    return reject(err)
   })
 })
