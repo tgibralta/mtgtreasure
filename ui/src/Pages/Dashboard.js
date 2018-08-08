@@ -231,7 +231,7 @@ class Dashboard extends Component {
           </div>
         </div>
         <Top10Component className="top10" trends={this.state.top10} popup={this.setupPopup.bind(this)}/>
-      <div className="container">
+      <div className="container container-main">
         <Popup trigger={<p></p>} position="right center" modal open={this.state.openPopup} children={this.state.popupContent} onClose={this.closePopup.bind(this)}/>
         <div className="row">
           <div className="col-md-10">

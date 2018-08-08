@@ -204,7 +204,7 @@ const queryAPIOnePage = (urlPage) => new Promise((resolve, reject) => {
     return resolve(JSON.parse(res))
   })
   .catch((err) => {
-    return reject(`Error page ${pageNb}: ${err}`)
+    return reject(`Error page ${urlPage}: ${err}`)
   })
 })
 
