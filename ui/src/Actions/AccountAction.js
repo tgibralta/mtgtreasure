@@ -23,12 +23,22 @@ export const CreateUser = (username, mail, password) => new Promise((resolve, re
   .then((res) => {
     let userID = res.userID
     // console.log(userID)
-    dispatcher.dispatch({
-      type: 'CREATE_USER',
-      username,
-      userID,
+    getTop10()
+    .then((trends) => {
+      dispatcher.dispatch({
+        type: 'TOP_10',
+        trends
+      })
+      dispatcher.dispatch({
+        type: 'CREATE_USER',
+        username,
+        userID
+      })
+      return resolve()
     })
-    return resolve()
+    .catch((errTop10) => {
+      return reject(errTop10)
+    })
   })
   .catch((err) => {
     return reject(err)
@@ -134,7 +144,6 @@ export const SigninUser = (username, password) => new Promise((resolve, reject) 
     let userID = JSON.parse(res).userID
     // FETCH USER COLLECTION
     let optionsCollection = createOptionGetCollection(userID)
-    // console.log(`OPTION COLLECTION: ${JSON.stringify(optionsCollection)}`)
     rp(optionsCollection)
     .then((resCollection) => {
       let JSONReply = JSON.parse(resCollection)
@@ -145,20 +154,12 @@ export const SigninUser = (username, password) => new Promise((resolve, reject) 
         let cardsInfo = nbCardAndInfo.totalCardInfo
         let initialInvestment = nbCardAndInfo.totalInvestment
         let currentValue = nbCardAndInfo.totalValue
-        // console.log(`OBJECT OBTAINED AFTER LOOP OVER ARRAY: ${JSON.stringify(nbCardAndInfo)}`)
-        // console.log(`NB CARD: ${nbCardInCollection}`)
-        // console.log(`INVESTMENT: ${initialInvestment}`)
-        // console.log(`VALUE: ${currentValue}`)
-        // console.log(`INFO: ${JSON.stringify(cardsInfo)}`)
         // FETCH USER DECKS
         let optionsGetDecks = createOptionGetDecks(userID)
         // console.log(`optionsGetDecks: ${JSON.stringify(optionsGetDecks)}`)
         rp(optionsGetDecks)
         .then((decks) => {
           let listDecks = JSON.parse(decks)
-          // console.log(`DECKS RECEIVED FROM MIDDLEWARE: ${decks}`)
-          // console.log(`NB CARD IN COLLECTION: ${nbCardInCollection}`)
-          
           // GET USER HISTORY
           let optionsUserHistory = createOptionGetUserHistory(userID)
           rp(optionsUserHistory)

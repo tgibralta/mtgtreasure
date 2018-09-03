@@ -233,7 +233,7 @@ class UserStore extends EventEmitter {
       }
       case 'CREATE_USER' : {
         // console.log(`USERSTORE: Setting user information`)
-        this.SigninUser(action.username, action.userID, 0, 0, 0, [])
+        this.SigninUser(action.username, action.userID, 0, 0, 0, [], action.trends)
         break
       }
       case 'ADD_CARD_TO_COLLECTION' : {
