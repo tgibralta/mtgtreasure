@@ -24,6 +24,7 @@ class UserStore extends EventEmitter {
       ],
     history: []
     }
+    this.language = 0
     this.isLoggedIn = false
     this.top10 = {trendDay:[],
                   trendWeek:[],
@@ -56,6 +57,7 @@ class UserStore extends EventEmitter {
       history: []
     }
     this.isLoggedIn = false
+    this.language = 0
     this.emit('change')
   }
   getUser() {
@@ -70,6 +72,10 @@ class UserStore extends EventEmitter {
 
   getTop10() {
     return this.top10
+  }
+
+  getLanguage() {
+    return this.language
   }
 
   getDeck(deckID) {
